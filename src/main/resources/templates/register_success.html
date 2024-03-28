@@ -32,45 +32,17 @@
 	<!-- Header/nav -->
    	<div th:replace="header :: header-fragment"></div>
     <!-- Header/nav nav -->
-    <section class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-xl-7 ftco-animate">
-					<form action="#" class="billing-form bg-light p-3 p-md-5">
-						<h3 class="mb-4 billing-heading">Login</h3>
-						<div class="row align-items-end">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label for="email">Email Address</label>
-									<input type="email" class="form-control" placeholder="Enter your email address">
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label for="password">Password</label>
-									<input type="password" class="form-control" placeholder="Enter your password">
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<div class="checkbox">
-										<label><input type="checkbox" value="" class="mr-2"> Remember Me</label>
-									</div>
-								</div>
-							</div>
-							<div class="w-100"></div>
-							<div class="col-md-12">
-								<div class="form-group mt-4">
-									<button type="submit" class="btn btn-primary py-3 px-4">Login</button>
-									<a href="#" class="btn btn-secondary py-3 px-4">Register</a>
-								</div>
-							</div>
-						</div>
-					</form><!-- END -->
-				</div>
-			</div>
-		</div>
-	</section>
+	 <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center ftco-animate">
+                    <h2 class="mb-4">Registration Complete!</h2>
+                    <p>Thank you for registering with Vegefoods. Your account has been successfully created.</p>
+                    <p>You can now <a href="index.html">return to the homepage</a> or <a href="shop.html">start shopping</a>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     <!--footer  -->
 	<div th:replace="footer :: footer"></div>
 	<!--footer end  -->
@@ -96,6 +68,24 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
-    
+  <script>
+        function previewFile() {
+            var preview = document.getElementById('preview-img');
+            var file    = document.getElementById('file-upload').files[0];
+            var reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+                preview.style.display = 'none';
+            }
+        }
+    </script>
   </body>
 </html>
