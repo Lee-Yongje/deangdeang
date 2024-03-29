@@ -1,169 +1,171 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
+<head>
+	<title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="css/aos.css">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+		rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/ionicons.min.css">
+	<link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+	<link rel="stylesheet" href="css/animate.css">
 
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="css/magnific-popup.css">
 
-    
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-  <body class="goto-here">
+	<link rel="stylesheet" href="css/aos.css">
+
+	<link rel="stylesheet" href="css/ionicons.min.css">
+
+	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="css/jquery.timepicker.css">
+
+	<link rel="stylesheet" href="css/flaticon.css">
+	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="goto-here">
 	<!-- Header/nav -->
-   	<div th:replace="header :: header-fragment"></div>
-    <!-- Header/nav nav -->
+	<div th:replace="header :: header-fragment"></div>
+	<!-- Header/nav nav -->
 
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
-            <h1 class="mb-0 bread">Community</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <section class="ftco-section ftco-degree-bg">
-      <div class="container">
-        <div class="row">
-        	<div class="col-lg-3 sidebar ftco-animate">
-	            <div class="sidebar-box">
-	              <form action="#" class="search-form">
-	                <div class="form-group">
-	                  <span class="icon ion-ios-search"></span>
-	                  <input type="text" class="form-control" placeholder="Search...">
-	                </div>
-	              </form>
-	            </div>
-	            <div class="sidebar-box ftco-animate">
-	            	<h3 class="heading">커뮤니티</h3>
-	              <ul class="categories">
-	                <li><a href="#">전국댕댕자랑<span>(12)</span></a></li>
-	                <li><a href="#">자유게시판 <span>(22)</span></a></li>
-	                <li><a href="#">질문게시판 <span>(37)</span></a></li>
-	                <li><a href="#">산책해요<span>(42)</span></a></li>
-	                <li><a href="#">신고/제보 <span>(30)</span></a></li>
-	              </ul>
-	            </div>
-          </div>
-        
-          <div class="col-lg-9 ftco-animate">
-		<section class="ftco-section">
-    	<div class="container">
-			<div class="d-flex justify-content-between align-items-center">
-			    <h2>전국댕댕자랑</h2>
-			    <a href="/write" class="btn btn-primary">글쓰기</a>
+	<div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate text-center">
+					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
+					<h1 class="mb-0 bread">Community</h1>
+				</div>
 			</div>
-		<br />
-    			
-    		
-	   <!--4by4 사진형 게시판-->
-		<div class="row">
-		    <!-- 반복문 시작 -->
-		    <div class="col-md-3" th:each="num: ${#numbers.sequence(1,16)}">
-		        <!--사진 하나 시작-->
-		        <div class="ftco-animate">
-		            <div class="product">
-		                <a href="/boastDetail" class="img-prod"><img class="img-fluid" src="images/product-1.jpg" alt="Colorlib Template">
-		                    <span class="status">HIT</span>
-		                    <div class="overlay"></div>
-		                </a>
-		                <div class="text py-3 pb-4 px-3 text-center">
-		                    <h3><a href="/boastDetail">강쥐1</a></h3>
-		                    <div class="d-flex">
-		                        <div class="pricing">
-		                            <p class="price"><span class="price-sale">주절주절 강아지 자랑 주절주절</span></p>
-		                        </div>
-		                    </div>
-		                    <!--혹시 몰라 남겨두는 좋아요-->
-		                    <div class="bottom-area d-flex px-3">
-		                        <div class="m-auto d-flex">
-		                            <a href="#" class="heart d-flex justify-content-center align-items-center ">
-		                                <span><i class="ion-ios-heart"></i></span>
-		                            </a>
-		                        </div>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		        <!--사진 하나 끝-->
-		    </div>
-		    <!-- 반복문 끝 -->
 		</div>
+	</div>
+	<br />
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 sidebar ftco-animate">
+				<div class="sidebar-box ftco-animate">
+					<h3 class="heading">커뮤니티</h3>
+					<ul class="categories">
+						<li><a href="/boast">전국댕댕자랑</a></li>
+						<li><a href="#">자유게시판</a></li>
+						<li><a href="#"></a></li>
+						<li><a href="#">산책해요</a></li>
+						<li><a href="/report">신고/제보</a></li>
+					</ul>
+				</div>
+			</div>
 
+			<div class="col-lg-9 ftco-animate">
+				<div class="container">
+					<div class="d-flex justify-content-between align-items-center">
+						<h2>전국댕댕자랑</h2>
+						<a href="/boastWrite" class="btn btn-primary">글쓰기</a>
+					</div>
+					<br />
 
-    		<div class="row mt-5">
-				
-          <!--페이징-->
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&gt;</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-    	</div>
-    </section>
-          </div> <!-- .col-md-8 -->
-          
+					<!-- 4by4 사진형 게시판 -->
+					<div class="row">
+						<!-- 반복문 시작 -->
+						<div class="col-lg-3 col-md-6 col-sm-12" th:each="num: ${#numbers.sequence(1,16)}">
+							<!-- 사진 하나 시작 -->
+							<div class="ftco-animate">
+								<div class="product">
+									<a href="/boastDetail" class="img-prod"><img class="img-fluid"
+											src="images/sampledog.jpg" alt="Colorlib Template">
+										<span class="status">HIT</span>
+										<div class="overlay"></div>
+									</a>
+									<div class="text py-3 pb-4 px-3 text-center">
+										<h3><a href="/boastDetail">강쥐1</a></h3>
+										<div class="d-flex">
+											<div class="pricing">
+												<p class="price"><span class="price-sale">주절주절 강아지 자랑 주절주절</span></p>
+											</div>
+										</div>
+										<!-- 혹시 몰라 남겨두는 좋아요 -->
+										<div class="bottom-area d-flex px-3">
+											<div class="m-auto d-flex">
+												<a href="#"
+													class="heart d-flex justify-content-center align-items-center ">
+													<span><i class="ion-ios-heart"></i></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 사진 하나 끝 -->
+						</div>
+						<!-- 반복문 끝 -->
+					</div>
 
-        </div>
-      </div>
-    </section> <!-- .section -->
+					<div class="row mt-5">
+						<!-- 페이징 -->
+						<div class="col text-center">
+							<div class="block-27">
+								<ul>
+									<li><a href="#">&lt;</a></li>
+									<li class="active"><span>1</span></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#">&gt;</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
 
-    <!--footer  -->
-	 <div th:replace="footer :: footer"></div>
-    <!--footer end  -->
-    
-  
+					<!-- 검색창 -->
+					<div class="row mt-3">
+						<div class="col-md-6 offset-md-3 ftco-animate">
+							<div class="sidebar-box">
+								<form action="#" class="search-form">
+									<div class="form-group">
+										<span class="icon ion-ios-search"></span>
+										<input type="text" class="form-control" placeholder="Search...">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- .col-md-8 -->
+		</div>
+	</div>
 
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+	<!-- footer -->
+	<div th:replace="footer :: footer"></div>
+	<!-- footer end -->
 
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00" />
+		</svg></div>
 
-  <script src="js/jquery.min.js"></script>
-  <script src="js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/jquery.waypoints.min.js"></script>
-  <script src="js/jquery.stellar.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/jquery.magnific-popup.min.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/jquery.animateNumber.min.js"></script>
-  <script src="js/bootstrap-datepicker.js"></script>
-  <script src="js/scrollax.min.js"></script>
-  <script src="js/google-map.js"></script>
-  <script src="js/main.js"></script>
-    
-  </body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.easing.1.3.js"></script>
+	<script src="js/jquery.waypoints.min.js"></script>
+	<script src="js/jquery.stellar.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/aos.js"></script>
+	<script src="js/jquery.animateNumber.min.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/scrollax.min.js"></script>
+	<script src="js/google-map.js"></script>
+	<script src="js/main.js"></script>
+</body>
+
 </html>
