@@ -126,6 +126,10 @@ public class PageController {
         return "wishlist";
     }
 
+    @GetMapping("/qna")
+    public String qnaPage() {
+        return "qna";
+    }
     //사진형 게시판 boast, report, usedgood
     @GetMapping("/boast")
     public String boastPage() {
