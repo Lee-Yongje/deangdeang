@@ -25,9 +25,14 @@
 	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
 	<link rel="stylesheet" href="css/jquery.timepicker.css">
 
+
 	<link rel="stylesheet" href="css/flaticon.css">
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/style.css">
+
+	<!--상세페이지용-->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body class="goto-here">
@@ -63,83 +68,46 @@
 
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
-					<div class="d-flex justify-content-between align-items-center">
-						<h2>제보/신고 게시판</h2>
-						<a href="/reportWrite" class="btn btn-primary">글쓰기</a>
-					</div>
-					<br />
-					<!--콤보박스-->
-					<div class="form-group">
-						<select class="form-control" id="reportType" style="width: 30%;">
-							<option value="02">서울</option>
-							<option value="031">경기</option>
-							<option value="032">인천</option>
-							<option value="033">강원</option>
-						</select>
-					</div>
-					<!-- 4by4 사진형 게시판 -->
-					<div class="row">
-						<!-- 반복문 시작 -->
-						<div class="col-md-3" th:each="num: ${#numbers.sequence(1,16)}">
-							<!-- 사진 하나 시작 -->
-							<div class="ftco-animate">
-								<div class="product">
-									<a href="/reportDetail" class="img-prod"><img class="img-fluid"
-											src="images/sampledog.jpg" alt="Colorlib Template">
-										<div class="overlay"></div>
-									</a>
-									<div class="text py-3 pb-4 px-3 text-center">
-										<h3><a href="/reportDetail">잃어버리신 분</a></h3>
-										<div class="d-flex">
-											<div class="pricing">
-												<p class="price"><span class="price-sale">서울</span></p>
-											</div>
-										</div>
-									</div>
+					<div class="container mt-5">
+						<div class="row">
+							<div class="col-md-8">
+								<h2>게시물 작성</h2>
+								<h5>전국댕댕자랑</h5>
+							</div>
+							<div class="col-md-4 text-right">
+								<button class="btn btn-primary">글 등록</button>
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="text" class="form-control" id="title" value="제목을 입력하세요"
+										onfocus="clearDefault(this)" onblur="restoreDefault(this)">
+								</div>
+								<div class="form-group">
+									<textarea class="form-control" id="content" rows="5" onfocus="clearDefault(this)"
+										onblur="restoreDefault(this)">내용을 입력하세요</textarea>
+								</div>
+								<div class="form-group">
+									<label for="file">파일 첨부</label>
+									<input type="file" class="form-control-file" id="file">
 								</div>
 							</div>
-							<!-- 사진 하나 끝 -->
-						</div>
-						<!-- 반복문 끝 -->
-					</div>
-
-					<div class="row mt-5">
-						<!-- 페이징 -->
-						<div class="col text-center">
-							<div class="block-27">
-								<ul>
-									<li><a href="#">&lt;</a></li>
-									<li class="active"><span>1</span></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#">&gt;</a></li>
-								</ul>
-							</div>
 						</div>
 					</div>
-					<!-- 검색창 -->
-					<div class="row mt-3">
-						<div class="col-md-6 offset-md-3 ftco-animate">
-							<div class="sidebar-box">
-								<form action="#" class="search-form">
-									<div class="form-group">
-										<span class="icon ion-ios-search"></span>
-										<input type="text" class="form-control" placeholder="제목으로 검색...">
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
+				</div><!--/container -->
 			</div> <!-- .col-md-8 -->
+
+
 		</div>
 	</div>
-
-	<!-- footer -->
+	</section> <!-- .section -->
+	<br /><br />
+	<!--footer  -->
 	<div th:replace="footer :: footer"></div>
-	<!-- footer end -->
+	<!--footer end  -->
+
+
 
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
@@ -147,6 +115,7 @@
 			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
 				stroke="#F96D00" />
 		</svg></div>
+
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-migrate-3.0.1.min.js"></script>
@@ -163,6 +132,27 @@
 	<script src="js/scrollax.min.js"></script>
 	<script src="js/google-map.js"></script>
 	<script src="js/main.js"></script>
+	<!--게시판상세글용-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script>
+		function clearDefault(element) {
+			element.value = '';
+		}
+
+		function restoreDefault(element) {
+			if (element.value === '') {
+				if (element.id === 'title') {
+					element.value = '제목을 입력하세요';
+				} else if (element.id === 'content') {
+					element.value = '내용을 입력하세요';
+				}
+			}
+		}
+	</script>
+
 </body>
 
 </html>

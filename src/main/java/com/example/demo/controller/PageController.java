@@ -31,16 +31,6 @@ public class PageController {
         return "blog-single";
     }
 
-    @GetMapping("/boast")
-    public String boastPage() {
-        return "boast";
-    }
-
-    @GetMapping("/boastDetail")
-    public String boastDetailPage() {
-        return "boastDetail";
-    }
-
     @GetMapping("/cart")
     public String cartPage() {
         return "cart";
@@ -49,6 +39,14 @@ public class PageController {
     @GetMapping("/changeInfo")
     public String changeInfoPage() {
         return "changeInfo";
+    }
+    @GetMapping("/changePwd")
+    public String changePwdPage() {
+    	return "changePwd";
+    }
+    @GetMapping("/insertPuppy")
+    public String insertPuppyPage() {
+    	return "insertPuppy";
     }
 
     @GetMapping("/checkout")
@@ -121,19 +119,9 @@ public class PageController {
         return "register";
     }
 
-    @GetMapping("/report")
-    public String reportPage() {
-        return "report";
-    }
-
     @GetMapping("/shop")
     public String shopPage() {
         return "shop";
-    }
-
-    @GetMapping("/usedgood")
-    public String usedgoodPage() {
-        return "usedgood";
     }
 
     @GetMapping("/walk")
@@ -146,9 +134,9 @@ public class PageController {
         return "wishlist";
     }
 
-    @GetMapping("/write")
-    public String writePage() {
-        return "write";
+    @GetMapping("/qna")
+    public String qnaPage() {
+        return "qna";
     }
     
     @GetMapping("/scheduler")
@@ -160,5 +148,46 @@ public class PageController {
     public String diary() {
         return "diary";
     }
+
+    //사진형 게시판 boast, report, usedgood
+    @GetMapping("/boast")
+    public String boastPage() {
+        return "boast";
+    }
+    @GetMapping("/report")
+    public String reportPage() {
+        return "report";
+    }
+    @GetMapping("/usedgood")
+    public String usedgoodPage() {
+        return "usedgood";
+    }
+
+    @GetMapping("/boastDetail")
+    public String boastDetailPage() {
+        return "boastDetail";
+    }
+    @GetMapping("/usedgoodDetail")
+    public String usedgoodDetailPage() {
+    	return "usedgoodDetail";
+    }
+    @GetMapping("/reportDetail")
+    public String reportDetail() {
+    	return "reportDetail";
+    }
+    
+    @GetMapping("/boastWrite")
+    public String boastWritePage() {
+        return "boastWrite";
+    }
+    @GetMapping("/usedgoodWrite")
+    public String usedgoodWritePage() {
+    	return "usedgoodWrite";
+    }
+    @GetMapping("/reportWrite")
+    public String reportWritePage() {
+    	return "reportWrite";
+    }
+    //-사진형게시판
 }
     
