@@ -140,7 +140,7 @@ public class PageController {
     public String walkPage() {
         return "walk"; 
     }
-
+ 
     @GetMapping("/wishlist")
     public String wishlistPage() {
         return "wishlist";
