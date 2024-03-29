@@ -31,16 +31,6 @@ public class PageController {
         return "blog-single";
     }
 
-    @GetMapping("/boast")
-    public String boastPage() {
-        return "boast";
-    }
-
-    @GetMapping("/boastDetail")
-    public String boastDetailPage() {
-        return "boastDetail";
-    }
-
     @GetMapping("/cart")
     public String cartPage() {
         return "cart";
@@ -121,19 +111,9 @@ public class PageController {
         return "register";
     }
 
-    @GetMapping("/report")
-    public String reportPage() {
-        return "report";
-    }
-
     @GetMapping("/shop")
     public String shopPage() {
         return "shop";
-    }
-
-    @GetMapping("/usedgood")
-    public String usedgoodPage() {
-        return "usedgood";
     }
 
     @GetMapping("/walk")
@@ -146,9 +126,44 @@ public class PageController {
         return "wishlist";
     }
 
-    @GetMapping("/write")
-    public String writePage() {
+    //사진형 게시판 boast, report, usedgood
+    @GetMapping("/boast")
+    public String boastPage() {
+        return "boast";
+    }
+    @GetMapping("/report")
+    public String reportPage() {
+        return "report";
+    }
+    @GetMapping("/usedgood")
+    public String usedgoodPage() {
+        return "usedgood";
+    }
+
+    @GetMapping("/boastDetail")
+    public String boastDetailPage() {
+        return "boastDetail";
+    }
+    @GetMapping("/usedgoodDetail")
+    public String usedgoodDetailPage() {
+    	return "write";
+    }
+    @GetMapping("/reportDetail")
+    public String reportDetailPage() {
+    	return "write";
+    }
+    
+    @GetMapping("/boastWrite")
+    public String boastWritePage() {
         return "write";
+    }
+    @GetMapping("/usedgoodWrite")
+    public String usedgoodWritePage() {
+    	return "write";
+    }
+    @GetMapping("/reportWrite")
+    public String reportWritePage() {
+    	return "write";
     }
 }
     
