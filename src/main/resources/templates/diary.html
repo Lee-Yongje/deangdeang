@@ -27,91 +27,6 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
-    
-	<style>
-	  #calendar {
-	    font-family: Arial, sans-serif;
-	    margin-top: 10px;
-	    width: 70%;
-	    margin: 0 auto; 
-	  }
-	  .month-button {
-	    margin: 5px;
-	    padding: 5px;
-	    cursor: pointer; 
-	    flex-basis: cacl(16.66% - 10px);
-	  }
-	  .month-button:hover, .month-button.active {
-	    color: white;
-	    background-color: #00AAFF;
-	  }
-	  #month-buttons {
-	  	display:flex;
-	    justify-content: center;
-	    flex-wrap: wrap;
-	    margin-bottom: 20px; 
-	    text-align:center;
-	    margin-bottom:10px;
-	  }
-	  #month-buttons, #calendar {
-        text-align: center; /* 중앙 정렬 */
-      }
-	  
-	  table {
-	    width: 100%;
-	    border-collapse: collapse;
-	  }
-	  th, td {
-	    padding: 5px;
-	    text-align: center;
-	    border: 1px solid #ddd;
-	  }
-	  th {
-	    background-color: #00AAFF;
-	   	color:#fff;
-	  }
-	  td:hover {
-	    background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
-	  }	
-	  
-	  #calendar td {
-	    cursor: pointer; 
-	  }
-	  .selected-date {
-	    background-color: #f0f0f0; /* 선택된 날짜 배경색 변경 */
-	  }
-	  .has-content {
-	    background-color: orange; /* 내용이 있는 날짜 배경색 변경*/
-	  }
-
-	  #year-select{
-	  	display:inline-block;
-	  }
-	  .content-area {
-        margin-left: auto;
-        margin-top: 20px; 
-	    margin-right:auto;
-        display: block;  
-        width:70%;
-        margin-bottom:20px;
-	  }
-	  #entries {
-	  	width:70%;
-	    margin-top: 20px; 
-	    margin-right:auto;
-	    display:block; 
-	  }
-	  
-	  .entry {
-	    border: 1px solid #00AAFF;
-	    padding: 10px;
-	    margin:5px 0; 
-        display: inline-block;
-        width: calc(100% - 20px);
-	  }
-	</style>
-
-    
   </head>
   <body class="goto-here">
 	<!-- Header/nav -->
@@ -206,9 +121,6 @@
               </div>
             </div>
 
-
-
-
             <div class="sidebar-box ftco-animate">
               <h3 class="heading">Paragraph</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
@@ -219,146 +131,102 @@
           <!--콘텐츠영역 -->
           <div class="col-lg-8 ftco-animate">
 			<div class="row">
-				
-				<select id="year-select">
-				  <option value="2024">2024</option>
-				  <option value="2025">2025</option>
-				  <option value="2026">2026</option>
-				</select>
-				
-				
-				<!--  월 선택 버튼  -->
-				<div id="month-buttons">
-				  <button class="month-button" data-month="0">1월</button>
-				  <button class="month-button" data-month="1">2월</button>
-				  <button class="month-button" data-month="2">3월</button>
-				  <button class="month-button" data-month="3">4월</button>
-				  <button class="month-button" data-month="4">5월</button>
-				  <button class="month-button" data-month="5">6월</button>
-				</div>
-				<div>
-				  <button class="month-button" data-month="6">7월</button>
-				  <button class="month-button" data-month="7">8월</button>
-				  <button class="month-button" data-month="8">9월</button>
-				  <button class="month-button" data-month="9">10월</button>
-				  <button class="month-button" data-month="10">11월</button>
-				  <button class="month-button" data-month="11">12월</button>
-				</div>
-				
-				<!-- 달력 --> 
-				<div id="calendar"></div>
-				<!-- 내용 입력하기 -->
-				<div class="content-area">
-                	<input type="text" id="content-input" placeholder="일정을 입력하세요">
-                	<button id="submit-btn">입력</button>
-            	</div>
-            	<br><br>
-            	<!-- 내용 표시될 예정 -->
-            	<div id="entries">
-<!--             		<div th:each="entry : ${entries}" class="entry">
-				        <span th:text="${entry.name}">할일목록</span>
-				    </div> -->
-				    
-				    <!-- 서버연결 안되어 있어서 예시로 출력하기 위해 추가함 -->
-					<div class="entry">
-				        <span>달래 미용실 꼭가기</span>
-				    </div>
-				    <div class="entry">
-				        <span>예방접종 하는날</span>
-				    </div>
-				    <div class="entry">
-				        <span>강아지 배변패드 사야함</span>
-   			 		</div>
-            	
-            	</div>
-				
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-				<script>
-				$(document).ready(function() {
-					//현재 월 가져와서 페이지 실행 시 해당 월에 표시
-					var currentMonth = new Date().getMonth();
-					
-					$('.month-button').each(function(){
-						if($(this).data('month')==currentMonth){
-							$(this).addClass('active');
-						}else{
-							$(this).removeClass('active');
-						}
-					})
-					
-					
-					function generateCalendar(year, month) {
-				    const firstDay = new Date(year, month, 1);
-				    const lastDay = new Date(year, month + 1, 0);
-				
-				    let calendarHtml = '<table>';
-				    calendarHtml += '<tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr><tr>';
-				
-				    for (let i = 0; i < firstDay.getDay(); i++) {
-				      calendarHtml += '<td></td>';
-				    }
-				
-				    for (let day = 1; day <= lastDay.getDate(); day++) {
-				      const dayOfWeek = new Date(year, month, day).getDay();
-				      if (dayOfWeek === 0 && day > 1) {
-				        calendarHtml += '</tr><tr>';
-				      }
-				      calendarHtml += `<td>${day}</td>`;
-				    }
-				
-				    const lastDayOfWeek = lastDay.getDay();
-				    for (let i = lastDayOfWeek + 1; i <= 6; i++) {
-				      calendarHtml += '<td></td>';
-				    }
-				
-				    calendarHtml += '</tr></table>';
-				    $('#calendar').html(calendarHtml);
-				  }
-				
-				  $('.month-button').click(function() {
-				    $('.month-button').removeClass('active');
-				    $(this).addClass('active');
-				    const month = $(this).data('month');
-				    const year = parseInt($('#year-select').val());
-				    generateCalendar(year, month);
-				  });
-				
-				  $('#year-select').change(function() {
-				    const year = parseInt($(this).val());
-				    const month = $('.month-button.active').data('month');
-				    generateCalendar(year, month);
-				  });
-				  
-				  
-				  //일 선택하면 색깔 바뀜 
-				  $('#calendar').on('click', 'td', function() {
-	                    $('td').css('background-color', '');
-	                    $(this).css('background-color', 'yellow'); 
-	              });
-				  
-				
-				  const now = new Date();
-				  generateCalendar(now.getFullYear(), now.getMonth());
-				  
-				  
-				  $('#submit-btn').click(function() {
-		                var content = $('#content-input').val();
-		                $('#content-input').val(''); // 입력창 내용 지우기
-
-		                // 내용을 #entries에 추가
-		                // 나중에 서버연결 후 수정 예정  >
-/* 		                $('#entries').append(`<div class="entry">달래 미용실 꼭가기</div>`); // 임시 내용 추가
-		                $('#entries').append(`<div class="entry">예방접종 하는날</div>`); // 임시 내용 추가
-		                $('#entries').append(`<div class="entry">강아지 배변패드 사야</div>`); // 임시 내용 추가
- */
-		            });
-				  
-				});
-				</script>
-		
-			
-		
-		
+				<div class="col-md-12 d-flex ftco-animate" style="border:1px solid #ced4da; border-radius:30px">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+        			<a href="blog-single.html" class="block-20" style="background-image: url('images/image_1.jpg'); background-position: center center; background-repeat: no-repeat; background-size: cover;">
+		              </a>
+		              <div class="text d-block pl-md-4" style="margin-top:20px">
+		              	<div class="meta mb-3">
+		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">Admin</a></div>
+		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+		                </div>
+		                <h3 class="heading"><a href="#">강아지 운동장에 다녀왔음~!</a></h3>
+		                <p>댕댕정보통에서 집근처 강아지 산책 모임할 사람을 모집하길래 들어갔다. 모임참석을 하겠다고 답하고 나가봤더니 다 아는 얼굴들이었는데 처음 보는 달마시안도 나와서 사진을 정말 많이 찍어왔음.</p>
+		                <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">더보기</a></p>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-12 d-flex ftco-animate">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_2.jpg');">
+		              </a>
+		              <div class="text d-block pl-md-4">
+		              	<div class="meta mb-3">
+		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">Admin</a></div>
+		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+		                </div>
+		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+		                <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-12 d-flex ftco-animate">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_3.jpg');">
+		              </a>
+		              <div class="text d-block pl-md-4">
+		              	<div class="meta mb-3">
+		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">Admin</a></div>
+		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+		                </div>
+		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+		                <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-12 d-flex ftco-animate">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_4.jpg');">
+		              </a>
+		              <div class="text d-block pl-md-4">
+		              	<div class="meta mb-3">
+		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">Admin</a></div>
+		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+		                </div>
+		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+		                <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-12 d-flex ftco-animate">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_5.jpg');">
+		              </a>
+		              <div class="text d-block pl-md-4">
+		              	<div class="meta mb-3">
+		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">Admin</a></div>
+		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+		                </div>
+		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+		                <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="col-md-12 d-flex ftco-animate">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_6.jpg');">
+		              </a>
+		              <div class="text d-block pl-md-4">
+		              	<div class="meta mb-3">
+		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">Admin</a></div>
+		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+		                </div>
+		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+		                <p><a href="blog-single.html" class="btn btn-primary py-2 px-3">Read more</a></p>
+		              </div>
+		           </div>
+		        </div>
 			</div>
           </div> <!-- .col-md-8 -->
 
@@ -389,7 +257,6 @@
   <script src="js/jquery.animateNumber.min.js"></script>
   <script src="js/bootstrap-datepicker.js"></script>
   <script src="js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
     

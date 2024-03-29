@@ -150,5 +150,15 @@ public class PageController {
     public String writePage() {
         return "write";
     }
+    
+    @GetMapping("/scheduler")
+    public String scheduler() {
+        return "scheduler";
+    } 
+    
+    @GetMapping("/diary")
+    public String diary() {
+        return "diary";
+    }
 }
     
