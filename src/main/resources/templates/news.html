@@ -115,7 +115,8 @@
     <!-- Header/nav nav -->
 	<section class="ftco-section ftco-degree-bg">
 	  <div class="container">
-	    <div class="row">
+	  	<h3><a href="https://www.pet-news.or.kr/">출처: 한국반려동물신문</a></h3>
+	  	<div class="row">
 	      <div class="col-lg-12 ftco-animate"> <!-- 여기를 col-lg-8에서 col-lg-12로 변경했습니다. -->
 	        <div class="row">
 	          <div class="col-md-12 d-flex ftco-animate" th:each="news : ${newsList}">
@@ -130,11 +131,12 @@
 	                </div>
 	                <h3 class="heading"><a href="#" th:text="${news.title}">Even the all-powerful Pointing has no control about the blind texts</a></h3>
 	                <p th:text="${news.summary}">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-	                <p><a href="#" class="btn btn-primary py-2 px-3">Read more</a></p>
-	              </div>
+<!-- 	                <p><a href="#" class="btn btn-primary py-2 px-3">Read more</a></p>-->	              
+				  </div>
 	            </div>
 	          </div>
 	        </div>
+	        <div id="paging"></div> <!-- 페이지네이션을 여기에 추가할 것입니다. -->
 	      </div>
 	    </div>
 	  </div>
