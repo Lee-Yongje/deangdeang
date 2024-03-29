@@ -40,6 +40,14 @@ public class PageController {
     public String changeInfoPage() {
         return "changeInfo";
     }
+    @GetMapping("/changePwd")
+    public String changePwdPage() {
+    	return "changePwd";
+    }
+    @GetMapping("/insertPuppy")
+    public String insertPuppyPage() {
+    	return "insertPuppy";
+    }
 
     @GetMapping("/checkout")
     public String checkoutPage() {
@@ -150,24 +158,25 @@ public class PageController {
     }
     @GetMapping("/usedgoodDetail")
     public String usedgoodDetailPage() {
-    	return "write";
+    	return "usedgoodDetail";
     }
     @GetMapping("/reportDetail")
-    public String reportDetailPage() {
-    	return "write";
+    public String reportDetail() {
+    	return "reportDetail";
     }
     
     @GetMapping("/boastWrite")
     public String boastWritePage() {
-        return "write";
+        return "boastWrite";
     }
     @GetMapping("/usedgoodWrite")
     public String usedgoodWritePage() {
-    	return "write";
+    	return "usedgoodWrite";
     }
     @GetMapping("/reportWrite")
     public String reportWritePage() {
-    	return "write";
+    	return "reportWrite";
     }
+    //-사진형게시판
 }
     
