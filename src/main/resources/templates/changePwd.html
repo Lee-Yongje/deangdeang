@@ -43,7 +43,6 @@
 	src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-
 </head>
 <body class="goto-here">
 	<!-- Header/nav -->
@@ -82,71 +81,40 @@
 
 				<div class="col-lg-8 ftco-animate">
 					<div class="row">
-						<!-- 회원정보 수정을 위한 시작 -->
-						<div class="card col-lg-12" style="background-color: #82AE46;">
-							<div class="card-header font-weight-bold"
-								style="font-size: 1.5em; height: 60px;">회원 정보 수정</div>
-							<div class="card-body" style="background-color: #82AE46;">
-								<ul class="nav nav-tabs">
-									<li class="active"><a href="#profile" data-toggle="tab" style="background-color: white; color: #82AE46;">프로필</a></li>
-								</ul>
-								<div id="myTabContent" class="tab-content">
-									<div class="tab-pane active in" id="profile">
-										<form id="profileForm">
-											<div class="form-group">
-												<label for="u_nickname" class="font-weight-bold">닉네임</label>
-												<input type="text" class="form-control" id="u_nickname"
-													value="#">
-											</div>
-											<div class="form-group">
-												<label for="u_name" class="font-weight-bold">이름</label> <input
-													type="text" class="form-control" id="u_name" value="#">
-											</div>
-											<div class="form-group">
-												<label for="u_email" class="font-weight-bold">이메일</label> <input
-													type="email" class="form-control" id="u_email" value="#">
-											</div>
-											<div class="form-group">
-												<label for="u_phone" class="font-weight-bold">전화번호</label> <input
-													type="email" class="form-control" id="u_phone" value="#">
-											</div>
-											<div class="form-group d-flex align-items-start">
-												<img src="/images/category.jpg" alt="프로필 이미지"
-													class="img-fluid" style="max-height: 100px; width: 100%;">
-												<div class="ml-3 d-flex flex-column justify-content-between"
-													style="height: 100px;">
-													<label for="u_fname" class="font-weight-bold">프로필
-														이미지</label> <input type="file" class="form-control">
+						<!-- 비밀번호 수정을 위한 시작 -->
+						<div class="container mt-5">
+							<div class="row justify-content-center">
+								<div class="col-md-6">
+									<div class="card">
+										<div class="card-header"
+											style="background-color: #82AE46; color: white;">비밀번호
+											수정</div>
+										<div class="card-body">
+											<form>
+												<div class="form-group">
+													<label for="u_pwd">현재 비밀번호</label> <input
+														type="password" class="form-control" id="u_pwd"
+														placeholder="현재 비밀번호 입력">
 												</div>
-											</div>
-											<div class="form-group">
-												<label for="rno" class="font-weight-bold">거주지</label> <select
-													class="form-control" id="rno">
-													<option value="02">서울</option>
-													<option value="031">경기</option>
-													<option value="032">인천</option>
-													<option value="033">강원</option>
-													<option value="041">충남</option>
-													<option value="042">대전</option>
-													<option value="043">충북</option>
-													<option value="044">세종</option>
-													<option value="051">부산</option>
-													<option value="052">울산</option>
-													<option value="053">대구</option>
-													<option value="054">경상북도</option>
-													<option value="055">경상남도</option>
-													<option value="061">전라남도</option>
-													<option value="062">광주</option>
-													<option value="063">전라북도</option>
-													<option value="064">제주도</option>
-												</select>
-											</div>
-												<button type="submit" class="btn btn-primary" style="background-color: white; color: #82AE46;">수정</button>
-										</form>
+												<div class="form-group">
+													<label for="newPassword">새로운 비밀번호</label> <input
+														type="password" class="form-control" id="newPassword"
+														placeholder="새로운 비밀번호 입력">
+												</div>
+												<div class="form-group">
+													<label for="confirmPassword">비밀번호 확인</label> <input
+														type="password" class="form-control" id="confirmPassword"
+														placeholder="비밀번호 확인">
+												</div>
+												<button type="submit" class="btn btn-primary"
+													style="background-color: #82AE46;">수정</button>
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+
 						<!-- 회원정보 수정을 위한 끝 -->
 
 
@@ -190,6 +158,7 @@
 	<script src="js/scrollax.min.js"></script>
 	<script src="js/google-map.js"></script>
 	<script src="js/main.js"></script>
+	
 
 </body>
 </html>
