@@ -190,14 +190,21 @@ public class PageController {
     }
     //-사진형게시판
     
+    //병원
+    @GetMapping("/hospital")
+    public String hospitalPage() {
+    	return "hospital";
+    }
+    @GetMapping("/hospitalDetail")
+    public String hospitalDetailPage() {
+    	return "hospitalDetail";
+    }
+    //-병원
     @GetMapping("/diaryDetail")
     public String diaryDetailPage() {
     	return "diaryDetail";
     }
     
-    @GetMapping("/hospital")
-    public String hospitalPage() {
-    	return "hospital";
-    }
+    
 }
     
