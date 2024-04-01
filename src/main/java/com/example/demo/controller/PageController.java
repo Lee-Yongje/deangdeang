@@ -195,6 +195,11 @@ public class PageController {
     	return "diaryDetail";
     }
     
+    @GetMapping("/diaryWrite")
+    public String diaryWritePage() {
+    	return "diaryWrite";
+    }
+    
     @GetMapping("/hospital")
     public String hospitalPage() {
     	return "hospital";
