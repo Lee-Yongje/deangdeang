@@ -23,6 +23,12 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+        .navbar {
+            background-color: #82AE46 !important;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white !important;
+        }
         .card {
             border-radius: 0;
             border: none;
@@ -51,11 +57,53 @@
             background-color: #6C9440;
             border-color: #6C9440;
         }
+        .post-info-bar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .post-info-bar > div {
+            flex: 1;
+            text-align: center;
+        }
+        .post-info-bar > div:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .post-info-bar > div:last-child {
+            border-radius: 0 4px 4px 0;
+        }
     </style>
 </head>
 <body class="goto-here">
     <!-- Header/nav -->
-    <div th:replace="header :: header-fragment"></div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Vegefoods</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- Header/nav nav -->
 
     <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
@@ -88,54 +136,32 @@
 
                 <div class="col-lg-8 ftco-animate">
                     <div class="row">
-                        <!-- 회원정보 수정을 위한 시작 -->
-                        <div class="card col-lg-12">
-                            <div class="card-header">회원 정보 수정</div>
+                        <!-- 내 글 보기 폼 시작 -->
+                        <div class="card col-lg-12 mt-4">
+                            <div class="card-header">내가 작성한 게시글 모아보기</div>
                             <div class="card-body">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#profile" data-toggle="tab">프로필</a></li>
-                                </ul>
-                                <div id="myTabContent" class="tab-content">
-                                    <div class="tab-pane active in" id="profile">
-                                        <form id="profileForm">
-                                            <div class="form-group">
-                                                <label for="u_nickname" class="font-weight-bold">닉네임</label>
-                                                <input type="text" class="form-control" id="u_nickname" value="#">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="u_name" class="font-weight-bold">이름</label>
-                                                <input type="text" class="form-control" id="u_name" value="#">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="u_email" class="font-weight-bold">이메일</label>
-                                                <input type="email" class="form-control" id="u_email" value="#">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="u_phone" class="font-weight-bold">전화번호</label>
-                                                <input type="email" class="form-control" id="u_phone" value="#">
-                                            </div>
-                                            <div class="form-group d-flex align-items-start">
-                                                <img src="/images/category.jpg" alt="프로필 이미지" class="img-fluid" style="max-height: 100px; width: 100%;">
-                                                <div class="ml-3 d-flex flex-column justify-content-between" style="height: 100px;">
-                                                    <label for="u_fname" class="font-weight-bold">프로필 이미지</label>
-                                                    <input type="file" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="rno" class="font-weight-bold">거주지</label>
-                                                <select class="form-control" id="rno">
-                                                    <option value="02">서울</option>
-                                                    <option value="031">경기</option>
-                                                    <!-- 나머지 옵션들 추가 -->
-                                                </select>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">수정</button>
-                                        </form>
-                                    </div>
+                                <!-- 게시글 목록 표시 -->
+                                <div class="post-info-bar">
+                                    <div>게시판</div>
+                                    <div>제목</div>
+                                    <div>날짜</div>
                                 </div>
+                                <!-- 각 게시글에 대한 정보 -->
+                                <div class="post-info-bar">
+                                    <div>게시판 1</div>
+                                    <div>게시글 제목 1</div>
+                                    <div>날짜 1</div>
+                                </div>
+                                <div class="post-info-bar">
+                                    <div>게시판 2</div>
+                                    <div>게시글 제목 2</div>
+                                    <div>날짜 2</div>
+                                </div>
+                                <!-- 추가 게시글 표시 -->
+                                <!-- 각 게시글에 대한 정보를 추가 -->
                             </div>
                         </div>
-                        <!-- 회원정보 수정을 위한 끝 -->
+                        <!-- 내 글 보기 폼 끝 -->
                     </div>
                     <!-- .row -->
                 </div>
