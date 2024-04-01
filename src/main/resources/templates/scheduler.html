@@ -32,30 +32,42 @@
 	  #calendar {
 	    font-family: Arial, sans-serif;
 	    margin-top: 10px;
-	    width: 70%;
+	    width: 80%;
 	    margin: 0 auto; 
+	    margin-bottom:10px;
 	  }
+	  #month-select{
+	  	text-align:center; 
+	  
+	  }
+	  
 	  .month-button {
-	    margin: 5px;
-	    padding: 5px;
+	  	width:50px;
+	    margin: 5px 8px;
+	    padding: 5px; 
 	    cursor: pointer; 
-	    flex-basis: cacl(16.66% - 10px);
+	    flex-basis: calc(16.66% - 10px);
+	    display:inline-block;
 	  }
 	  .month-button:hover, .month-button.active {
 	    color: white;
 	    background-color: #00AAFF;
 	  }
-	  #month-buttons {
-	  	display:flex;     
-	    justify-content: center;
-	    flex-wrap: wrap;
-	    margin-bottom: 20px; 
-	    text-align:center;
-	    margin-bottom:10px;
+	  #month-buttons1, #month-buttons2 {
+	  	text-align: center;
+ 		margin-bottom: 10px;
+ 		display:inline-block;
+
 	  }
 	  #month-buttons, #calendar {
         text-align: center; /* 중앙 정렬 */
       }
+	  .year-select-container{
+		  display: block;
+		  width: 100%;
+		  text-align: center;
+		  margin-bottom: 10px;
+	  }
 	  
 	  table {
 	    width: 100%;
@@ -75,7 +87,8 @@
 	  }	
 	  
 	  #calendar td {
-	    cursor: pointer; 
+	    cursor: pointer;
+	    color:black; 
 	  }
 	  .selected-date {
 	    background-color: #f0f0f0; /* 선택된 날짜 배경색 변경 */
@@ -84,19 +97,30 @@
 	    background-color: orange; /* 내용이 있는 날짜 배경색 변경*/
 	  }
 
-	  #year-select{
-	  	display:inline-block;
+	  .row #year-select{ 
+	  	display:block;
+	  	
 	  }
-	  .content-area {
-        margin-left: auto;
-        margin-top: 20px; 
-	    margin-right:auto;
-        display: block;  
-        width:70%;
-        margin-bottom:20px;
-	  }
+	.content-area {
+	  width: 80%; 
+	  margin: 0 auto 4px;
+	  display: flex; 
+	  justify-content: space-between;
+	}
+	
+	#content-input {
+	  width: 80%; 
+	  padding: 3px;
+	  color:black;
+	}
+	
+	#submit-btn {
+	  width: 18%; 
+	  padding: 3px;
+	  color:black; 
+	}
 	  #entries {
-	  	width:70%;
+	  	width:100%;
 	    margin-top: 20px; 
 	    margin-right:auto;
 	    display:block; 
@@ -108,6 +132,12 @@
 	    margin:5px 0; 
         display: inline-block;
         width: calc(100% - 20px);
+        color:#000;
+	  }
+	  
+	  .selected-entry {
+  		background-color: yellow;
+  		cursor:pointer;
 	  }
 	</style>
 
@@ -220,30 +250,40 @@
           <div class="col-lg-8 ftco-animate">
 			<div class="row">
 				
-				<select id="year-select">
-				  <option value="2024">2024</option>
-				  <option value="2025">2025</option>
-				  <option value="2026">2026</option>
-				</select>
+				<div class="year-select-container">
+					<select id="year-select">
+					  <option value="2024">2024</option>
+					  <option value="2025">2025</option>
+					  <option value="2026">2026</option>
+					  <option value="2026">2027</option>
+					  <option value="2026">2028</option>
+					  <option value="2026">2029</option>
+					  <option value="2026">2030</option>
+					  <option value="2026">2031</option>
+					</select>
+				</div>
+				
+				<div id="month-select">
+					<!--  월 선택 버튼  -->
+					<div id="month-buttons1">
+					  <button class="month-button" data-month="0">1월</button>
+					  <button class="month-button" data-month="1">2월</button>
+					  <button class="month-button" data-month="2">3월</button>
+					  <button class="month-button" data-month="3">4월</button>
+					  <button class="month-button" data-month="4">5월</button>
+					  <button class="month-button" data-month="5">6월</button>
+					</div>
+					<div id="month-buttons2">
+					  <button class="month-button" data-month="6">7월</button>
+					  <button class="month-button" data-month="7">8월</button>
+					  <button class="month-button" data-month="8">9월</button>
+					  <button class="month-button" data-month="9">10월</button>
+					  <button class="month-button" data-month="10">11월</button>
+					  <button class="month-button" data-month="11">12월</button>
+					</div>
+				</div>
 				
 				
-				<!--  월 선택 버튼  -->
-				<div id="month-buttons">
-				  <button class="month-button" data-month="0">1월</button>
-				  <button class="month-button" data-month="1">2월</button>
-				  <button class="month-button" data-month="2">3월</button>
-				  <button class="month-button" data-month="3">4월</button>
-				  <button class="month-button" data-month="4">5월</button>
-				  <button class="month-button" data-month="5">6월</button>
-				</div>
-				<div>
-				  <button class="month-button" data-month="6">7월</button>
-				  <button class="month-button" data-month="7">8월</button>
-				  <button class="month-button" data-month="8">9월</button>
-				  <button class="month-button" data-month="9">10월</button>
-				  <button class="month-button" data-month="10">11월</button>
-				  <button class="month-button" data-month="11">12월</button>
-				</div>
 				
 				<!-- 달력 --> 
 				<div id="calendar"></div>
@@ -352,6 +392,12 @@
 		                $('#entries').append(`<div class="entry">강아지 배변패드 사야</div>`); // 임시 내용 추가
  */
 		            });
+				  
+				  // 입력한 일정 클릭
+				  $('#entries').on('click', '.entry', function() {
+					    $(this).toggleClass('selected-entry');
+					});
+
 				  
 				});
 				</script>

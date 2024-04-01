@@ -189,5 +189,10 @@ public class PageController {
     	return "reportWrite";
     }
     //-사진형게시판
+    
+    @GetMapping("/diaryDetail")
+    public String diaryDetailPage() {
+    	return "diaryDetail";
+    }
 }
     
