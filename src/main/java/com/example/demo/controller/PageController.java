@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -191,15 +193,20 @@ public class PageController {
     //-사진형게시판
     
     //병원
+    @Value("${kakao.api.key}")
+    private String kakaoApiKey;
+    
     @GetMapping("/hospital")
     public String hospitalPage() {
     	return "hospital";
     }
     @GetMapping("/hospitalDetail")
-    public String hospitalDetailPage() {
+    public String hospitalDetailPage(Model model) {
+    	model.addAttribute("kakaoApiKey", kakaoApiKey);
     	return "hospitalDetail";
     }
     //-병원
+    
     @GetMapping("/diaryDetail")
     public String diaryDetailPage() {
     	return "diaryDetail";
