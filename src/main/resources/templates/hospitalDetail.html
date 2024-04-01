@@ -76,7 +76,11 @@
 							<h5>02-123-1234</h5>
 							<h5>서울시 마포구 월드컵북로32길 34</h5>
                             <br />
-                            <div id="map" style="width:70%;height:350px;"></div>
+                             <div class="row">
+						        <div class="col-sm-12 col-md-10">
+						            <div id="map" style="height:500px "></div>
+						        </div>
+						    </div>
                             <script type="text/javascript" th:src="@{'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey}}"></script>
                             <script>
 								var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
