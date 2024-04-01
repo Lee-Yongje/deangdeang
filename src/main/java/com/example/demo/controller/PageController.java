@@ -50,6 +50,10 @@ public class PageController {
     public String insertPuppyPage() {
     	return "insertPuppy";
     }
+    @GetMapping("/myPosts")
+    public String myPostsPage() {
+    	return "myPosts";
+    }
 
     @GetMapping("/checkout")
     public String checkoutPage() {

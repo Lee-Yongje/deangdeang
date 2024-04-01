@@ -4,17 +4,17 @@
 <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
 <meta charset="utf-8">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <link
-	href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
-	rel="stylesheet">
+    href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+    rel="stylesheet">
 <link
-	href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap"
-	rel="stylesheet">
+    href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap"
+    rel="stylesheet">
 <link
-	href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap"
-	rel="stylesheet">
+    href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap"
+    rel="stylesheet">
 
 <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
 <link rel="stylesheet" href="css/animate.css">
@@ -35,168 +35,244 @@
 <link rel="stylesheet" href="css/icomoon.css">
 <link rel="stylesheet" href="css/style.css">
 
-<!-- 회원정보 수정을 위한 링크 및 스크립트 -->
 <link
-	href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
-	rel="stylesheet" id="bootstrap-css">
+    href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+    rel="stylesheet" id="bootstrap-css">
 <script
-	src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+.form-row.justify-content-center {
+    margin: 0;
+    padding: 0;
+}
 
+.form-group.col-md-4.text-center {
+    padding: 0;
+}
+
+.form-group.col-md-4.text-center label {
+    margin-bottom: 0.5rem;
+}
+
+/* 추가된 스타일 */
+.card-header {
+    background-color: #82AE46;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 10px;
+}
+
+.card-header img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.card-header div {
+    flex: 1;
+    text-align: center;
+}
+
+.card-body {
+    background-color: #f8f9fa; /* 밝은 배경색 */
+    padding: 20px;
+}
+
+.nav-tabs .nav-link {
+    background-color: white;
+    color: #82AE46;
+}
+
+.btn-primary {
+    background-color: #82AE46; /* 포인트 색상 */
+    color: white;
+    border: none;
+    border-radius: 20px; /* 부드러운 모양의 테두리 */
+    padding: 10px 20px; /* 여백 조정 */
+}
+
+.btn-primary:hover {
+    background-color: #5f8e3e; /* 호버 시 색상 변경 */
+}
+
+/* 글씨체 */
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Amatic SC', cursive;
+    font-weight: bold;
+}
+
+/* 수정된 스타일 */
+.form-check-label {
+    padding-left: 1rem;
+}
+
+.form-check-input {
+    margin-left: -1rem;
+}
+
+.divider {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+</style>
 
 </head>
 <body class="goto-here">
-	<!-- Header/nav -->
-	<div th:replace="header :: header-fragment"></div>
-	<!-- Header/nav nav -->
+    <!-- Header/nav -->
+    <div th:replace="header :: header-fragment"></div>
+    <!-- Header/nav nav -->
 
-	<div class="hero-wrap hero-bread"
-		style="background-image: url('images/bg_1.jpg');">
-		<div class="container">
-			<div
-				class="row no-gutters slider-text align-items-center justify-content-center">
-				<div class="col-md-9 ftco-animate text-center">
-					<p class="breadcrumbs">
-						<span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span>
-					</p>
-					<h1 class="mb-0 bread">Blog</h1>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="hero-wrap hero-bread"
+        style="background-image: url('images/bg_1.jpg');">
+        <div class="container">
+            <div
+                class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs">
+                        <span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span>
+                    </p>
+                    <h1 class="mb-0 bread">Blog</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<section class="ftco-section ftco-degree-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 sidebar ftco-animate">
-					<div class="sidebar-box ftco-animate">
-						<h3 class="heading">Categories</h3>
-						<ul class="categories">
-							<li><a href="#">Vegetables <span>(12)</span></a></li>
-							<li><a href="#">Fruits <span>(22)</span></a></li>
-							<li><a href="#">Juice <span>(37)</span></a></li>
-							<li><a href="#">Dries <span>(42)</span></a></li>
-						</ul>
-					</div>
-				</div>
+    <section class="ftco-section ftco-degree-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 sidebar ftco-animate">
+                    <div class="sidebar-box ftco-animate">
+                        <h3 class="heading">Categories</h3>
+                        <ul class="categories">
+                            <li><a href="#">Vegetables <span>(12)</span></a></li>
+                            <li><a href="#">Fruits <span>(22)</span></a></li>
+                            <li><a href="#">Juice <span>(37)</span></a></li>
+                            <li><a href="#">Dries <span>(42)</span></a></li>
+                        </ul>
+                    </div>
+                </div>
 
-				<div class="col-lg-8 ftco-animate">
-					<div class="row">
-						<!-- 회원정보 수정을 위한 시작 -->
-						<div class="card col-lg-12" style="background-color: #82AE46;">
-							<div class="card-header"
-								style="display: flex; align-items: center;">
-								<img src="/images/category.jpg" alt="강아지 이미지"
-									style="width: 40px; height: 40px; margin-right: 10px;">
-								<div style="flex: 1; text-align: center;">
-									<span style="font-size: 20px; font-weight: bold;">나의 반려견
-										등록하기</span>
-								</div>
-							</div>
-
-							<div class="card-body" style="background-color: #82AE46;">
-								<ul class="nav nav-tabs">
-									<li class="active"><a href="#profile" data-toggle="tab"
-										style="background-color: white; color: #82AE46;">반려견 정보</a></li>
-								</ul>
-
-								<div id="myTabContent" class="tab-content">
-									<div class="tab-pane active in" id="profile">
-										<form id="dogRegistrationForm">
-											<div class="form-group d-flex align-items-start">
-												<img src="/images/category.jpg" alt="강아지 이미지"
-													class="img-fluid" style="max-height: 300px; width: 250px;">
-												<div
-													class="ml-3 d-flex flex-column justify-content-between col-lg-8">
-													<label for="dogImage" class="font-weight-bold">강아지
-														사진</label> <input type="file" class="form-control" id="dogImage">
-													<label for="dogName" class="font-weight-bold mt-3">이름</label>
-													<input type="text" class="form-control" id="dogName">
-													<label for="dogImage" class="font-weight-bold">생년월일</label>
-													<input type="date" class="form-control" id="dogBirthday">
+                <div class="col-lg-8 ftco-animate">
+                    <div class="row">
+                        <!-- 반려견 등록폼 시작 -->
+                        <div class="card col-lg-12">
+                            <div class="card-header">
+                                <img src="/images/category.jpg" alt="강아지 이미지">
+                                <div>
+                                    <span style="font-size: 20px; font-weight: bold;">나의 반려견 등록하기</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#profile" data-toggle="tab">반려견 정보</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div class="tab-pane active in" id="profile">
+                                        <form id="dogRegistrationForm">
+                                            <div class="form-group d-flex align-items-start" style="overflow: hidden;">
+                                                <img src="/images/category.jpg" alt="강아지 이미지" class="img-fluid" style="max-height: 280px; width: 250px;">
+                                                <div class="ml-3 d-flex flex-column justify-content-between col-lg-8">
+                                                    <label for="dogImage" class="font-weight-bold">강아지 사진</label>
+                                                    <input type="file" class="form-control" id="dogImage">
+                                                    <label for="dogName" class="font-weight-bold mt-3">이름</label>
+                                                    <input type="text" class="form-control" id="dogName">
+                                                    <label for="dogImage" class="font-weight-bold">생년월일</label>
+                                                    <input type="date" class="form-control" id="dogBirthday">
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="form-row justify-content-center">
+                                                <div class="form-group col-md-4 text-center">
+												    <label class="font-weight-bold" style="font-size: 20px;">성별</label>
+												    <div class="d-flex justify-content-center" style="font-size: 20px;">
+												        <div class="form-check form-check-inline mr-3">
+												            <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+												            <label class="form-check-label" for="male" style="margin-left: 0;">남</label>
+												        </div>
+												        <div class="form-check form-check-inline">
+												            <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+												            <label class="form-check-label" for="female" style="margin-left: 0;">여</label>
+												        </div>
+												    </div>
 												</div>
-											</div>
+												
+												<div class="form-group col-md-4 text-center">
+												    <label class="font-weight-bold" style="font-size: 20px;">중성화 여부</label>
+												    <div class="d-flex justify-content-center" style="font-size: 20px;">
+												        <div class="form-check form-check-inline mr-3">
+												            <input class="form-check-input" type="radio" name="p_neuter" id="p_neuter_O" value="p_neuter_O">
+												            <label class="form-check-label" for="p_neuter_O" style="margin-left: 0;">했어요</label>
+												        </div>
+												        <div class="form-check form-check-inline">
+												            <input class="form-check-input" type="radio" name="p_neuter" id="p_neuter_X" value="_X">
+												            <label class="form-check-label" for="p_neuter_X" style="margin-left: 0;">안했어요</label>
+												        </div>
+												    </div>
+												</div>
+												
+												
+                                                <!-- <div class="form-group col-md-4 text-center">
+                                                    <label class="font-weight-bold" style="font-size: 20px;">중성화 여부</label>
+                                                    <div class="form-check justify-content-center">
+                                                        <input class="form-check-input" type="checkbox" value="" id="neutered">
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <div class="divider"></div>
+                                            <button type="submit" class="btn btn-primary">등록</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 반려견 등록폼 끝 -->
+                    </div>
+                    <!-- .col-md-8 -->
+                </div>
+            </div>
+    </section>
+    <!-- .section -->
 
-											<div class="container">
-											    <div class="row">
-											        <div class="col-md-6">
-											            <div class="form-group">
-											                <label class="font-weight-bold" style="font-size: 20px;">성별</label>
-											                <div class="d-flex" style="font-size: 20px;">
-											                    <div class="form-check form-check-inline mr-3">
-											                        <input class="form-check-input" type="radio" name="gender" id="male" value="male">
-											                        <label class="form-check-label mr-2" for="male">남</label>
-											                    </div>
-											                    <div class="form-check form-check-inline">
-											                        <input class="form-check-input" type="radio" name="gender" id="female" value="female">
-											                        <label class="form-check-label" for="female">여</label>
-											                    </div>
-											                </div>
-											            </div>
-											        </div>
-											        <div class="col-md-6">
-											            <div class="form-group">
-											                <div class="form-check">
-											                    <input class="form-check-input" type="checkbox" value="" id="neutered">
-											                    <label class="form-check-label font-weight-bold" for="neutered" style="font-size: 20px; border: 1px solid #000; padding: 5px;">중성화 여부</label>
-											                </div>
-											            </div>
-											        </div>
-											    </div>
-											</div>
-											
-
-											<button type="submit" class="btn btn-primary"
-												style="background-color: white; color: #82AE46;">등록</button>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<!-- 회원정보 수정을 위한 끝 -->
-
-
-					</div>
-					<!-- .col-md-8 -->
-
-
-				</div>
-			</div>
-	</section>
-	<!-- .section -->
-
-	<!--footer  -->
-	<div th:replace="footer :: footer"></div>
-	<!--footer end  -->
+    <!--footer  -->
+    <div th:replace="footer :: footer"></div>
+    <!--footer end  -->
 
 
 
-	<!-- loader -->
-	<div id="ftco-loader" class="show fullscreen">
-		<svg class="circular" width="48px" height="48px">
-			<circle class="path-bg" cx="24" cy="24" r="22" fill="none"
-				stroke-width="4" stroke="#eeeeee" />
-			<circle class="path" cx="24" cy="24" r="22" fill="none"
-				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
-	</div>
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none"
+                stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none"
+                stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
+    </div>
 
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.easing.1.3.js"></script>
-	<script src="js/jquery.waypoints.min.js"></script>
-	<script src="js/jquery.stellar.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/aos.js"></script>
-	<script src="js/jquery.animateNumber.min.js"></script>
-	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/scrollax.min.js"></script>
-	<script src="js/google-map.js"></script>
-	<script src="js/main.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script src="js/google-map.js"></script>
+    <script src="js/main.js"></script>
+    
 
 </body>
 </html>
