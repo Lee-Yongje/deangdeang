@@ -34,9 +34,17 @@
     }
     
     .table {
-    width: 60%; 
+    width: 80%; 
     margin: auto; 
 	}
+	
+	.search-area {
+        border: 1px solid #ccc; 
+        background-color: #f9f9f9; 
+        padding: 20px; 
+        width: 80%;
+        margin: auto; 
+    }
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
@@ -73,7 +81,7 @@
                             </div>
                             <br />
 							<!--검색창-->
-							<div class="container">
+							<div class="container search-area">
 								<div class="row justify-content-center">
 									<form action="/searchHospital" method="get" class="search-form form-inline">
 										<select class="form-control" id="region">
