@@ -21,7 +21,7 @@ public class NewsController {
 	@Autowired
     private NewsService newsService;
 
-    @GetMapping("/news")
+    @GetMapping("/member/news")
     public String getNews(Model model) {
         // NewsService에서 뉴스 데이터를 가져옵니다.
         List<News> newsList = newsService.crawlDataFromWebPage();
@@ -30,6 +30,6 @@ public class NewsController {
         model.addAttribute("newsList", newsList);
         
         // 뉴스를 보여줄 뷰의 이름을 반환합니다. (예: "News.html"의 Thymeleaf 템플릿)
-        return "News"; // Thymeleaf 템플릿 파일 이름 (확장자 제외)
+        return "/member/news"; // Thymeleaf 템플릿 파일 이름 (확장자 제외)
     }
 }

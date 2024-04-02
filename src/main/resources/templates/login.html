@@ -26,53 +26,49 @@
     
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body class="goto-here">
 	<!-- Header/nav -->
-   	<div th:replace="header :: header-fragment"></div>
+	<div th:insert="~{header :: header-fragment}"></div>
     <!-- Header/nav nav -->
     <section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-xl-7 ftco-animate">
-					<form action="#" class="billing-form bg-light p-3 p-md-5">
-						<h3 class="mb-4 billing-heading">로그인</h3>
-						<div class="row align-items-end">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label for="email">이메일 주소</label>
-									<input type="email" class="form-control" placeholder="Enter your email address">
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label for="password">비밀번호</label>
-									<input type="password" class="form-control" placeholder="Enter your password">
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<div class="checkbox">
-										<label><input type="checkbox" value="" class="mr-2">아이디 기억</label>
-									</div>
-								</div>
-							</div>
-							<div class="w-100"></div>
-							<div class="col-md-12">
-								<div class="form-group mt-4">
-									<button type="submit" class="btn btn-primary py-3 px-4">로그인</button>
-									<a href="/register" class="btn btn-secondary py-3 px-4">회원가입</a>
-								</div>
-							</div>
-						</div>
+				<form th:action="@{/login}" method="post" class="billing-form bg-light p-3 p-md-5">
+					    <h3 class="mb-4 billing-heading">로그인</h3>
+					    <div class="row align-items-end">
+					        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					        <div class="col-md-12">
+					            <div class="form-group">
+					                <label for="username">이메일 주소</label>
+					                <!-- Here we use th:field to bind with form-backing bean property -->
+					                <input type="email" th:field="*{loginForm.username}" class="form-control" placeholder="Enter your email address" required>
+					            </div>
+					        </div>
+					        <div class="col-md-12">
+					            <div class="form-group">
+					                <label for="password">비밀번호</label>
+					                <!-- Here we use th:field to bind with form-backing bean property -->
+					                <input type="password" th:field="*{loginForm.password}" class="form-control" placeholder="Enter your password" required>
+					            </div>
+					        </div>
+					        <!-- Rest of your form -->
+					        <div class="w-100"></div>
+					        <div class="col-md-12">
+					            <div class="form-group mt-4">
+					                <button type="submit" class="btn btn-primary py-3 px-4">로그인</button>
+					                <a href="/register" class="btn btn-secondary py-3 px-4">회원가입</a>
+					            </div>
+					        </div>
+					    </div>
 					</form><!-- END -->
 				</div>
 			</div>
 		</div>
 	</section>
     <!--footer  -->
-	<div th:replace="footer :: footer"></div>
+    <div th:replace="~{footer :: footer}"></div>
 	<!--footer end  -->
   
 
