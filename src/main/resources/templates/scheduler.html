@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+ <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+ <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+ <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+ <link rel="stylesheet" href="css/animate.css">
+ 
+ <link rel="stylesheet" href="css/owl.carousel.min.css">
+ <link rel="stylesheet" href="css/owl.theme.default.min.css">
+ <link rel="stylesheet" href="css/magnific-popup.css">
+
+ <link rel="stylesheet" href="css/aos.css">
+
+ <link rel="stylesheet" href="css/ionicons.min.css">
+
+ <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+ <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+ 
+ <link rel="stylesheet" href="css/flaticon.css">
+ <link rel="stylesheet" href="css/icomoon.css">
+ <link rel="stylesheet" href="css/style.css">
+   
+<style>
+  #calendar {
+    font-family: Arial, sans-serif;
+    margin-top: 10px;
+    width: 80%;
+    margin: 0 auto; 
+    margin-bottom:10px;
+  }
+  #month-select{
+  	text-align:center; 
+  
+  }
+  
+  .month-button {
+  	width:50px;
+    margin: 5px 8px;
+    padding: 5px; 
+    cursor: pointer; 
+    flex-basis: calc(16.66% - 10px);
+    display:inline-block;
+  }
+  .month-button:hover, .month-button.active {
+    color: white;
+    background-color: #00AAFF;
+  }
+  #month-buttons1, #month-buttons2 {
+  	text-align: center;
+		margin-bottom: 10px;
+		display:inline-block;
+
+  }
+  #month-buttons, #calendar {
+       text-align: center; /* 중앙 정렬 */
+     }
+  .year-select-container{
+	  display: block;
+	  width: 100%;
+	  text-align: center;
+	  margin-bottom: 10px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 5px;
+    text-align: center;
+    border: none;
+  }
+  th {
+    /* background-color: #00AAFF; */
+   	/* color:#fff; */
+   	color:#000;
+   	text-align:center;
+  } 
+  td:hover {
+    background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
+  }	
+  
+  #calendar td {
+    cursor: pointer;
+    color:black; 
+
+  }
+  .calendar-day{
+  	height:70px;
+  	vertical-align: top;
+  	position:relative;
+  	z-index:2;
+  }
+  
+  .selected-date {
+    background-color: #f0f0f0; /* 선택된 날짜 배경색 변경 */
+  }
+  .has-content {
+    background-color: orange; /* 내용이 있는 날짜 배경색 변경*/
+  }
+
+  .row #year-select{ 
+  	display:block;
+  	
+  }
+.schedulerPlus {
+  width: 80%; 
+  margin: 0 auto 4px;
+  display: flex; 
+  justify-content: space-between;
+}
+
+#content-input {
+  width: 80%; 
+  padding: 3px;
+  color:black;
+}
+
+/* #submit-btn {
+  width: 18%; 
+  padding: 3px;
+  color:black; 
+} */
+  #entries {
+  	width:100%;
+    margin-top: 20px; 
+    margin-right:auto;
+    display:block; 
+  }
+  
+  .entry {
+    border: 1px solid #00AAFF;
+    padding: 10px;
+    margin:5px 0; 
+       display: inline-block;
+       width: calc(100% - 20px);
+       color:#000;
+  }
+  
+  .selected-entry {
+ 		background-color: yellow;
+ 		cursor:pointer;
+  }
+  
+  .circle{
+  	background-color: #00AAFF;
+  	color: white;
+  	border-radius:50%;
+  	text-align:center;
+  	line-height:50px;
+  	height:30px;
+  	width:30px;
+  	line-height:30px;
+  	display:inline-block;
+  	margin:0 auto;
+  	z-index:1;
+  	border: none;
+  }
+  
+  
+</style> 
+</head>
+
+ <body class="goto-here">
+<!-- Header/nav -->
+  	<div th:replace="header :: header-fragment"></div>
+   <!-- Header/nav nav -->
+
+   <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+     <div class="container">
+       <div class="row no-gutters slider-text align-items-center justify-content-center">
+         <div class="col-md-9 ftco-animate text-center">
+         	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+           <h1 class="mb-0 bread">Blog</h1>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <section class="ftco-section ftco-degree-bg">
+     <div class="container">
+       <div class="row">
+		<div class="col-lg-3 sidebar ftco-animate">
+			<div class="sidebar-box ftco-animate">
+				<h3 class="heading">마이페이지</h3>
+				<ul class="categories">
+					<li><a href="/scheduler">댕댕스케줄</a></li>
+					<li><a href="/diary">집사일지</a></li>
+					<li><a href="#">회원정보 수정</a></li>
+					<li><a href="#">비밀번호 수정</a></li>
+					<li><a href="#">마이 펫</a></li>
+					<li><a href="#">내가 쓴 글</a></li>
+				</ul>
+			</div>
+		</div>         
+         
+         <!--콘텐츠영역 -->
+         <div class="col-lg-8 ftco-animate">
+         	<div class="d-flex justify-content-between align-items-center">
+				<h2>댕댕스케줄</h2>
+			</div>
+         
+			<div class="row">
+			
+			<div class="year-select-container">
+				<select id="year-select">
+				  <option value="2024">2024</option>
+				  <option value="2025">2025</option>
+				  <option value="2026">2026</option>
+				  <option value="2026">2027</option>
+				  <option value="2026">2028</option>
+				  <option value="2026">2029</option>
+				  <option value="2026">2030</option>
+				  <option value="2026">2031</option>
+				</select>
+			</div>
+			
+			<div id="month-select">
+				<!--  월 선택 버튼  -->
+				<div id="month-buttons1">
+				  <button class="month-button" data-month="0">1월</button>
+				  <button class="month-button" data-month="1">2월</button>
+				  <button class="month-button" data-month="2">3월</button>
+				  <button class="month-button" data-month="3">4월</button>
+				  <button class="month-button" data-month="4">5월</button>
+				  <button class="month-button" data-month="5">6월</button>
+				</div>
+				<div id="month-buttons2">
+				  <button class="month-button" data-month="6">7월</button>
+				  <button class="month-button" data-month="7">8월</button>
+				  <button class="month-button" data-month="8">9월</button>
+				  <button class="month-button" data-month="9">10월</button>
+				  <button class="month-button" data-month="10">11월</button>
+				  <button class="month-button" data-month="11">12월</button>
+				</div>
+			</div>
+			
+			
+			
+			<!-- 달력 --> 
+			<div id="calendar"></div>
+			<!-- 내용 입력하기 -->
+			<div class="schedulerPlus">
+<!--                	<input type="text" id="content-input" placeholder="일정을 입력하세요"> -->
+		    	<p><a href="schedulerWrite" class="btn btn-primary py-2 px-3">╋</a></p>
+
+           	</div>
+           	<br><br>
+           	<!-- 내용 표시될 예정 -->
+           	<div id="entries">
+<!--             		<div th:each="entry : ${entries}" class="entry">
+				        <span th:text="${entry.name}">할일목록</span>
+				    </div> -->
+			    
+			    <!-- 서버연결 안되어 있어서 예시로 출력하기 위해 추가함 -->
+				<div class="entry">
+			        <span>달래 미용실 꼭가기</span>
+			    </div>
+			    <div class="entry">
+			        <span>예방접종 하는날</span>
+			    </div>
+			    <div class="entry">
+			        <span>강아지 배변패드 사야함</span>
+  			 		</div>
+           	
+           	</div>
+			
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+			<script>
+				$(function() {
+					//현재 월 가져와서 페이지 실행 시 해당 월에 표시
+					var currentMonth = new Date().getMonth();
+					
+					$('.month-button').each(function(){
+						if($(this).data('month')==currentMonth){
+							$(this).addClass('active');
+						}else{
+							$(this).removeClass('active');
+						}
+					})
+					
+					
+					function generateCalendar(year, month) {
+				    const firstDay = new Date(year, month, 1);
+				    const lastDay = new Date(year, month + 1, 0);
+				
+				    let calendarHtml = '<table>';
+				    calendarHtml += '<tr><th style="color:red">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th style="color:#00AAFF">토</th></tr><tr>';
+				
+				    for (let i = 0; i < firstDay.getDay(); i++) {
+				      calendarHtml += '<td></td>';
+				    }
+				
+				    for (let day = 1; day <= lastDay.getDate(); day++) {
+				      const dayOfWeek = new Date(year, month, day).getDay();
+				      if (dayOfWeek === 0 && day > 1) {
+				        calendarHtml += '</tr><tr>';
+				      }
+				      calendarHtml += `<td class = "calendar-day">${day}</td>`;
+				    }
+				
+				    const lastDayOfWeek = lastDay.getDay();
+				    for (let i = lastDayOfWeek + 1; i <= 6; i++) {
+				      calendarHtml += '<td></td>';
+				    }
+				
+				    calendarHtml += '</tr></table>';
+				    $('#calendar').html(calendarHtml);
+				  }
+				
+				  $('.month-button').click(function() {
+				    $('.month-button').removeClass('active');
+				    $(this).addClass('active');
+				    const month = $(this).data('month');
+				    const year = parseInt($('#year-select').val());
+				    generateCalendar(year, month);
+				  });
+				
+				  $('#year-select').change(function() {
+				    const year = parseInt($(this).val());
+				    const month = $('.month-button.active').data('month');
+				    generateCalendar(year, month);
+				  });
+				  
+				  
+				  //일 선택하면 색깔 바뀜 
+				  $('#calendar').on('click', 'td', function() {
+					  $('td.circle').each(function() {
+						    $(this).removeClass('circle') // .circle 클래스를 제거합니다.
+						           .css('background-color', '') // 배경색을 초기화합니다.
+						           .find('span').css('color', 'black') // 숫자 색상을 검정색으로 변경합니다.
+						           .end() // .find()에 의해 변경된 컨텍스트를 되돌립니다.
+						           .html($(this).find('span').text()); // <span> 태그를 제거하고 숫자만 남깁니다.
+						  });
+	                    /* $('td').css('background-color', '');		클릭하면 노란색으로 바뀜(변경전)
+	                    $(this).css('background-color', 'yellow'); */ 
+	                  var dayContent = $(this).text();
+	                  $(this).addClass('circle')
+	                  .html(`<span style="color: white;">${dayContent}</span>`);
+	              });
+				  
+				
+				  const now = new Date();
+				  generateCalendar(now.getFullYear(), now.getMonth());
+				  
+				  
+				  $('#submit-btn').click(function() {
+		                var content = $('#content-input').val();
+		                $('#content-input').val(''); // 입력창 내용 지우기
+
+		                // 내용을 #entries에 추가
+		                // 나중에 서버연결 후 수정 예정  >
+/* 		                $('#entries').append(`<div class="entry">달래 미용실 꼭가기</div>`); // 임시 내용 추가
+		                $('#entries').append(`<div class="entry">예방접종 하는날</div>`); // 임시 내용 추가
+		                $('#entries').append(`<div class="entry">강아지 배변패드 사야</div>`); // 임시 내용 추가
+ */
+		            });
+				  
+				  // 입력한 일정 클릭
+				  $('#entries').on('click', '.entry', function() {
+					    $(this).toggleClass('selected-entry');
+					});
+
+				  
+				});
+				</script>
+	
+		
+	
+	
+			</div>
+         </div> <!-- .col-md-8 -->
+
+       </div>
+     </div>
+   </section> <!-- .section -->
+
+   <!--footer  -->
+ <div th:replace="footer :: footer"></div>
+   <!--footer end  -->
+   
+ 
+
+ <!-- loader -->
+ <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+ <script src="js/jquery.min.js"></script>
+ <script src="js/jquery-migrate-3.0.1.min.js"></script>
+ <script src="js/popper.min.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+ <script src="js/jquery.easing.1.3.js"></script>
+ <script src="js/jquery.waypoints.min.js"></script>
+ <script src="js/jquery.stellar.min.js"></script>
+ <script src="js/owl.carousel.min.js"></script>
+ <script src="js/jquery.magnific-popup.min.js"></script>
+ <script src="js/aos.js"></script>
+ <script src="js/jquery.animateNumber.min.js"></script>
+ <script src="js/bootstrap-datepicker.js"></script>
+ <script src="js/scrollax.min.js"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+ <script src="js/google-map.js"></script>
+ <script src="js/main.js"></script>
+   
+ </body>
+</html>

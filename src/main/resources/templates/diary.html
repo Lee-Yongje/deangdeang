@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/ionicons.min.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="goto-here">
+	<!-- Header/nav -->
+   	<div th:replace="header :: header-fragment"></div>
+    <!-- Header/nav nav -->
+
+    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+            <h1 class="mb-0 bread">Blog</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section ftco-degree-bg">
+      <div class="container">
+        <div class="row">
+	        <div class="col-lg-3 sidebar ftco-animate">
+				<div class="sidebar-box ftco-animate">
+					<h3 class="heading">마이페이지</h3>
+					<ul class="categories">
+						<li><a href="/scheduler">댕댕스케줄</a></li>
+						<li><a href="/diary">집사일지</a></li>
+						<li><a href="#">회원정보 수정</a></li>
+						<li><a href="#">비밀번호 수정</a></li>
+						<li><a href="#">마이 펫</a></li>
+						<li><a href="#">내가 쓴 글</a></li>
+					</ul>
+				</div>
+			</div>            
+          
+          <!--콘텐츠영역 -->    
+          <div class="col-lg-8 ftco-animate">
+          	<div class="d-flex justify-content-between align-items-center">
+				<h2>집사일지</h2>
+				<a href="/diaryWrite" class="btn btn-primary">일기쓰기</a>
+			</div>
+					<br />
+			<div class="row">
+    			<div th:each="i : ${#numbers.sequence(1, 5)}" class="col-md-12 d-flex ftco-animate">
+		            <div class="blog-entry align-self-stretch d-md-flex">
+		              <a href="diaryDetail" class="block-20" style="background-image: url('images/angryDog.jpg');">
+		              </a>
+		              <div class="text d-block pl-md-4">
+		              	<div class="meta mb-3">
+		                  <div>July 20, 2019</div>
+		                </div>
+		                <h3 class="heading"><a href="#">강아지 산책모임에 다녀왔음~!</a></h3>
+		                <p>댕댕정보통에서 집근처 강아지 산책 모임할 사람을 모집하길래 들어갔다. 모임참석을 하겠다고 답하고 나가봤더니 다 아는 얼굴들이었는데 처음 보는 달마시안도 나와서 사진을 정말 많이 찍어왔음.</p>
+		                <p><a href="diaryDetail" class="btn btn-primary py-2 px-3">더보기</a></p>
+		              </div>
+		            </div>
+		          </div>
+			</div>
+
+          </div> <!-- .col-md-8 -->
+
+        </div>
+      </div>
+    </section> <!-- .section -->
+
+    <!--footer  -->
+	 <div th:replace="footer :: footer"></div>
+    <!--footer end  -->
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="js/google-map.js"></script>
+  <script src="js/main.js"></script>
+    
+  </body>
+</html>
