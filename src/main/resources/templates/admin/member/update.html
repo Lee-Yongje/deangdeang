@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>회원 정보 수정</h2>
+	<form action="/admin/member/update" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+		<input type="hidden" name="id" th:value="${m.id}">
+		<input type="hidden" name="pwd" th:value="${m.pwd}">
+		이름 : <input type="text" name="name" th:value="${m.name}">
+		암호 : <input type="text" name="update_pwd"><br>
+		role : <input type="text" name="role" th:value="${m.role}"><br>
+		<input type="submit" value="수정">
+		<input type="reset" value="다시입력">
+	</form>
+</body>
+</html>

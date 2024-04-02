@@ -91,15 +91,6 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
-    }
-
-    @GetMapping("/login2")
-    public String login2Page() {
-        return "login2";
-    }
 
     @GetMapping("/product-single")
     public String productSinglePage() {
@@ -149,6 +140,16 @@ public class PageController {
     @GetMapping("/write")
     public String writePage() {
         return "write";
+    }
+    
+    @GetMapping("/login")
+    public String login() {
+        return "member/login";
+    }
+
+    @GetMapping("/member/login")
+    public String userLogin() {
+        return "member/welcome";
     }
 }
     

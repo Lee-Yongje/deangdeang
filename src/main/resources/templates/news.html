@@ -114,34 +114,32 @@
    	<div th:replace="header :: header-fragment"></div>
     <!-- Header/nav nav -->
 	<section class="ftco-section ftco-degree-bg">
-	  <div class="container">
-	  	<h3><a href="https://www.pet-news.or.kr/">출처: 한국반려동물신문</a></h3>
-	  	<div class="row">
-	      <div class="col-lg-12 ftco-animate"> <!-- 여기를 col-lg-8에서 col-lg-12로 변경했습니다. -->
+	    <div class="container">
+	        <h3><a href="https://www.pet-news.or.kr/">출처: 한국반려동물신문</a></h3>
 	        <div class="row">
-	          <div class="col-md-12 d-flex ftco-animate" th:each="news : ${newsList}">
-	            <div class="blog-entry align-self-stretch d-md-flex">
-	              <!-- 이미지는 예시 이미지나 기본 이미지를 사용합니다. -->
-				  <a href="#" class="thumb"><img th:src="${news.imageUrl}" alt="News Thumbnail"></a>
-	              <div class="text d-block pl-md-4">
-	                <div class="meta mb-3">
-	                  <div><a href="#" th:text="${news.date}">July 20, 2019</a></div>
-	                  <div><a href="#" th:text="${news.author}">Admin</a></div>
-	                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+	            <div class="col-lg-12 ftco-animate">
+	                <div class="row">
+	                    <!-- 뉴스 리스트를 루프하여 표시 -->
+	                    <div class="col-md-12 d-flex ftco-animate" th:each="news : ${newsList}">
+	                        <div class="blog-entry align-self-stretch d-md-flex">
+	                            <a href="#" class="thumb"><img th:src="${news.imageUrl}" alt="News Thumbnail"></a>
+	                            <div class="text d-block pl-md-4">
+	                                <div class="meta mb-3">
+	                                    <div><a href="#"> <span th:text="${news.date}">July 20, 2019</span> </a></div>
+	                                    <div><a href="#"> <span th:text="${news.author}">Admin</span> </a></div>
+	                                    <!-- 여기에 댓글 수 등의 추가 정보가 들어갈 수 있습니다. -->
+	                                </div>
+	                                <h3 class="heading"><a href="#" th:text="${news.title}">뉴스 제목</a></h3>
+	                                <p th:text="${news.summary}">뉴스 요약</p>
+	                            </div>
+	                        </div>
+	                    </div>
 	                </div>
-	                <h3 class="heading"><a href="#" th:text="${news.title}">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-	                <p th:text="${news.summary}">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-<!-- 	                <p><a href="#" class="btn btn-primary py-2 px-3">Read more</a></p>-->	              
-				  </div>
 	            </div>
-	          </div>
 	        </div>
-	        <div id="paging"></div> <!-- 페이지네이션을 여기에 추가할 것입니다. -->
-	      </div>
 	    </div>
-	  </div>
-	</section> <!-- .section -->
-
+	</section>
+	
     <!--footer  -->
 	 <div th:replace="footer :: footer"></div>
     <!--footer end  -->
