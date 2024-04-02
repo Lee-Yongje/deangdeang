@@ -26,7 +26,17 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+	    $(document).ready(function() {
+	        $("table tbody tr").click(function() {
+	            //각 행에 attr추가필
+	            var url = "/hospitalDetail";
+	            window.location.href = url;
+	        });
+	    });
+	</script>
 	<style>
 	.table tbody tr td {
 	    padding-top: 5px; 
@@ -45,17 +55,11 @@
         width: 80%;
         margin: auto; 
     }
+    .text, a{
+		color: black;
+	}
 	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script>
-	    $(document).ready(function() {
-	        $("table tbody tr").click(function() {
-	            //각 행에 attr추가필
-	            var url = "/hospitalDetail";
-	            window.location.href = url;
-	        });
-	    });
-	</script>
+
 </head>	
 <body class="goto-here">
 	
@@ -74,7 +78,7 @@
         </div>
     </div>
 	<br />
-        <div class="container">
+        <div class="container text">
                         <div class="container">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h2>동물병원</h2>
