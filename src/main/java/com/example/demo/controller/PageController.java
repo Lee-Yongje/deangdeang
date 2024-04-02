@@ -149,10 +149,22 @@ public class PageController {
     public String scheduler() {
         return "scheduler";
     } 
+    @GetMapping("/schedulerWrite")
+    public String schedulerWritePage() {
+    	return "schedulerWrite";
+    }
     
     @GetMapping("/diary")
-    public String diary() {
+    public String diaryPage() {
         return "diary";
+    }
+    @GetMapping("/diaryDetail")
+    public String diaryDetailPage() {
+    	return "diaryDetail";
+    }
+    @GetMapping("/diaryWrite")
+    public String diaryWritePage() {
+    	return "diaryWrite";
     }
 
     //사진형 게시판 boast, report, usedgood
@@ -200,10 +212,6 @@ public class PageController {
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
     
-    @GetMapping("/diaryWrite")
-    public String diaryWritePage() {
-    	return "diaryWrite";
-    }
     
     @GetMapping("/hospital")
     public String hospitalPage() {
@@ -216,11 +224,6 @@ public class PageController {
     }
     //-병원
     
-    @GetMapping("/diaryDetail")
-    public String diaryDetailPage() {
-    	return "diaryDetail";
-    }
-    
-    
+
 }
     

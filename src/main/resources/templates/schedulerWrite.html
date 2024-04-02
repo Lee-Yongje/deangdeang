@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
-
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
 <style>
 	.tagcloud span {
 	  text-transform: uppercase;
@@ -47,11 +48,64 @@
 	.feelings{
 		margin-top: 1rem !important;
 	}
-	  
-
+	.form-group{
+		margin-bottom:30px;
+	}
+	
+	.pet-selection{
+		text-align:left; 
+		margin-bottom:20px;
+	}	
+	.pet-selected{
+		flex:1 1 calc(33.33% - 10px);
+		text-align:center;
+		margin-bottom:10px;
+	}
+	.pet-selected img {
+	  width: 120px; 
+	  height: 120px; 
+	  border-radius: 50%;
+	}
+	.pet-selected p{
+		margin-top:10px;
+	}
+	.pets-container{
+		display:flex;
+		flex-wrap:wrap;
+		gap:10px;
+		justify-content:flex-start;
+		margin-top:20px;
+	}
+	.pet-selected:nth-child(3n){
+		margin-right:0;
+	}
+	
+	.pet-image{
+		cursor:pointer;
+	}
+	.pet-image.active{
+		border: 4px solid blue;
+		padding:-4px;
+	}
+	.pet-image:hover{
+		border:4px solid blue;
+	}
+	#datepicker-container{
+		padding:10px;
+		border: 1px solid #ccc;
+		background-color:#f9f9f9;
+	}
+	
+	.ui-datepicker{
+		width:500px; height:auto;
+	}
+	
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $(function() {
 	$('.tagcloud span').click(function(){
@@ -69,6 +123,29 @@ $(function() {
 			}).data('isClicked',true);
 		}
 	});
+	
+	$('.pet-image').on('click',function(){
+		$('.pet-image').not(this).removeClass('active');
+		$(this).toggleClass('active');
+	});
+	
+	$("#datepicker").datepicker({
+		dateFormat: "yy-mm-dd",
+		onSelect:function(dateText){
+			$("#selected-date").text("선택된 날짜: "+dateText);
+		}
+	});
+	
+	$("#datepicker-button").on("click", function(e) {
+        e.preventDefault(); // 클릭하면 페이지 새로고침 되는것 방지
+        $("#datepicker-container").toggle();
+    });
+	
+	$("#confirm-date").on("click", function(e) {
+        e.preventDefault(); 
+        $("#datepicker-container").hide();
+    });
+	
 });
 </script>
 </head>
@@ -91,8 +168,7 @@ $(function() {
     <section class="ftco-section ftco-degree-bg">
       <div class="container">
         <div class="row">
-        
-	        <div class="col-lg-3 sidebar ftco-animate">
+			<div class="col-lg-3 sidebar ftco-animate">
 				<div class="sidebar-box ftco-animate">
 					<h3 class="heading">마이페이지</h3>
 					<ul class="categories">
@@ -104,61 +180,60 @@ $(function() {
 						<li><a href="#">내가 쓴 글</a></li>
 					</ul>
 				</div>
-			</div>        
-        
-        
+			</div>
+
+
         <!-- 자세한 내용 -->
           <div class="col-lg-8 ftco-animate">
 <!--           	<form action="url" method="post" enctype="multipart/form-data">-->
 				<form>
  					<div class="row">
 					<div class="col-md-8">
-						<h2>게시물 작성</h2>
-						<h5>댕댕육아일기</h5>
+						<h2>일정 추가하기</h2>
 					</div>
 					<div class="col-md-4 text-right">
-						<button class="btn btn-primary">글 등록</button>
+						<button class="btn btn-primary">일정 등록</button>
 					</div>
-				</div>
+				</div> 
 				<div class="row mt-3">
 					<div class="col-md-12">
+					
+						<div class="pet-selection">
+							<h5>반려동물 선택</h5>						
+							<!-- db연결 시
+						        <div th:each="pet : ${pets}">
+						          <img th:src="@{${pet.image}}" alt="Pet Image" style="width:80px; height:80px; border-radius:50%;">
+						          <p th:text="${pet.name}"></p>
+						        </div>
+						      -->
+							<div class="pets-container">
+								<div class="pet-selected">
+								    <img src="images/angryDog.jpg" class="pet-image">
+								    <p>달래</p>
+							    </div>
+							    <div class="pet-selected">
+								    <img src="images/sampledog.jpg" class="pet-image">
+								    <p>빵떡이</p>
+							    </div>
+							    <div class="pet-selected">
+								    <img src="images/angryDog.jpg" class="pet-image">
+								    <p>동식이</p>
+							    </div>						    							    
+							</div>
+						</div>
+						
 						<div class="form-group">
+							<h5>댕댕스케줄</h5>
 							<input type="text" class="form-control" id="title" name="title"
-								placeholder="제목을 입력하세요" style="color:#ced4da">
+								placeholder="내용을 입력하세요" style="color:#ced4da">
 						</div>
 						<div class="form-group">
-							<textarea class="form-control" id="content" rows="10" 
-								placeholder="내용을 입력하세요" style="color:#ced4da" name="content"></textarea>
-								
+							<h5>날짜 선택</h5>
+							<input type="text" id="datepicker">
 						</div>
-						<div class="form-group">
-							<label for="file">파일 첨부</label>
-							<input type="file" class="form-control-file" id="file" name="file">
-							
-						</div>
+						
 					</div>
 				</div>
-				
-				<!-- 기분 버튼 -->
-				<input type="hidden" name="seletedTags" id="selectedTags" value="">
-	            <div class="tag-widget post-tag-container mb-5 mt-5 feelings">
-	              <div class="tagcloud">
-	                <span class="tag-cloud-link" style="border: 2px solid #ff0000">산책완료</span>
-	                <span class="tag-cloud-link" style="border: 2px solid #FF6347">즐거움</span >
-	                <span class="tag-cloud-link" style="border: 2px solid orange">보통</span >
-	              </div>
-	              <div class="tagcloud">
-	                <span class="tag-cloud-link" style="border: 2px solid #4682B4">우울함</span>
-	                <span class="tag-cloud-link" style="border: 2px solid #6495ED">슬픔</span>
-	                <span class="tag-cloud-link" style="border: 2px solid #20B2AA">외로움</span>
-	              </div>
-	              
-	              <div class="tagcloud">
-	                <span class="tag-cloud-link" style="border: 2px solid #8B008B">매우화남</span>
-	                <span class="tag-cloud-link" style="border: 2px solid #9400D3">짜증남</span>
-	                <span class="tag-cloud-link" style="border: 2px solid #9370DB">어이없음</span>
-	              </div>     
-	            </div> <!-- 기분버튼 종료 -->
  			</form>   <!-- form태그 종료 -->       
           </div> <!-- .col-md-8 내용 입력 완료--> 
 
