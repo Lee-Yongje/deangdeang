@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link th:href="@{/css/open-iconic-bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    
+    <link th:href="@{/css/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/css/owl.theme.default.min.css}" rel="stylesheet">
+    <link th:href="@{/css/magnific-popup.css}" rel="stylesheet">
+
+    <link th:href="@{/css/aos.css}" rel="stylesheet">
+
+    <link th:href="@{/css/ionicons.min.css}" rel="stylesheet">
+
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet">
+    <link th:href="@{/css/jquery.timepicker.css}" rel="stylesheet">
+
+    <link th:href="@{/css/flaticon.css}" rel="stylesheet">
+    <link th:href="@{/css/icomoon.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .table tbody tr td {
+            padding-top: 5px; 
+            padding-bottom:5px;
+        }
+        
+        .table {
+            width: 60%; 
+            margin: auto; 
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.easing.1.3.js}"></script>
+    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/js/jquery.stellar.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{/js/aos.js}"></script>
+    <script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/js/scrollax.min.js}"></script>
+    <script th:src="@{/js/google-map.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        $(document).ready(function() {
+            $("table tbody tr").click(function() {
+                //각 행에 attr추가필요
+                var url = "/hospitalDetail";
+                window.location.href = url;
+            });
+        });
+    </script>
+</head>    
+<body class="goto-here">
+    
+    <!-- Header/nav -->
+    <div th:replace="header :: header-fragment"></div>
+    <!-- Header/nav nav -->
+
+    <div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
+                    <h1 class="mb-0 bread">HOSPITAL</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>동물병원 상세</h2>
+            </div>
+            <br />
+            <h4>강아지굿병원</h4>
+            <h5>02-123-1234</h5>
+            <h5>서울시 마포구 월드컵북로32길 34</h5>
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-10">
+                    <div id="map" style="height:500px "></div>
+                </div>
+            </div>
+            <script type="text/javascript" th:src="@{'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey}}"></script>
+            <script>
+                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                    mapOption = { 
+                        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                        level: 3 // 지도의 확대 레벨
+                    };
+                
+                var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+                
+                // 마커가 표시될 위치입니다 
+                var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
+                
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition
+                });
+                
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
+                
+                // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+                // marker.setMap(null);    
+            </script>
+        </div><!--container-->
+    </div>
+    <br /><br />
+    <!-- footer -->
+    <div th:replace="footer :: footer"></div>
+    <!-- footer end -->
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.easing.1.3.js}"></script>
+    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/js/jquery.stellar.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{/js/aos.js}"></script>
+    <script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/js/scrollax.min.js}"></script>
+    <script th:src="@{/js/google-map.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

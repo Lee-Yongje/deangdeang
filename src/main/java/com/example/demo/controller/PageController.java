@@ -193,11 +193,6 @@ public class PageController {
     	model.addAttribute("kakaoApiKey", kakaoApiKey);
     	return "hospitalDetail";
     }
-   
-    @GetMapping("/write")
-    public String writePage() {
-        return "write";
-    }
     
 }
     
