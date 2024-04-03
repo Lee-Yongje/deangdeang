@@ -121,7 +121,6 @@ public class PageController {
         return "qna";
     }
     
-<<<<<<< HEAD
     @GetMapping("/scheduler")
     public String scheduler() {
         return "scheduler";
@@ -143,10 +142,6 @@ public class PageController {
     public String diaryWritePage() {
     	return "diaryWrite";
     }
-
-    //사진형 게시판 boast, report, usedgood
-    @GetMapping("/community/boast")
-    public void boastPage(){}
     
     @GetMapping("/report")
     public String reportPage() {
@@ -198,10 +193,7 @@ public class PageController {
     	model.addAttribute("kakaoApiKey", kakaoApiKey);
     	return "hospitalDetail";
     }
-    //-병원
-    
-=======
->>>>>>> branch 'main' of https://github.com/sangwon0707/final.git
+   
     @GetMapping("/write")
     public String writePage() {
         return "write";
