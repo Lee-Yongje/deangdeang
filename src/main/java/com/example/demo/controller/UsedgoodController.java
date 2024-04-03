@@ -10,15 +10,18 @@ import com.example.demo.dto.LoginFormDTO;
 
 @Controller
 public class UsedgoodController {
-
+	
+	 //중고거래 조회
 	 @GetMapping("/usedgood/usedgood")
 	    public void usedgoodPage() {
 	    }
     
+	 //중고거래 상세
 	 @GetMapping("/member/usedgood/detail")
 	    public void usedgoodDetailPage() {
 	    }
 	 
+	 //중고거래 글 등록
 	 @GetMapping("/member/usedgood/write")
 	    public void usedgoodWritePage() {
 	    }
