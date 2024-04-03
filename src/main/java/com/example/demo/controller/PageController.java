@@ -40,27 +40,6 @@ public class PageController {
         return "cart";
     }
 
-    @GetMapping("/changeInfo")
-    public String changeInfoPage() {
-        return "changeInfo";
-    }
-    @GetMapping("/changePwd")
-    public String changePwdPage() {
-    	return "changePwd";
-    }
-    @GetMapping("/insertPuppy")
-    public String insertPuppyPage() {
-    	return "insertPuppy";
-    }
-    @GetMapping("/listPuppy")
-    public String listPuppyForm(Model model) {
-        return "listPuppy";
-    }
-    @GetMapping("/myPosts")
-    public String myPostsPage() {
-    	return "myPosts";
-    }
-
     @GetMapping("/checkout")
     public String checkoutPage() {
         return "checkout";
@@ -142,6 +121,7 @@ public class PageController {
         return "qna";
     }
     
+<<<<<<< HEAD
     @GetMapping("/scheduler")
     public String scheduler() {
         return "scheduler";
@@ -220,6 +200,8 @@ public class PageController {
     }
     //-병원
     
+=======
+>>>>>>> branch 'main' of https://github.com/sangwon0707/final.git
     @GetMapping("/write")
     public String writePage() {
         return "write";
