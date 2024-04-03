@@ -165,10 +165,9 @@ public class PageController {
     }
 
     //사진형 게시판 boast, report, usedgood
-    @GetMapping("/boast")
-    public String boastPage() {
-        return "boast";
-    }
+    @GetMapping("/community/boast")
+    public void boastPage(){}
+    
     @GetMapping("/report")
     public String reportPage() {
         return "report";
@@ -225,18 +224,6 @@ public class PageController {
     public String writePage() {
         return "write";
     }
-    
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("loginForm", new LoginFormDTO()); // LoginForm은 사용자 입력을 담을 클래스
-        return "login";
-    }
-
-    @GetMapping("/member/login")
-    public String userLogin() {
-        return "/member/index";
-    }
-    
     
 }
     
