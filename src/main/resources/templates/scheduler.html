@@ -165,7 +165,44 @@
   	border: none;
   }
   
-  
+  	.pet-selection{
+		text-align:left; 
+		margin-bottom:20px;
+	}	
+	.pet-selected{
+		flex:1 1 calc(33.33% - 10px);
+		text-align:center;
+		margin-bottom:10px;
+	}
+	.pet-selected img {
+	  width: 100px; 
+	  height: 100px; 
+	  border-radius: 50%;
+	}
+	.pet-selected p{
+		margin-top:10px;
+	}
+	.pets-container{
+		display:flex;
+		flex-wrap:wrap;
+		gap:10px;
+		justify-content:flex-start;
+		margin-top:20px;
+	}
+	.pet-selected:nth-child(3n){
+		margin-right:0;
+	}
+	
+	.pet-image{
+		cursor:pointer;
+	}
+	.pet-image.active{
+		border: 4px solid blue;
+		padding:-4px;
+	}
+	.pet-image:hover{
+		border:4px solid blue;
+	}
 </style> 
 </head>
 
@@ -203,13 +240,46 @@
 		</div>         
          
          <!--콘텐츠영역 -->
-         <div class="col-lg-8 ftco-animate">
+         <div class="col-lg-9 ftco-animate">
          	<div class="d-flex justify-content-between align-items-center">
-				<h2>댕댕스케줄</h2>
+				<h2 style="margin-bottom:20px;">댕댕스케줄</h2>
 			</div>
          
 			<div class="row">
+			<div class="col-md-12">
+		        <div class="pet-selection">
+		            <h5>반려동물 선택</h5>                        
+		            <div class="pets-container">
+		                <div class="pet-selected">
+		                    <img src="images/angryDog.jpg" class="pet-image">
+		                    <p>달래</p>
+		                </div>
+		                <div class="pet-selected">
+		                    <img src="images/sampledog.jpg" class="pet-image">
+		                    <p>빵떡이</p>
+		                </div>
+		                <div class="pet-selected">
+		                    <img src="images/angryDog.jpg" class="pet-image">
+		                    <p>동식이</p>
+		                </div>                                                 
+		            </div>
+		            
+<!-- 		            db형태
+		            <div class="pet-selection">
+					    <h5>반려동물 선택</h5>                        
+					    <div class="pets-container">
+					        <div th:each="pet : ${pets}" class="pet-selected">
+					            <img th:src="@{${pet.p_fname}}" class="p_fname">
+					            <p th:text="${pet.p_name}"></p>
+					        </div>
+					    </div>
+					</div> -->
+		            
+		            
+		        </div>
+			</div>
 			
+						
 			<div class="year-select-container">
 				<select id="year-select">
 				  <option value="2024">2024</option>
@@ -298,13 +368,26 @@
 				    for (let i = 0; i < firstDay.getDay(); i++) {
 				      calendarHtml += '<td></td>';
 				    }
+				    
+				    const today = new Date();
+				    const todayYear = today.getFullYear();
+				    const todayMonth = today.getMonth();
+				    const todayDate = today.getDate();
 				
 				    for (let day = 1; day <= lastDay.getDate(); day++) {
 				      const dayOfWeek = new Date(year, month, day).getDay();
 				      if (dayOfWeek === 0 && day > 1) {
 				        calendarHtml += '</tr><tr>';
 				      }
+				      
+				      //페이지 실행 시 오늘 날짜에 .circle 표시.
+				      if(year===todayYear && month === todayMonth && day === todayDate){
+				    	  calendarHtml +=
+				    		  `<td class="calendar-day circle">
+				    	  <span style="color: white;">${day}</span></td>`;
+				      }else{
 				      calendarHtml += `<td class = "calendar-day">${day}</td>`;
+				      }
 				    }
 				
 				    const lastDayOfWeek = lastDay.getDay();
@@ -334,11 +417,11 @@
 				  //일 선택하면 색깔 바뀜 
 				  $('#calendar').on('click', 'td', function() {
 					  $('td.circle').each(function() {
-						    $(this).removeClass('circle') // .circle 클래스를 제거합니다.
-						           .css('background-color', '') // 배경색을 초기화합니다.
-						           .find('span').css('color', 'black') // 숫자 색상을 검정색으로 변경합니다.
-						           .end() // .find()에 의해 변경된 컨텍스트를 되돌립니다.
-						           .html($(this).find('span').text()); // <span> 태그를 제거하고 숫자만 남깁니다.
+						    $(this).removeClass('circle') 
+						           .css('background-color', '')
+						           .find('span').css('color', 'black')
+						           .end()
+						           .html($(this).find('span').text());
 						  });
 	                    /* $('td').css('background-color', '');		클릭하면 노란색으로 바뀜(변경전)
 	                    $(this).css('background-color', 'yellow'); */ 
@@ -352,30 +435,25 @@
 				  generateCalendar(now.getFullYear(), now.getMonth());
 				  
 				  
-				  $('#submit-btn').click(function() {
+/* 				  $('#submit-btn').click(function() {
 		                var content = $('#content-input').val();
 		                $('#content-input').val(''); // 입력창 내용 지우기
 
 		                // 내용을 #entries에 추가
 		                // 나중에 서버연결 후 수정 예정  >
-/* 		                $('#entries').append(`<div class="entry">달래 미용실 꼭가기</div>`); // 임시 내용 추가
+		                $('#entries').append(`<div class="entry">달래 미용실 꼭가기</div>`); // 임시 내용 추가
 		                $('#entries').append(`<div class="entry">예방접종 하는날</div>`); // 임시 내용 추가
 		                $('#entries').append(`<div class="entry">강아지 배변패드 사야</div>`); // 임시 내용 추가
- */
-		            });
+ 
+		            }); */ 
 				  
 				  // 입력한 일정 클릭
 				  $('#entries').on('click', '.entry', function() {
 					    $(this).toggleClass('selected-entry');
 					});
 
-				  
 				});
 				</script>
-	
-		
-	
-	
 			</div>
          </div> <!-- .col-md-8 -->
 
