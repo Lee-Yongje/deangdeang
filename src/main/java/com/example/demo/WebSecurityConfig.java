@@ -21,7 +21,7 @@ public class WebSecurityConfig {
         http
             .authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/", "/index", "/css/**", "/js/**", "/js/**", "/fonts/**", "/images/**", "/scss/**").permitAll()
+                    .requestMatchers("/", "/index", "/css/**", "/js/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/community/**", "/region/**", "/usedgood/**").permitAll()
                     .requestMatchers("/member/**").authenticated() // 수정된 부분
 //                    .anyRequest().authenticated()
             )

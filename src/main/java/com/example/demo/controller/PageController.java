@@ -121,22 +121,91 @@ public class PageController {
         return "qna";
     }
     
+<<<<<<< HEAD
+    @GetMapping("/scheduler")
+    public String scheduler() {
+        return "scheduler";
+    } 
+    @GetMapping("/schedulerWrite")
+    public String schedulerWritePage() {
+    	return "schedulerWrite";
+    }
+    
+    @GetMapping("/diary")
+    public String diaryPage() {
+        return "diary";
+    }
+    @GetMapping("/diaryDetail")
+    public String diaryDetailPage() {
+    	return "diaryDetail";
+    }
+    @GetMapping("/diaryWrite")
+    public String diaryWritePage() {
+    	return "diaryWrite";
+    }
+
+    //사진형 게시판 boast, report, usedgood
+    @GetMapping("/community/boast")
+    public void boastPage(){}
+    
+    @GetMapping("/report")
+    public String reportPage() {
+        return "report";
+    }
+    @GetMapping("/usedgood")
+    public String usedgoodPage() {
+        return "usedgood";
+    }
+
+    @GetMapping("/boastDetail")
+    public String boastDetailPage() {
+        return "boastDetail";
+    }
+    @GetMapping("/usedgoodDetail")
+    public String usedgoodDetailPage() {
+    	return "usedgoodDetail";
+    }
+    @GetMapping("/reportDetail")
+    public String reportDetail() {
+    	return "reportDetail";
+    }
+    
+    @GetMapping("/boastWrite")
+    public String boastWritePage() {
+        return "boastWrite";
+    }
+    @GetMapping("/usedgoodWrite")
+    public String usedgoodWritePage() {
+    	return "usedgoodWrite";
+    }
+    @GetMapping("/reportWrite")
+    public String reportWritePage() {
+    	return "reportWrite";
+    }
+    //-사진형게시판
+    
+    //병원
+    @Value("${kakao.api.key}")
+    private String kakaoApiKey;
+    
+    
+    @GetMapping("/hospital")
+    public String hospitalPage() {
+    	return "hospital";
+    }
+    @GetMapping("/hospitalDetail")
+    public String hospitalDetailPage(Model model) {
+    	model.addAttribute("kakaoApiKey", kakaoApiKey);
+    	return "hospitalDetail";
+    }
+    //-병원
+    
+=======
+>>>>>>> branch 'main' of https://github.com/sangwon0707/final.git
     @GetMapping("/write")
     public String writePage() {
         return "write";
     }
-    
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("loginForm", new LoginFormDTO()); // LoginForm은 사용자 입력을 담을 클래스
-        return "login";
-    }
-
-    @GetMapping("/member/login")
-    public String userLogin() {
-        return "/member/index";
-    }
-    
     
 }
     
