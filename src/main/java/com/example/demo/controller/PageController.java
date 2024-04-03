@@ -126,17 +126,5 @@ public class PageController {
         return "write";
     }
     
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("loginForm", new LoginFormDTO()); // LoginForm은 사용자 입력을 담을 클래스
-        return "login";
-    }
-
-    @GetMapping("/member/login")
-    public String userLogin() {
-        return "/member/index";
-    }
-    
-    
 }
     
