@@ -11,9 +11,10 @@ import com.example.demo.dto.LoginFormDTO;
 @Controller
 public class CommunityController {
 	//게시판형
-	
-	
-	
+	@GetMapping("/community/board")
+	public void boardPage() { 
+		
+	}
 	
 	
 	//사진형
