@@ -52,6 +52,10 @@ public class PageController {
     public String insertPuppyPage() {
     	return "insertPuppy";
     }
+    @GetMapping("/listPuppy")
+    public String listPuppyForm(Model model) {
+        return "listPuppy";
+    }
     @GetMapping("/myPosts")
     public String myPostsPage() {
     	return "myPosts";
@@ -232,6 +236,7 @@ public class PageController {
     public String userLogin() {
         return "/member/index";
     }
-
+    
+    
 }
     
