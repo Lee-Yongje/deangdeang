@@ -34,7 +34,7 @@
 	<div th:replace="header :: header-fragment"></div>
 	<!-- Header/nav nav -->
 
-	<div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
 		<div class="container">
 			<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate text-center">
@@ -51,11 +51,11 @@
 				<div class="sidebar-box ftco-animate">
 					<h3 class="heading">커뮤니티</h3>
 					<ul class="categories">
-						<li><a href="/boast">전국댕댕자랑</a></li>
-						<li><a href="#">자유게시판</a></li>
-						<li><a href="#">질문게시판</a></li>
-						<li><a href="#">산책해요</a></li>
-						<li><a href="/report">신고/제보</a></li>
+						<li><a href="/community/boast">전국댕댕자랑</a></li>
+						<li><a href="/community/board">자유게시판</a></li>
+						<li><a href="/community/board">질문게시판</a></li>
+						<li><a href="/community/board">산책해요</a></li> 
+						<li><a href="/community/report">신고/제보</a></li>
 					</ul>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 				<div class="container">
 					<div class="d-flex justify-content-between align-items-center">
 						<h2>제보/신고 게시판</h2>
-						<a href="/reportWrite" class="btn btn-primary">글쓰기</a>
+						<a href="/member/community/boardWrite" class="btn btn-primary">글쓰기</a>
 					</div>
 					<br />
 					<!--콤보박스-->
@@ -83,7 +83,7 @@
 							<!-- 사진 하나 시작 -->
 							<div class="ftco-animate">
 								<div class="product">
-									<a href="/reportDetail" class="img-prod"><img class="img-fluid"
+									<a href="/member/community/reportDetail" class="img-prod"><img class="img-fluid"
 											th:src="@{/images/sampledog.jpg}" alt="Colorlib Template">
 										<div class="overlay"></div>
 									</a>
