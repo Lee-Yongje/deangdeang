@@ -15,11 +15,11 @@ public class UsedgoodController {
 	    public void usedgoodPage() {
 	    }
     
-	 @GetMapping("/member/usedgood/usedgoodDetail")
+	 @GetMapping("/member/usedgood/detail")
 	    public void usedgoodDetailPage() {
 	    }
 	 
-	 @GetMapping("/member/usedgood/usedgoodWrite")
+	 @GetMapping("/member/usedgood/write")
 	    public void usedgoodWritePage() {
 	    }
 }
