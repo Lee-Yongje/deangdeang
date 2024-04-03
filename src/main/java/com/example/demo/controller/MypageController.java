@@ -11,7 +11,21 @@ import com.example.demo.dto.LoginFormDTO;
 @Controller
 public class MypageController {
 
-    
+	@GetMapping("/member/mypage/changeInfo")
+    public void changeInfoPage() {
+    }
+    @GetMapping("/member/mypage/changePwd")
+    public void changePwdPage() {
+    }
+    @GetMapping("/member/mypage/insertPuppy")
+    public void insertPuppyPage() {
+    }
+    @GetMapping("/member/mypage/listPuppy")
+    public void listPuppyForm(Model model) {
+    }
+    @GetMapping("/member/mypage/myPosts")
+    public void myPostsPage() {
+    }
     
 }
     

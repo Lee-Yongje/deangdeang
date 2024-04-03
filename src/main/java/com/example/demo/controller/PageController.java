@@ -40,27 +40,6 @@ public class PageController {
         return "cart";
     }
 
-    @GetMapping("/changeInfo")
-    public String changeInfoPage() {
-        return "changeInfo";
-    }
-    @GetMapping("/changePwd")
-    public String changePwdPage() {
-    	return "changePwd";
-    }
-    @GetMapping("/insertPuppy")
-    public String insertPuppyPage() {
-    	return "insertPuppy";
-    }
-    @GetMapping("/listPuppy")
-    public String listPuppyForm(Model model) {
-        return "listPuppy";
-    }
-    @GetMapping("/myPosts")
-    public String myPostsPage() {
-    	return "myPosts";
-    }
-
     @GetMapping("/checkout")
     public String checkoutPage() {
         return "checkout";
@@ -141,85 +120,6 @@ public class PageController {
     public String qnaPage() {
         return "qna";
     }
-    
-    @GetMapping("/scheduler")
-    public String scheduler() {
-        return "scheduler";
-    } 
-    @GetMapping("/schedulerWrite")
-    public String schedulerWritePage() {
-    	return "schedulerWrite";
-    }
-    
-    @GetMapping("/diary")
-    public String diaryPage() {
-        return "diary";
-    }
-    @GetMapping("/diaryDetail")
-    public String diaryDetailPage() {
-    	return "diaryDetail";
-    }
-    @GetMapping("/diaryWrite")
-    public String diaryWritePage() {
-    	return "diaryWrite";
-    }
-
-    //사진형 게시판 boast, report, usedgood
-    @GetMapping("/boast")
-    public String boastPage() {
-        return "boast";
-    }
-    @GetMapping("/report")
-    public String reportPage() {
-        return "report";
-    }
-    @GetMapping("/usedgood")
-    public String usedgoodPage() {
-        return "usedgood";
-    }
-
-    @GetMapping("/boastDetail")
-    public String boastDetailPage() {
-        return "boastDetail";
-    }
-    @GetMapping("/usedgoodDetail")
-    public String usedgoodDetailPage() {
-    	return "usedgoodDetail";
-    }
-    @GetMapping("/reportDetail")
-    public String reportDetail() {
-    	return "reportDetail";
-    }
-    
-    @GetMapping("/boastWrite")
-    public String boastWritePage() {
-        return "boastWrite";
-    }
-    @GetMapping("/usedgoodWrite")
-    public String usedgoodWritePage() {
-    	return "usedgoodWrite";
-    }
-    @GetMapping("/reportWrite")
-    public String reportWritePage() {
-    	return "reportWrite";
-    }
-    //-사진형게시판
-    
-    //병원
-    @Value("${kakao.api.key}")
-    private String kakaoApiKey;
-    
-    
-    @GetMapping("/hospital")
-    public String hospitalPage() {
-    	return "hospital";
-    }
-    @GetMapping("/hospitalDetail")
-    public String hospitalDetailPage(Model model) {
-    	model.addAttribute("kakaoApiKey", kakaoApiKey);
-    	return "hospitalDetail";
-    }
-    //-병원
     
     @GetMapping("/write")
     public String writePage() {

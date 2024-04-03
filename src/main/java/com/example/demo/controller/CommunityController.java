@@ -17,7 +17,30 @@ public class CommunityController {
 	
 	
 	//사진형
+	@GetMapping("/community/boast")
+    public void boastPage() {
+    }
+	
+    @GetMapping("/community/report")
+    public void reportPage() {
+    }
+   
+
+    @GetMapping("/member/community/boastDetail")
+    public void boastDetailPage() {
+    }
     
+    @GetMapping("/member/community/reportDetail")
+    public void reportDetail() {
+    }
+    
+    @GetMapping("/member/community/boastWrite")
+    public void boastWritePage() {
+    }
+    
+    @GetMapping("/member/community/reportWrite")
+    public void reportWritePage() {
+    }
     
 }
     
