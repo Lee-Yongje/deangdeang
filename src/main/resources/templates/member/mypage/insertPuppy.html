@@ -35,6 +35,9 @@
 <link rel="stylesheet" href="css/icomoon.css">
 <link rel="stylesheet" href="css/style.css">
 
+<link
+    href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+    rel="stylesheet" id="bootstrap-css">
 <script
     src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -52,11 +55,7 @@
     margin-bottom: 0.5rem;
 }
 
-.form-check-label {
-            padding-left: 1rem;
-            white-space: nowrap; /* 긴 텍스트가 한 줄에 나오도록 설정 */
-        }
-
+/* 추가된 스타일 */
 .card-header {
     background-color: #82AE46;
     display: flex;
@@ -180,16 +179,15 @@ h1, h2, h3, h4, h5, h6 {
                                     <div class="tab-pane active in" id="profile">
                                         <form id="dogRegistrationForm">
                                             <div class="form-group d-flex align-items-start" style="overflow: hidden;">
-                                                <img src="/images/강아지2.jpg" alt="강아지 이미지" class="img-fluid" style="max-height: 350px; max-width: 250px;">
-													<div class="ml-3 d-flex flex-column justify-content-between col-lg-7">
-													    <label for="dogImage" class="font-weight-bold">강아지 사진</label>
-													    <input type="file" class="form-control" id="dogImage">
-													    <label for="dogName" class="font-weight-bold mt-3">이름</label>
-													    <input type="text" class="form-control" id="dogName">
-													    <label for="dogImage" class="font-weight-bold">생년월일</label>
-													    <input type="date" class="form-control" id="dogBirthday">
-													</div>
-
+                                                <img src="/images/강아지2.jpg" alt="강아지 이미지" class="img-fluid" style="max-height: 350px; width: 250px;">
+                                                <div class="ml-3 d-flex flex-column justify-content-between col-lg-8">
+                                                    <label for="dogImage" class="font-weight-bold">강아지 사진</label>
+                                                    <input type="file" class="form-control" id="dogImage">
+                                                    <label for="dogName" class="font-weight-bold mt-3">이름</label>
+                                                    <input type="text" class="form-control" id="dogName">
+                                                    <label for="dogImage" class="font-weight-bold">생년월일</label>
+                                                    <input type="date" class="form-control" id="dogBirthday">
+                                                </div>
                                             </div>
                                             <div class="divider"></div>
                                             <div class="form-row justify-content-center">
@@ -227,8 +225,6 @@ h1, h2, h3, h4, h5, h6 {
                                             <div class="divider"></div>
                                             <div class="col-md-12 text-right">
 											    <button type="submit" class="btn btn-primary">등록</button>
-											    <!-- <button type="submit" class="btn btn-primary">수정</button> -->
-											    <!-- <button type="submit" class="btn btn-primary">삭제</button> -->
 											</div>
                                         </form>
                                     </div>

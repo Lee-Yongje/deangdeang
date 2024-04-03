@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="css/aos.css">
     <link rel="stylesheet" href="css/ionicons.min.css">
     <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
         body {
@@ -53,6 +56,7 @@
 <body class="goto-here">
     <!-- Header/nav -->
     <div th:replace="header :: header-fragment"></div>
+    <!-- Header/nav nav -->
 
     <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
         <div class="container">
@@ -86,6 +90,7 @@
 
                 <div class="col-lg-8 ftco-animate">
                     <div class="row">
+                        <!-- 회원정보 수정을 위한 시작 -->
                         <div class="card col-lg-12">
                             <div class="card-header">회원 정보 수정</div>
                             <div class="card-body">
@@ -112,7 +117,7 @@
                                                 <input type="email" class="form-control" id="u_phone" value="010-1111-1111">
                                             </div>
                                             <div class="form-group d-flex align-items-start">
-                                                <img src="/images/강아지.jpg" alt="프로필 이미지" class="img-fluid" style="max-height: 250px; max-width: 250px;">
+                                                <img src="/images/강아지.jpg" alt="프로필 이미지" class="img-fluid" style="max-height: 100px; width: 100%;">
                                                 <div class="ml-3 d-flex flex-column justify-content-between" style="height: 100px;">
                                                     <label for="u_fname" class="font-weight-bold">프로필 이미지</label>
                                                     <input type="file" class="form-control">
@@ -147,14 +152,21 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- 회원정보 수정을 위한 끝 -->
                     </div>
+                    <!-- .row -->
                 </div>
+                <!-- .col-lg-8 -->
             </div>
+            <!-- .row -->
         </div>
+        <!-- .container -->
     </section>
+    <!-- .ftco-section -->
 
     <!--footer  -->
     <div th:replace="footer :: footer"></div>
+    <!--footer end  -->
 
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen">
