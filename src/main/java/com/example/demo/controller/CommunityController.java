@@ -34,12 +34,11 @@ public class CommunityController {
     public void reportDetail() {
     }
     
-    @GetMapping("/member/community/boastWrite")
-    public void boastWritePage() {
-    }
     
-    @GetMapping("/member/community/reportWrite")
-    public void reportWritePage() {
+    
+    //공통:글 작성
+    @GetMapping("/member/community/boardWrite")
+    public void boardWritePage() {
     }
     
 }
