@@ -28,6 +28,12 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <style>
+		.combobox{
+			display: none;	
+		}
+	</style>
 </head>
 
 <body class="goto-here">
@@ -75,6 +81,18 @@
 						</div>
 						<div class="row mt-3">
 							<div class="col-md-12">
+								<form action="">
+								<!--콤보박스: 신고/제보 게시판인 경우에는 보이게 설정.-->
+								<div class="form-group combobox">
+									<select class="form-control" id="reportType" style="width: 40%;">
+										<option value="">지역을 선택해 주세요</option>
+										<option value="02">서울</option>
+										<option value="031">경기</option>
+										<option value="032">인천</option>
+										<option value="033">강원</option>
+									</select>
+								</div>
+								<!--end콤보박스-->
 								<div class="form-group">
 									<input type="text" class="form-control" id="title" value="제목을 입력하세요"
 										onfocus="clearDefault(this)" onblur="restoreDefault(this)">
@@ -87,6 +105,7 @@
 									<label for="file">파일 첨부</label>
 									<input type="file" class="form-control-file" id="file">
 								</div>
+								</form>
 							</div>
 						</div>
 					</div>
