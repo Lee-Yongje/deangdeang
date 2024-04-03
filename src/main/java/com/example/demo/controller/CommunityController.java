@@ -12,7 +12,7 @@ import com.example.demo.dto.LoginFormDTO;
 public class CommunityController {
 	//게시판형
 	@GetMapping("/community/board")
-	public void boardPage() {
+	public void boardPage() { 
 		
 	}
 	
