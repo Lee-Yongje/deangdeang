@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
- <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
- <meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>댕댕정보통 | 댕댕스케줄</title>
+	<link rel="icon" th:href="@{/images/icon.png}">
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
  
- <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
- <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
- <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
- <link rel="stylesheet" href="css/animate.css">
- 
- <link rel="stylesheet" href="css/owl.carousel.min.css">
- <link rel="stylesheet" href="css/owl.theme.default.min.css">
- <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
 
- <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
 
- <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" th:href="@{/css/aos.css}">
 
- <link rel="stylesheet" href="css/bootstrap-datepicker.css">
- <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
 
- 
- <link rel="stylesheet" href="css/flaticon.css">
- <link rel="stylesheet" href="css/icomoon.css">
- <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+
+    <link rel="stylesheet" th:href="@{/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/css/icomoon.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
    
 <style>  
   table {
@@ -55,30 +56,31 @@
     width: 80%;
     margin: 0 auto; 
     margin-bottom:10px;
+    display:block;
   }
   #month-select{
   	text-align:center; 
   
   }
   
-  .month-button {
+/*   .month-button {
   	width:50px;
     margin: 5px 8px;
     padding: 5px; 
     cursor: pointer; 
     flex-basis: calc(16.66% - 10px);
     display:inline-block;
-  }
-  .month-button:hover, .month-button.active {
+  } */
+/*   .month-button:hover, .month-button.active {
     color: white;
     background-color: #00AAFF;
-  }
-  #month-buttons1, #month-buttons2 {
+  } */
+/*   #month-buttons1, #month-buttons2 {
   	text-align: center;
 		margin-bottom: 10px;
 		display:inline-block;
 
-  }
+  } */
   #month-buttons, #calendar {
        text-align: center; /* 중앙 정렬 */
      }
@@ -92,15 +94,49 @@
   
   #calendar td {
     cursor: pointer;
-    color:black; 
+    color:#8c8c8c; 
 
   }
   .calendar-day{
-  	height:70px;
+  	min-height:70px;
   	vertical-align: top;
   	position:relative;
   	z-index:2;
+  	overflow:visible;
   }
+  .calendar-day.circle {
+  background-color: #00AAFF; /* 배경 색상 */
+  border-radius: 50%;
+  /* .dots 컨테이너 스타일,배열 유지 위함 */
+}
+.calendar-container {
+    clear: both;
+    width: 100%;
+    display: block;
+    margin-top: 20px; 
+}
+
+.calendar-day {
+	position:relative;
+	height:70px;
+}
+.calendar-day .dots {
+    position: absolute; 
+    bottom: 20px;
+    left: 50%; 
+    transform: translateX(-50%);
+    display: flex; 
+    flex-wrap: nowrap; 
+    justify-content: center; 
+    align-items: center; 
+}
+.calendar-day .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin: 0 2px; 
+}
+
   
   .selected-date {
     background-color: #f0f0f0; /* 선택된 날짜 배경색 변경 */
@@ -119,6 +155,7 @@
   .select-container{
   	display:flex;
   	justify-content:center;
+  	align-items:center;
   	gap:20px;
   }
   
@@ -140,28 +177,27 @@
   padding: 3px;
   color:black; 
 } */
-  #entries {
-  	width:100%;
-    margin-top: 20px; 
-    margin-right:auto;
-    display:block; 
-  }
+	#entries {
+		width:90%;
+		margin:20px auto;
+		display:block; 
+	}
   
-  .entry {
-    border: 1px solid #00AAFF;
-    padding: 10px;
-    margin:5px 0; 
-       display: inline-block;
-       width: calc(100% - 20px);
-       color:#000;
-  }
+	.entry {
+/* 	    border: 1px solid #f0f0f0; */
+	    padding: 10px;
+	    margin:5px 0; 
+	    display: inline-block;
+	    width: calc(100% - 20px);
+	    color:#000;
+	}
   
-  .selected-entry {
- 		background-color: yellow;
+	.selected-entry {
+		background-color: yellow;
  		cursor:pointer;
-  }
+	}
   
-  .circle{
+/*   .circle{
   	background-color: #00AAFF;
   	color: white;
   	border-radius:50%;
@@ -174,7 +210,7 @@
   	margin:0 auto;
   	z-index:1;
   	border: none;
-  }
+  } */
   
   	.pet-selection{
 		text-align:left; 
@@ -204,6 +240,29 @@
 		margin-right:0;
 	}
 	
+	/* 강아지 선택하면 추가되는 테두리 */
+	.pet-selected.red-border .pet-image.active {
+	    border: 4px solid red;
+	}
+	
+	.pet-selected.orange-border .pet-image.active {
+	    border: 4px solid orange;
+	}
+	
+	.pet-selected.green-border .pet-image.active {
+	    border: 4px solid green;
+	}
+	
+	.pet-selected.blue-border .pet-image.active {
+	    border: 4px solid blue;
+	}
+	
+	.pet-selected.purple-border .pet-image.active {
+	    border: 4px solid purple;
+	}
+		
+	
+	
 	.pet-image{
 		cursor:pointer;
 	}
@@ -214,309 +273,472 @@
 	.pet-image:hover{
 		border:4px solid blue;
 	}
+	
+	/* 점 스타일 */
+	.dot-container {
+	  text-align: center;
+	  position: absolute;
+	  left: 50%;
+	  bottom: 5px;
+	  transform: translateX(-50%);
+	  width: 100%;
+	}
+	
+	
+	.dot {
+	  width: 9px; 
+	  height: 9px;
+	  border-radius: 50%;
+	  margin: 0 2px; /* 점 사이 간격 */
+	}
+
+	.dots {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: center; 
+	  align-items: center;
+	  position: absolute;
+	  bottom: 20px;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  max-width: 100%;}
+
+
+
+	.red-dot {
+	  background-color: red;
+	}
+	
+	.orange-dot {
+	  background-color: orange;
+	}
+	
+	.green-dot{
+		background-color: green;
+	}
+	
 </style> 
 </head>
 
- <body class="goto-here">
+<body class="goto-here">
 <!-- Header/nav -->
-  	<div th:replace="header :: header-fragment"></div>
+	<div th:replace="header :: header-fragment"></div>
    <!-- Header/nav nav -->
 
-   <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
-     <div class="container">
-       <div class="row no-gutters slider-text align-items-center justify-content-center">
-         <div class="col-md-9 ftco-animate text-center">
-         	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
-           <h1 class="mb-0 bread">Blog</h1>
-         </div>
-       </div>
-     </div>
-   </div>
-
-   <section class="ftco-section ftco-degree-bg">
-     <div class="container">
-       <div class="row">
-		<div class="col-lg-3 sidebar ftco-animate">
-			<div class="sidebar-box ftco-animate">
-				<h3 class="heading">마이페이지</h3>
-				<ul class="categories">
-					<li><a href="/scheduler">댕댕스케줄</a></li>
-					<li><a href="/diary">집사일지</a></li>
-					<li><a href="#">회원정보 수정</a></li>
-					<li><a href="#">비밀번호 수정</a></li>
-					<li><a href="#">마이 펫</a></li>
-					<li><a href="#">내가 쓴 글</a></li>
-				</ul>
+	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">\
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate text-center">
+ 					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+					<h1 class="mb-0 bread">Blog</h1>
+				</div>
 			</div>
-		</div>         
+		</div>
+	</div>
+
+	<section class="ftco-section ftco-degree-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 sidebar ftco-animate">
+					<div class="sidebar-box ftco-animate">
+					<h3 class="heading">댕댕수첩</h3>
+						<ul class="categories">
+							<li><a href="/member/diary/scheduler">댕댕스케줄</a></li>
+							<li><a href="/member/diary/diary">집사일지</a></li>
+						</ul>
+					</div>
+				</div>         
          
          <!--콘텐츠영역 -->
-         <div class="col-lg-9 ftco-animate">
-         	<div class="d-flex justify-content-between align-items-center">
-				<h2 style="margin-bottom:20px;">댕댕스케줄</h2>
-			</div>
+         		<div class="col-lg-9 ftco-animate">
+         			<div class="d-flex justify-content-between align-items-center">
+						<h2 style="margin-bottom:20px;">댕댕스케줄</h2>
+					</div>
          
-			<div class="row">
-			<div class="col-md-12">
-		        <div class="pet-selection">
-		            <h5>반려동물 선택</h5>                        
-		            <div class="pets-container">
-		                <div class="pet-selected">
-		                    <img src="images/angryDog.jpg" class="pet-image">
-		                    <p>달래</p>
-		                </div>
-		                <div class="pet-selected">
-		                    <img src="images/sampledog.jpg" class="pet-image">
-		                    <p>빵떡이</p>
-		                </div>
-		                <div class="pet-selected">
-		                    <img src="images/angryDog.jpg" class="pet-image">
-		                    <p>동식이</p>
-		                </div>                                                 
-		            </div>
-		            
-<!-- 		            db형태
-		            <div class="pet-selection">
-					    <h5>반려동물 선택</h5>                        
-					    <div class="pets-container">
-					        <div th:each="pet : ${pets}" class="pet-selected">
-					            <img th:src="@{${pet.p_fname}}" class="p_fname">
-					            <p th:text="${pet.p_name}"></p>
+					<div class="row">
+						<div class="col-md-12">
+					        <div class="pet-selection">
+					            <h5>나의 반려견</h5>                        
+					            <div class="pets-container">
+
+					                <div class="pet-selected">
+					                    <img th:src="@{/images/angryDog.jpg}" class="pet-image">
+					                    <p>달래</p>
+					                </div>
+					                <div class="pet-selected">
+					                    <img th:src="@{/images/sampledog.jpg}" class="pet-image">
+					                    <p>빵떡이</p>
+					                </div>
+					                <div class="pet-selected">
+					                    <img th:src="@{/images/angryDog.jpg}" class="pet-image">
+					                    <p>동식이</p>
+					                </div>                                                 
+					            </div>
+					            
+					            <!-- db형태 -->
+<!-- 					            <div class="pets-container">
+								    <div th:each="dog, iterStat : ${dogs}" 
+								         class="pet-selected" 
+								         th:classappend="${iterStat.index} % 5 == 0 ? 'red-border' : 
+								                        ${iterStat.index} % 5 == 1 ? 'orange-border' : 
+								                        ${iterStat.index} % 5 == 2 ? 'green-border' : 
+								                        ${iterStat.index} % 5 == 3 ? 'blue-border' : 'purple-border'">
+								        <img th:src="@{${dog.imagePath}}" class="pet-image">
+								        <p th:text="${dog.name}">강아지 이름</p>
+								    </div>
+								</div>	 -->
+								
+<!-- 								<div th:each="dog : ${dogs}">
+								    <img th:src="@{'/images/' + ${dog.imagePath}}" class="pet-image">
+								    <p th:text="${dog.name}">강아지 이름</p>
+								</div> -->
+									            
 					        </div>
-					    </div>
+						</div>
+				
+						<div class="select-container">						
+							<div class="year-select-container">
+								<select id="year-select">
+								  <option value="2024">2024</option>
+								  <option value="2025">2025</option>
+								  <option value="2026">2026</option>
+								  <option value="2027">2027</option>
+								  <option value="2028">2028</option>
+								  <option value="2029">2029</option>
+								  <option value="2030">2030</option>
+								  <option value="2031">2031</option>
+								  <option value="2032">2032</option>
+								  <option value="2033">2033</option>
+								</select>
+							</div>
+					
+							<div class="month-select-container">
+								<select id="month-select">
+								  <option value="0">1월</option>
+								  <option value="1">2월</option>
+								  <option value="2">3월</option>
+								  <option value="3">4월</option>
+								  <option value="4">5월</option>
+								  <option value="5">6월</option>
+								  <option value="6">7월</option>
+								  <option value="7">8월</option>
+								  <option value="8">9월</option>
+								  <option value="9">10월</option>
+								  <option value="10">11월</option>
+								  <option value="11">12월</option>
+								</select>
+							</div>
+						</div>
+		<!-- 			<div id="month-select">
+						 월 선택 버튼 
+						<div id="month-buttons1">
+						  <button class="month-button" data-month="0">1월</button>
+						  <button class="month-button" data-month="1">2월</button>
+						  <button class="month-button" data-month="2">3월</button>
+						  <button class="month-button" data-month="3">4월</button>
+						  <button class="month-button" data-month="4">5월</button>
+						  <button class="month-button" data-month="5">6월</button>
+						</div>
+						<div id="month-buttons2">
+						  <button class="month-button" data-month="6">7월</button>
+						  <button class="month-button" data-month="7">8월</button>
+						  <button class="month-button" data-month="8">9월</button>
+						  <button class="month-button" data-month="9">10월</button>
+						  <button class="month-button" data-month="10">11월</button>
+						  <button class="month-button" data-month="11">12월</button>
+						</div>
 					</div> -->
-		            
-		            
-		        </div>
-			</div>
-			
-			<div class="select-container">						
-				<div class="year-select-container">
-					<select id="year-select">
-					  <option value="2024">2024</option>
-					  <option value="2025">2025</option>
-					  <option value="2026">2026</option>
-					  <option value="2027">2027</option>
-					  <option value="2028">2028</option>
-					  <option value="2029">2029</option>
-					  <option value="2030">2030</option>
-					  <option value="2031">2031</option>
-					  <option value="2032">2032</option>
-					  <option value="2033">2033</option>
-					</select>
-				</div>
 				
-				<div class="month-select-container">
-					<select id="month-select">
-					  <option value="0">1월</option>
-					  <option value="1">2월</option>
-					  <option value="2">3월</option>
-					  <option value="3">4월</option>
-					  <option value="4">5월</option>
-					  <option value="5">6월</option>
-					  <option value="6">7월</option>
-					  <option value="7">8월</option>
-					  <option value="8">9월</option>
-					  <option value="9">10월</option>
-					  <option value="10">11월</option>
-					  <option value="11">12월</option>
-					</select>
-				</div>
-			</div>
-<!-- 			<div id="month-select">
-				 월 선택 버튼 
-				<div id="month-buttons1">
-				  <button class="month-button" data-month="0">1월</button>
-				  <button class="month-button" data-month="1">2월</button>
-				  <button class="month-button" data-month="2">3월</button>
-				  <button class="month-button" data-month="3">4월</button>
-				  <button class="month-button" data-month="4">5월</button>
-				  <button class="month-button" data-month="5">6월</button>
-				</div>
-				<div id="month-buttons2">
-				  <button class="month-button" data-month="6">7월</button>
-				  <button class="month-button" data-month="7">8월</button>
-				  <button class="month-button" data-month="8">9월</button>
-				  <button class="month-button" data-month="9">10월</button>
-				  <button class="month-button" data-month="10">11월</button>
-				  <button class="month-button" data-month="11">12월</button>
-				</div>
-			</div> -->
-			
-			
-			
-			<!-- 달력 --> 
-			<div id="calendar"></div>
-			<!-- 내용 입력하기 -->
-			<div class="schedulerPlus">
-<!--                	<input type="text" id="content-input" placeholder="일정을 입력하세요"> -->
-		    	<p><a href="schedulerWrite" class="btn btn-primary py-2 px-3">╋</a></p>
-
-           	</div>
-           	<br><br>
-           	<!-- 내용 표시될 예정 -->
-           	<div id="entries">
-<!--             		<div th:each="entry : ${entries}" class="entry">
-				        <span th:text="${entry.name}">할일목록</span>
-				    </div> -->
-			    
-			    <!-- 서버연결 안되어 있어서 예시로 출력하기 위해 추가함 -->
-				<div class="entry">
-			        <span>달래 미용실 꼭가기</span>
-			    </div>
-			    <div class="entry">
-			        <span>예방접종 하는날</span>
-			    </div>
-			    <div class="entry">
-			        <span>강아지 배변패드 사야함</span>
-  			 		</div>
-           	
-           	</div>
-			
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-			<script>
-				$(function() {
-					//현재 월 가져와서 페이지 실행 시 해당 월에 표시
-					var currentMonth = new Date().getMonth();
-					
-					$('.month-button').each(function(){
-						if($(this).data('month')==currentMonth){
-							$(this).addClass('active');
-						}else{
-							$(this).removeClass('active');
-						}
-					})
-					
-					
-					function generateCalendar(year, month) {
-				    const firstDay = new Date(year, month, 1);
-				    const lastDay = new Date(year, month + 1, 0);
 				
-				    let calendarHtml = '<table>';
-				    calendarHtml += '<tr><th style="color:red">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th style="color:#00AAFF">토</th></tr><tr>';
 				
-				    for (let i = 0; i < firstDay.getDay(); i++) {
-				      calendarHtml += '<td></td>';
-				    }
+				<!-- 달력 --> 
+						<div class="calendar-container">
+						<div id="calendar"></div>
+						</div>
+				<!-- 내용 입력하기 -->
+						<div class="schedulerPlus">
+	<!--                	<input type="text" id="content-input" placeholder="일정을 입력하세요"> -->
+							<p><a href="schedulerWrite" class="btn btn-primary py-2 px-3">╋</a></p>
+	
+	           			</div>
+	           			<br><br>
+	           			
+	           			<!-- 달력과 구분 -->
+	           			<div class="col-md-12" style="border:2px solid #e0e0e0; margin-top: 20px;"></div>
+	           			
+	           			
+	           	<!-- 내용 표시될 부분 -->
+	           			<div id="entries">
+	<!--             		<div th:each="entry : ${entries}" class="entry">
+					        <span th:text="${entry.name}">할일목록</span>
+					    </div> -->
 				    
-				    const today = new Date();
-				    const todayYear = today.getFullYear();
-				    const todayMonth = today.getMonth();
-				    const todayDate = today.getDate();
+				    <!-- 서버연결 안되어 있어서 예시로 출력하기 위해 추가함 -->
+<!-- 							<div class="entry">
+								<span>달래 미용실 꼭가기</span>
+				    		</div>
+						    <div class="entry">
+						        <span>예방접종 하는날</span>
+						    </div>
+						    <div class="entry">
+						        <span>태양이 배변패드 구매</span>
+			  			 	</div> -->
+			  				<div th:each="entry : ${entries}" class="entry">
+    							<span th:text="${entry.s_content}"></span>
+    <!-- 여기에 다른 정보들도 추가 가능 -->
+  							</div>
+  
+						</div>
 				
-				    for (let day = 1; day <= lastDay.getDate(); day++) {
-				      const dayOfWeek = new Date(year, month, day).getDay();
-				      if (dayOfWeek === 0 && day > 1) {
-				        calendarHtml += '</tr><tr>';
-				      }
-				      
-				      //페이지 실행 시 오늘 날짜에 .circle 표시.
-				      if(year===todayYear && month === todayMonth && day === todayDate){
-				    	  calendarHtml +=
-				    		  `<td class="calendar-day circle">
-				    	  <span style="color: white;">${day}</span></td>`;
-				      }else{
-				      calendarHtml += `<td class = "calendar-day">${day}</td>`;
-				      }
-				    }
 				
-				    const lastDayOfWeek = lastDay.getDay();
-				    for (let i = lastDayOfWeek + 1; i <= 6; i++) {
-				      calendarHtml += '<td></td>';
-				    }
-				
-				    calendarHtml += '</tr></table>';
-				    $('#calendar').html(calendarHtml);
-				  }
-				
-				  $('.month-button').click(function() {
-				    $('.month-button').removeClass('active');
-				    $(this).addClass('active');
-				    const month = $(this).data('month');
-				    const year = parseInt($('#year-select').val());
-				    generateCalendar(year, month);
-				  });
-				
-				  $('#year-select').change(function() {
-				    const year = parseInt($(this).val());
-				    const month = $('.month-button.active').data('month');
-				    generateCalendar(year, month);
-				  });
-				  
-				  
-				  //일 선택하면 색깔 바뀜 
-				  $('#calendar').on('click', 'td', function() {
-					  $('td.circle').each(function() {
-						    $(this).removeClass('circle') 
-						           .css('background-color', '')
-						           .find('span').css('color', 'black')
-						           .end()
-						           .html($(this).find('span').text());
-						  });
-	                    /* $('td').css('background-color', '');		클릭하면 노란색으로 바뀜(변경전)
-	                    $(this).css('background-color', 'yellow'); */ 
-	                  var dayContent = $(this).text();
-	                  $(this).addClass('circle')
-	                  .html(`<span style="color: white;">${dayContent}</span>`);
-	              });
-				  
-				
-				  const now = new Date();
-				  generateCalendar(now.getFullYear(), now.getMonth());
-				  
-				  
-/* 				  $('#submit-btn').click(function() {
-		                var content = $('#content-input').val();
-		                $('#content-input').val(''); // 입력창 내용 지우기
+				<!-- 달력 -->
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+				<script>
+					$(function() {
+						//페이지 실행 시현재 월 표시 위함
+						var currentDate = new Date();
+						var currentMonth = currentDate.getMonth();
+						var currentYear = currentDate.getFullYear();
+						
+						// 처음 실행 시 월 선택박스 오늘 날짜로.
+						$('#month-select').val(currentMonth);
+						
+						
+/* 						$('.month-button').each(function(){
+							if($(this).data('month')==currentMonth){
+								$(this).addClass('active');
+							}else{
+								$(this).removeClass('active');
+							}
+						}) */
+						
+						
+						function generateCalendar(year, month) {
+						    const firstDay = new Date(year, month, 1);
+						    const lastDay = new Date(year, month + 1, 0);
+						
+						    let calendarHtml = '<table>';
+						    calendarHtml += '<tr><th style="color:red">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th style="color:#00AAFF">토</th></tr><tr>';
+						
+						    for(let i = 0; i < firstDay.getDay(); i++) {
+						      calendarHtml += '<td></td>';
+						    }
+						    
+						    const today = new Date();
+						    const todayYear = today.getFullYear();
+						    const todayMonth = today.getMonth();
+						    const todayDate = today.getDate();
+						
+						    for(let day = 1; day <= lastDay.getDate(); day++) {
+						      const dayOfWeek = new Date(year, month, day).getDay();
+						      if (dayOfWeek === 0 && day > 1) {
+						        calendarHtml += '</tr><tr>';
+						      }
+						      
+						      //페이지 실행 시 오늘 날짜에 .circle 표시.
+						      if(year === todayYear && month === todayMonth && day === todayDate){
+						    	  calendarHtml += `<td class="calendar-day selected-date" data-day="${day}">
+				                       <span class="date">${day}</span>
+				                       <div class="dots"></div>
+				                     </td>`;
+						      } else {
+						    	    // 오늘 날짜가 아니면 기본 페이지 생성
+						    	    calendarHtml += `<td class="calendar-day" data-day="${day}">
+						    	                       <span class="date">${day}</span>
+						    	                       <div class="dots"></div>
+						    	                     </td>`;
+						    	  }
+						      
+						    }
+						
+						    const lastDayOfWeek = lastDay.getDay();
+						    for(let i = lastDayOfWeek + 1; i <= 6; i++) {
+						      calendarHtml += '<td></td>';
+						    }
+						
+						    calendarHtml += '</tr></table>';
+						    $('#calendar').html(calendarHtml);
+						    
+						    addDots();
 
-		                // 내용을 #entries에 추가
-		                // 나중에 서버연결 후 수정 예정  >
-		                $('#entries').append(`<div class="entry">달래 미용실 꼭가기</div>`); // 임시 내용 추가
-		                $('#entries').append(`<div class="entry">예방접종 하는날</div>`); // 임시 내용 추가
-		                $('#entries').append(`<div class="entry">강아지 배변패드 사야</div>`); // 임시 내용 추가
- 
-		            }); */ 
-				  
-				  // 입력한 일정 클릭
-				  $('#entries').on('click', '.entry', function() {
-					    $(this).toggleClass('selected-entry');
+					  }
+					
+/* 						  $('.month-button').click(function() {
+							    var month = $(this).data('month');
+							    $('#month-select').val(month); // select 박스의 값을 선택된 버튼의 월로 변경
+							    generateCalendar(currentYear, month);
+							  }); */
+
+							  $('#year-select').change(function() {
+							    currentYear = parseInt($(this).val());
+							    generateCalendar(currentYear, currentMonth);
+							  });
+
+							  $('#month-select').change(function() {
+							    currentMonth = parseInt($(this).val());
+							    generateCalendar(currentYear, currentMonth);
+							  });
+					  
+					  
+					  //캘린터 날짜 클릭 시 이벤트
+					  $('#calendar').on('click', 'td.calendar-day', function() {
+						  //연도, 월, 일을 가져오기 위한 코드.
+						  
+						  const year = $('#year-select').val();
+						  const month = $('#month-select').val();
+						  const day = $(this).find('.date').text();
+						  updateEntries(year, month, day);
+						  
+						  $('td.selected-date').removeClass('selected-date');
+						  $(this).addClass('selected-date');
+/* 						  $('td.circle').each(function() {
+							    $(this).removeClass('circle')
+							    .find('.date').css('color', 'black');
+ 							           .css('background-color', '')
+							           .find('span').css('color', 'black')
+							           .end()
+							           .html($(this).find('span').text());
+						}); */
+		                    /* $('td').css('background-color', '');		클릭하면 노란색으로 바뀜(변경전)
+		                    $(this).css('background-color', 'yellow'); */ 
+		                  /* var dayContent = $(this).text(); */
+		                  
+		                  $('td.calendar-day .date').css('color', '#8c8c8c');
+		                  $(this).addClass('selected-date')
+		                  /* .html(`<span style="color: white;">${dayContent}</span>`) */
+		                  .find('.date').css('color', 'black');
+		                  
+		                  
+		                  /* .dots 컨테이너, 점 스타일 유지 */
+		                  $(this).children('.dots').css({
+		                      'position': 'absolute',
+		                      'bottom': '5px',
+		                      'left': '50%',
+		                      'transform': 'translateX(-50%)'
+		                  });
+
+		                  $('.calendar-day .dots').css('bottom','20px');
+		              });
+					  
+					  // 특정 날짜를 선택하여 일정 표시
+					  function updateEntries(year, month, day) {
+						  const entriesDiv = $('#entries');
+						  entriesDiv.empty();
+
+						  // 특정 날짜 선택 시 해당 날짜에 대한 일정 출력. 
+						  if (year === '2024' && month === '3' && day === '1') { // month는 index 숫자
+						    entriesDiv.append('<div class="entry">태양이 미용실 꼭가기</div>');
+						  } else if((year === '2024' && month === '3' && day === '3')){
+						    // 다른 날짜를 클릭했을 경우 기본 내용 추가
+						    entriesDiv.append('<div class="entry">달래 미용실 꼭가기</span>');
+						    entriesDiv.append('<div class="entry">예방접종 하는날</span>');
+						    entriesDiv.append('<div class="entry">강아지 배변패드 사야함</span>');
+						  }
+						}
+					  
+					  function addDots() {
+						  // 1일에 파란색 점 추가	//db 연결 전 임시추가
+						  var orangeDot = '<span class="dot orange-dot"></span>';
+						  $('td[data-day="1"] .dots').append(orangeDot);
+
+						  // 3일에 분홍색과 파란색 점 추가
+						  var redDot = '<span class="dot red-dot"></span>';
+						  $('td[data-day="3"] .dots').append(redDot).append(orangeDot);
+						}
+					  
+					
+					  const now = new Date();
+					  generateCalendar(now.getFullYear(), now.getMonth());
+					  
+					  
+	/* 				  $('#submit-btn').click(function() {
+			                var content = $('#content-input').val();
+			                $('#content-input').val(''); // 입력창 내용 지우기
+	
+			                // 내용을 #entries에 추가
+			                // 나중에 서버연결 후 수정 예정  >
+			                $('#entries').append(`<div class="entry">달래 미용실 꼭가기</div>`); // 임시 내용 추가
+			                $('#entries').append(`<div class="entry">예방접종 하는날</div>`); // 임시 내용 추가
+			                $('#entries').append(`<div class="entry">강아지 배변패드 사야</div>`); // 임시 내용 추가
+	 
+			            }); */ 
+					  
+					  // 입력한 일정 클릭
+					$('#entries').on('click', '.entry', function() {
+						    $(this).toggleClass('selected-entry');
+					  });
+			            
+			          
+			         $('.entry').each(function(){
+			        	 var color = $(this).data('color');
+			        	 $(this).css('border','4px solid'+color);
+			         });   
+			            
+			           
+			          // 강아지별로 색깔 추가(최대 5개) (반복실행)
+			          $('.pet-selected').each(function(index){
+			        	  var color;
+			        	 switch(index % 5){
+			        	 	case 0:
+			        	 		color = 'red';
+			        	 		break;
+			        	 	case 1:
+			        	 		color = 'orange';
+			        	 		break;	
+			        	 	case 2:
+			        	 		color = 'green';
+			        	 		break;	
+			        	 	case 3:
+			        	 		color = 'blue';
+			        	 		break;
+			        	 	case 4:
+			        	 		color = 'purple';
+			        	 		break;	
+			        	 }
+			             $(this).find('.pet-image').css('border', '4px solid ' + color);
+
+			          });  
+			            
+			            
+					// 페이지 로딩 후 달력 생성
+					  $(function() {
+					    generateCalendar(currentYear, currentMonth);
+					  });
+
+	
 					});
+					</script>
+					
+					</div> <!--row -->
+         		</div> <!-- .col-md-9 -->
+			</div>	<!-- .container .row -->
+		</div>	<!-- .container -->
+	</section> <!-- .section -->
 
-				});
-				</script>
-			</div>
-         </div> <!-- .col-md-8 -->
-
-       </div>
-     </div>
-   </section> <!-- .section -->
-
-   <!--footer  -->
- <div th:replace="footer :: footer"></div>
-   <!--footer end  -->
+	<!--footer  -->
+	<div th:replace="footer :: footer"></div>
+	<!--footer end  -->
    
  
 
- <!-- loader -->
- <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
- <script src="js/jquery.min.js"></script>
- <script src="js/jquery-migrate-3.0.1.min.js"></script>
- <script src="js/popper.min.js"></script>
- <script src="js/bootstrap.min.js"></script>
- <script src="js/jquery.easing.1.3.js"></script>
- <script src="js/jquery.waypoints.min.js"></script>
- <script src="js/jquery.stellar.min.js"></script>
- <script src="js/owl.carousel.min.js"></script>
- <script src="js/jquery.magnific-popup.min.js"></script>
- <script src="js/aos.js"></script>
- <script src="js/jquery.animateNumber.min.js"></script>
- <script src="js/bootstrap-datepicker.js"></script>
- <script src="js/scrollax.min.js"></script>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
- <script src="js/google-map.js"></script>
- <script src="js/main.js"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.easing.1.3.js}"></script>
+    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/js/jquery.stellar.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{/js/aos.js}"></script>
+    <script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/js/scrollax.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
    
- </body>
+</body>
 </html>
