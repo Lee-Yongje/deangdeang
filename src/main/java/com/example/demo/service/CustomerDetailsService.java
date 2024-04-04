@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.CustomerDAO;
 import com.example.demo.entity.Customer;
-import com.example.demo.repository.CustomerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +15,11 @@ import java.util.Collections;
 @Service
 public class CustomerDetailsService implements UserDetailsService {
 
-	private final CustomerRepository customerRepository;
+	private final CustomerDAO customerRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomerDetailsService(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+    public CustomerDetailsService(CustomerDAO customerRepository, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
     }
