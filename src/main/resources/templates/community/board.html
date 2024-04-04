@@ -2,7 +2,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>자유게시판</title>
+<title>댕댕정보통 | 자유게시판</title>
+<link rel="icon" th:href="@{/images/icon.png}">
 <meta charset="utf-8">
 <meta name="viewport" 
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -42,7 +43,7 @@ a {
 	<!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread"
-		style="background-image: url('images/bg_1.jpg');">
+		th:style=" 'background-image: url(/images/bg_1.jpg)' ">
 		<div class="container">
 			<div
 				class="row no-gutters slider-text align-items-center justify-content-center">
