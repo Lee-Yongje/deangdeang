@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dao.CustomerDAO;
 import com.example.demo.entity.Customer;
-import com.example.demo.repository.CustomerRepository;
 import com.example.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerDAO customerRepository;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerDAO customerRepository) {
         this.customerRepository = customerRepository;
     }
 
