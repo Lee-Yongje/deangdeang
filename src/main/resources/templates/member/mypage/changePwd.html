@@ -9,22 +9,22 @@
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/aos.css">
-    <link rel="stylesheet" href="css/ionicons.min.css">
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link th:href="@{/css/open-iconic-bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/css/owl.theme.default.min.css}" rel="stylesheet">
+    <link th:href="@{/css/magnific-popup.css}" rel="stylesheet">
+    <link th:href="@{/css/aos.css}" rel="stylesheet">
+    <link th:href="@{/css/ionicons.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
     
 </head>
 <body class="goto-here">
     <!-- Header/nav -->
     <div th:replace="header :: header-fragment"></div>
 
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+    <div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
         <div class="container">
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
@@ -42,16 +42,15 @@
             <div class="row">
                 <div class="col-lg-3 sidebar ftco-animate">
                     <div class="sidebar-box ftco-animate">
-                        <h3 class="heading">마이페이지</h3>
-                        <ul class="categories">
-                            <li><a href="/boast">댕댕스케줄</a></li>
-                            <li><a href="#">집사일지</a></li>
-                            <li><a href="#">회원정보 수정</a></li>
-                            <li><a href="#">비밀번호 수정</a></li>
-                            <li><a href="#">마이 펫</a></li>
-                            <li><a href="#">내가 쓴 글</a></li>
-                        </ul>
-                    </div>
+						<h3 class="heading">마이페이지</h3>
+						<ul class="categories">
+							<li><a href="/member/mypage/changeInfo">회원정보 수정</a></li>
+							<li><a href="/member/mypage/changePwd">비밀번호 수정</a></li>
+							<li><a href="/member/mypage/listPuppy">반려견 조회</a></li>
+							<li><a href="/member/mypage/insertPuppy">반려견 등록</a></li>
+							<li><a href="/member/mypage/myPosts">내가 쓴 글</a></li>
+						</ul>
+					</div>
                 </div>
                 <div class="col-lg-8 ftco-animate">
                     <div class="row">
@@ -60,7 +59,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-10">
                                     <div class="card">
-                                        <div class="card-header" style="background-color: #82AE46; color: white;">비밀번호 변경</div>
+                                        <div class="card-header" th:style="'background-color: #82AE46; color: white;'">비밀번호 변경</div>
                                         <div class="card-body">
                                             <form>
                                                 <div class="form-group">
@@ -75,7 +74,7 @@
                                                     <label for="confirmPassword">비밀번호 확인</label>
                                                     <input type="password" class="form-control" id="confirmPassword" placeholder="비밀번호 확인">
                                                 </div>
-                                                <button type="submit" class="btn btn-primary" style="background-color: #82AE46;">변경</button>
+                                                <button type="submit" class="btn btn-primary" th:style="'background-color: #82AE46;'">변경</button>
                                             </form>
                                         </div>
                                     </div>
@@ -102,20 +101,20 @@
         </svg>
     </div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.easing.1.3.js"></script>
-    <script src="js/jquery.waypoints.min.js"></script>
-    <script src="js/jquery.stellar.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/aos.js"></script>
-    <script src="js/jquery.animateNumber.min.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script src="js/scrollax.min.js"></script>
-    <script src="js/google-map.js"></script>
-    <script src="js/main.js"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.easing.1.3.js}"></script>
+    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/js/jquery.stellar.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{/js/aos.js}"></script>
+    <script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/js/scrollax.min.js}"></script>
+    <script th:src="@{/js/google-map.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
