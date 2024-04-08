@@ -184,13 +184,37 @@
 	}
   
 	.entry {
-/* 	    border: 1px solid #f0f0f0; */
-	    padding: 10px;
+ 	    border: 1px solid #f0f0f0;
+	    padding: 10px; 
 	    margin:5px 0; 
-	    display: inline-block;
+	    display: flex;
 	    width: calc(100% - 20px);
 	    color:#000;
+	    
+	    justify-content: space-between;
+	    align-items:center;
+	    
 	}
+	
+	.entry-content{
+		text-align:left;
+		flex-grow:1;
+	}
+	
+	.entry-buttons{
+		display:flex;
+		align-items:center;
+	}
+	
+	.entry-button{
+		padding: 5px 10px;
+		margin-left:5px;
+		cursor:pointer;
+		border: 1px solid #ddd;
+		background-color: #f8f8f8;
+		border-radius:4px;
+	}
+	
   
 	.selected-entry {
 		background-color: yellow;
@@ -483,10 +507,15 @@
 						    <div class="entry">
 						        <span>태양이 배변패드 구매</span>
 			  			 	</div> -->
+			  			 	
 			  				<div th:each="entry : ${entries}" class="entry">
     							<span th:text="${entry.s_content}"></span>
     <!-- 여기에 다른 정보들도 추가 가능 -->
   							</div>
+<!--   							<div class="entry-buttons">
+  								<button class="entry-button edit">수정</button>
+  								<button class="entry-button delete">삭제</button>
+  							</div> -->
   
 						</div>
 				
@@ -624,17 +653,34 @@
 					  function updateEntries(year, month, day) {
 						  const entriesDiv = $('#entries');
 						  entriesDiv.empty();
+						  
+						  
+						  function createEntryHtml(s_content) {
+							    return `<div class="entry">
+							              <div class="entry-content">
+							                <span>${s_content}</span>
+							              </div>
+							              <div class="entry-buttons">
+							                <button class="entry-button edit">수정</button>
+							                <button class="entry-button delete">삭제</button>
+							              </div>
+							            </div>`;
+							}
 
 						  // 특정 날짜 선택 시 해당 날짜에 대한 일정 출력. 
-						  if (year === '2024' && month === '3' && day === '1') { // month는 index 숫자
-						    entriesDiv.append('<div class="entry">태양이 미용실 꼭가기</div>');
-						  } else if((year === '2024' && month === '3' && day === '3')){
-						    // 다른 날짜를 클릭했을 경우 기본 내용 추가
-						    entriesDiv.append('<div class="entry">달래 미용실 꼭가기</span>');
-						    entriesDiv.append('<div class="entry">예방접종 하는날</span>');
-						    entriesDiv.append('<div class="entry">강아지 배변패드 사야함</span>');
+						  if (year === '2024' && month === '3' && day === '1') {
+						    entriesDiv.append(createEntryHtml('태양이 미용실 꼭 가기'));
+						  } else if (year === '2024' && month === '3' && day === '3') {
+						    entriesDiv.append(createEntryHtml('달래 미용실 꼭 가기'));
+						    entriesDiv.append(createEntryHtml('예방접종 하는 날'));
+						    entriesDiv.append(createEntryHtml('강아지 배변패드 사야함'));
 						  }
 						}
+					  
+					  /* 수정/삭제클릭 시 entry 클릭 이벤트와 관련 없도록 함  */
+					  $(document).on('click','entry-button',function(event){
+						event.stopPropagation();  
+					  })
 					  
 					  function addDots() {
 						  // 1일에 파란색 점 추가	//db 연결 전 임시추가
