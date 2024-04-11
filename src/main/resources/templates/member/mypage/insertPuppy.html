@@ -191,39 +191,23 @@ h1, h2, h3, h4, h5, h6 {
                                                     <input type="date" class="form-control" id="dogBirthday">
                                                 </div>
                                             </div>
+                                            <fieldset>
+                                                <legend>성별</legend>
+                                                <input type="radio" id="male" name="gender" value="male" checked>
+                                                <label for="male">수컷</label>
+                                                &nbsp;
+                                                <input type="radio" id="female" name="gender" value="female">
+                                                <label for="female">암컷</label>
+                                            </fieldset>
                                             <div class="divider"></div>
-                                            <div class="form-row justify-content-center">
-                                                <div class="form-group col-md-4 text-center">
-												    <label class="font-weight-bold" style="font-size: 20px;">성별</label>
-												    <div class="d-flex justify-content-center" style="font-size: 20px;">
-												        <div class="form-check form-check-inline mr-3">
-												            <input class="form-check-input" type="radio" name="gender" id="male" value="male">
-												            <label class="form-check-label" for="male" style="margin-left: 0;">남</label>
-												        </div>
-												        <div class="form-check form-check-inline">
-												            <input class="form-check-input" type="radio" name="gender" id="female" value="female">
-												            <label class="form-check-label" for="female" style="margin-left: 0;">여</label>
-												        </div>
-												    </div>
-												</div>
-												
-												<div class="form-group col-md-4 text-center">
-												    <label class="font-weight-bold" style="font-size: 20px;">중성화 여부</label>
-												    <div class="d-flex justify-content-center" style="font-size: 20px;">
-												        <div class="form-check form-check-inline mr-3">
-												            <input class="form-check-input" type="radio" name="p_neuter" id="p_neuter_O" value="p_neuter_O">
-												            <label class="form-check-label" for="p_neuter_O" style="margin-left: 0;">했어요</label>
-												        </div>
-												        <div class="form-check form-check-inline">
-												            <input class="form-check-input" type="radio" name="p_neuter" id="p_neuter_X" value="_X">
-												            <label class="form-check-label" for="p_neuter_X" style="margin-left: 0;">안했어요</label>
-												        </div>
-												    </div>
-												</div>
-												
-									
-                                            </div>
-                                            
+                                            <fieldset>
+                                                <legend>중성화 여부</legend>
+                                                <input type="radio" id="p_neuter_O" name="p_neuter" value="_O" checked>
+                                                <label for="p_neuter_O">했어요</label>
+                                                &nbsp;
+                                                <input type="radio" id="p_neuter_X" name="p_neuter" value="_X">
+                                                <label for="p_neuter_X">안했어요</label>
+                                            </fieldset>
                                             <div class="divider"></div>
                                             <div class="col-md-12 text-right">
 											    <button type="submit" class="btn btn-primary">등록</button>
