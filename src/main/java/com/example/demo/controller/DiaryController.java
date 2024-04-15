@@ -27,6 +27,8 @@ public class DiaryController {
     @GetMapping("/member/diary/diaryWrite")
     public void diaryWritePage() {
     }
-    
+    @GetMapping("/member/diary/diaryUpdate")
+    public void diaryUpdatePage() {
+    }
 }
     
