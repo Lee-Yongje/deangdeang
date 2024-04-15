@@ -31,13 +31,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+			
+			fetch("/data/dis.json")
+			    .then((response) => response.json())
+			    .then((json) => {
+			        const cities = json.city;
+			        cities.forEach((city) => {
+			            console.log(city.name);
+			            console.log(city.district);
+			        });
+			
+			        $('#region').change(function() {
+			            const selectedRegion = $(this).val();
+			            const selectedCity = json.city.find(city => city.name === selectedRegion);
+			            $('#region2').html('<option value="none">전체</option>');
+			            $.each(selectedCity.district, function(index, district) {
+			                $('#region2').append($('<option>', {
+			                    value: district,
+			                    text: district
+			                }));
+			            });
+			        });
+			    });
+
+			
 			$.ajax({
 				type: "GET",
 				url: "/regionCode",
 				success: function (regionCodes) {
 					regionCodes.forEach(function (regionCode) {
 						$('#region').append($('<option>', {
-							value: regionCode.rno,
+							value: regionCode.r_name,
 							text: regionCode.r_name
 						}));
 					});
@@ -45,11 +69,14 @@
 			});
 			
 	        $("table tbody tr").click(function() {
-	            //각 행에 attr추가필
 	            var phone = $(this).find("#phone").val();
 	            var url = "/region/hospitalDetail?phone="+phone;
 	            window.location.href = url;
 	        });
+	        
+	        $("#btnSub").click(function(event) {
+            	$("#form").submit();
+        	});
 	    });
 	</script>
 	<style>
@@ -102,18 +129,20 @@
 							<!--검색창-->
 							<div class="container search-area">
 								<div class="row justify-content-center">
-									<form action="/searchHospital" method="get" class="search-form form-inline">
-										<select class="form-control" id="region">
-											<option value="">전체</option>
+									<form action="/region/hospital" method="get" id="form" class="search-form form-inline">
+										<select class="form-control" id="region" name="region1">
+											<option value="none">전체</option>
 										</select>&nbsp;
-										시군구: &nbsp;<input type="text" class="form-control" name="query">&nbsp;
+										시군구:&nbsp; <select class="form-control" id="region2" name="region2">
+											<option value="none">전체</option>
+										</select>&nbsp;
 										병원명: &nbsp; <input type="text" class="form-control" name="search">&nbsp;
 									</form>
 								</div>
 								<br />
 								<div class="row justify-content-center">
 									<div class="form-group">
-										<button type="submit" class="btn btn-primary" style="width:200px;">조회</button>
+										<button type="submit" id="btnSub" class="btn btn-primary" style="width:200px;">조회</button>
 									</div>
 								</div>
 							</div>

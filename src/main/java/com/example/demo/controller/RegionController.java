@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,8 @@ import com.example.demo.dto.LoginFormDTO;
 import com.example.demo.entity.Hospital;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RegionController {
@@ -43,20 +46,104 @@ public class RegionController {
     //병원 조회
     @GetMapping("/region/hospital")
     public void getHospitals(Model model,
-			@RequestParam(required = false) String search,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) throws IOException {
-
+							@RequestParam(required = false) String search,
+							@RequestParam(required = false) String region1,
+							@RequestParam(required = false) String region2,
+				            @RequestParam(defaultValue = "1") int page,
+            HttpSession session) throws IOException {
+    		
+    		String vsearch = null;
+    		String vregion1 = null;
+    		String vregion2 = null;
+    		
+    		//전체 병원 조회
     		List<Hospital> hospitals = loadHospitals();
     		
-			if(search!=null) {
-			hospitals = hospitals.stream()
-				.filter(hospital -> search.equals(hospital.getCtprvn_NM()))
-				.collect(Collectors.toList());
+    		//검색어로 검색
+    		if(session.getAttribute("search")!=null) {
+    			vsearch=(String)session.getAttribute("search"); 
+    		}
+    		if(search!=null) {
+				session.setAttribute("search", search);
+				vsearch = search;
 			}
 			
-			int startIndex = page * size;
+			//시도로 검색
+			if(session.getAttribute("region1")!=null) {
+    			vregion1=(String)session.getAttribute("region1"); 
+    		}
+    		if(region1!=null) {
+    			if(region1.equals("none")) {
+    				region1=null;
+    			}
+				session.setAttribute("region1", region1);
+				vregion1 = region1;
+			}
+    		
+    		//시군구로 검색
+    		if(session.getAttribute("region2")!=null) {
+    			vregion2=(String)session.getAttribute("region2"); 
+    		}
+    		if(region2!=null) {
+    			if(region2.equals("none")) {
+    				region2=null;
+    			}
+				session.setAttribute("region2", region2);
+				vregion2 = region2;
+			}
+    		
+    		
+    		System.out.println("vsearch:"+vsearch); 
+    		System.out.println("vregion1:"+vregion1); 
+    		System.out.println("vregion2:"+vregion2); 
+			
+			//hospital에서 해당 시도를 하나하나 찾아서 다시 hospitals에 넣기
+			List<Hospital> filteredHospitals = new ArrayList<>();
+			if (vregion1 != null) {
+			    for (Hospital hospital : hospitals) {
+			        if (hospital.getCtprvn_NM() != null && hospital.getCtprvn_NM().contains(vregion1)) {
+			            filteredHospitals.add(hospital);
+			        }
+			    }
+			} else {
+			    filteredHospitals.addAll(hospitals);
+			}
+			hospitals = filteredHospitals;
+			
+			//hospital에서 해당 시군구를 하나하나 찾아서 다시 hospitals에 넣기
+			List<Hospital> filteredHospitals2 = new ArrayList<>();
+			if (vregion2 != null) {
+			    for (Hospital hospital : hospitals) {
+			        if (hospital.getSigngu_NM() != null && hospital.getSigngu_NM().contains(vregion2)) {
+			            filteredHospitals2.add(hospital);
+			        }
+			    }
+			} else {
+			    filteredHospitals2.addAll(hospitals);
+			}
+			hospitals = filteredHospitals2;
+			
+			//hospital에서 검색 건을 하나하나 찾아서 다시 hospitals에 넣기
+			List<Hospital> filteredHospitals3 = new ArrayList<>();
+			if (vsearch != null) {
+			    for (Hospital hospital : hospitals) {
+			        if (hospital.getFclty_NM() != null && hospital.getFclty_NM().contains(vsearch)) {
+			            filteredHospitals3.add(hospital);
+			        }
+			    }
+			} else {
+			    filteredHospitals3.addAll(hospitals);
+			}
+			hospitals = filteredHospitals3;
+
+			
+			
+			int size=10;
+			int startIndex = (page-1) * size;
 			int endIndex = Math.min(startIndex + size, hospitals.size());
+			
+			System.out.println("startIndex:"+startIndex);
+			System.out.println("endIndex:"+endIndex);
 			
 			// 페이지에 해당하는 데이터만 추출
 			List<Hospital> hospitalsPerPage = hospitals.subList(startIndex, endIndex);
@@ -64,16 +151,16 @@ public class RegionController {
 			//페이징
 		    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
 		    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
-		    int endPage = Math.min(startPage + pagingSize - 1, hospitals.size()/size); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
+		    int totalPage =  (int) Math.ceil((double) hospitals.size() /size);
+		    int endPage = Math.min(startPage + pagingSize - 1, totalPage); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
 		    
 			
-			System.out.println("hospitalsPerpage: "+hospitalsPerPage.get(0));
+//			System.out.println("hospitalsPerpage: "+hospitalsPerPage.get(0));
 			model.addAttribute("list", hospitalsPerPage);
 			model.addAttribute("nowPage", page);
 			model.addAttribute("startPage", startPage);
 			model.addAttribute("endPage", endPage);
-			//?이건뭐지?
-			model.addAttribute("totalPage", (int) Math.floor((double) hospitals.size() / size));
+			model.addAttribute("totalPage",totalPage);
 			}
 	    
     
