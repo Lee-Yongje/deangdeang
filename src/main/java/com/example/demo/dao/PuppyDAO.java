@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 public interface PuppyDAO extends JpaRepository<Puppy, Integer> {
 
 	@Query(value = "select p.* from puppy p inner join users u on p.uno=u.uno where p.uno=?", nativeQuery = true)
-	public List<Puppy> findByUno(int uno);
+	public List<Puppy> findByUno(Long uno);
 	
 	@Query(value = "select ifnull(max(pno),0)+1 from puppy", nativeQuery = true)
 	public int getNextPno();

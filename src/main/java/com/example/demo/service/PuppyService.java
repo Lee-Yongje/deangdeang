@@ -15,7 +15,7 @@ public class PuppyService {
 	private PuppyDAO dao;
 	
 	
-	public List<Puppy> findByUno(int uno) {
+	public List<Puppy> findByUno(Long uno) {
 		return dao.findByUno(uno);
 	}
 	
