@@ -110,7 +110,7 @@ public class MypageController {
     
     @GetMapping("/member/mypage/listPuppy")
     public void listPuppyForm(Model model) {
-    	int uno = 101;
+    	Long uno = (long) 101;
     	List<Puppy> puppy = ps.findByUno(uno);
     	model.addAttribute("puppy", puppy);
     }
@@ -120,7 +120,7 @@ public class MypageController {
     }
     @PostMapping("/member/mypage/insertPuppy")
     public String insertPuppy(Puppy p,HttpServletRequest request,Model model) {
-    	int uno = 101;
+    	Long uno = (long) 101;
     	p.setUser(us.findById(uno));
     	List<Puppy> puppy = ps.findByUno(uno);
     	model.addAttribute("puppy", puppy);
