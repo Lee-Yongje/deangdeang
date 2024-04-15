@@ -285,24 +285,24 @@
 	    border: 6px solid purple;
 	}
 	
-	.pet-selected.purple-border .pet-image.active {
+	.pet-selected.yellow-border .pet-image.active {
 	    border: 6px solid yellow;
 	}	
 
-	.pet-selected.purple-border .pet-image.active {
+	.pet-selected.pink-border .pet-image.active {
 	    border: 6px solid pink;
 	}		
 
-	.pet-selected.purple-border .pet-image.active {
+	.pet-selected.skyblue-border .pet-image.active {
 	    border: 6px solid skyblue;
 	}
 
-	.pet-selected.purple-border .pet-image.active {
+	.pet-selected.brown-border .pet-image.active {
 	    border: 6px solid brown;
 	}
 	
-	.pet-selected.purple-border .pet-image.active {
-	    border: 6px solid yellowgreen;
+	.pet-selected.gold-border .pet-image.active {
+	    border: 6px solid gold;
 	}	
 	
 		
@@ -360,6 +360,34 @@
 	.green-dot{
 		background-color: green;
 	}
+	
+	.blue-dot{
+		background-color:blue;
+	}
+	
+	.purple-dot{
+		background-color:purple;
+	}	
+	
+	.yellow-dot{
+		background-color:yellow;
+	}	
+	
+	.pink-dot{
+		background-color:pink;
+	}	
+	
+	.skyblue-dot{
+		background-color:skyblue;
+	}	
+
+	.brown-dot{
+		background-color:brown;
+	}	
+
+	.gold-dot{
+		background-color:gold;
+	}	
 	
 </style> 
 </head>
@@ -671,7 +699,7 @@
 						      url: '/get-schedule',
 						      type: 'GET',
 						      data: {
-						        'uno': 101, // 임시회원번호
+						        'id': 101, // 임시회원번호
 						        'year': year,
 						        'month': month,
 						        'day': day
@@ -797,7 +825,7 @@
 			        	 		color = 'brown';
 			        	 		break;
 			        	 	case 9:
-			        	 		color = 'yellowgreen';
+			        	 		color = 'gold';
 			        	 		break;	 		
 			        	 		
 			        	 }
