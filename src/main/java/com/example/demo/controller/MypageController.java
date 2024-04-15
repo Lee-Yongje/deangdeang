@@ -48,10 +48,10 @@ public class MypageController {
 	
 	@PostMapping("/member/mypage/changeInfo")
 	public String changeInfo(Users u, String rno, HttpServletRequest request) {
-		int uno = 101;
-		u.setUno(uno);
+		Long uno = (long) 101;
+		u.setId(uno);
 		String viewPage = "redirect:/member/mypage/changeInfo";
-	    String oldFname = u.getU_fname();
+	    String oldFname = u.getFilename();
 	    Resource resource = resourceLoader.getResource("classpath:/static/images"); //절대경로 찾기
 	    String fname = null;
 	    String path = null;
@@ -67,13 +67,13 @@ public class MypageController {
 	                FileOutputStream fos = new FileOutputStream(path + "/" + fname);
 	                FileCopyUtils.copy(uploadFile.getBytes(), fos);
 	                fos.close();
-	                u.setU_fname(fname);
+	                u.setFilename(fname);
 	            } catch (Exception e) {
 	            	System.out.println("예외발생 : "+e.getMessage());
 	            }
 	        }
 	    }
-	    int re = us.updateInfo(u.getU_name(), u.getU_email(), u.getU_phone(), u.getU_nickname(), u.getU_fname(), rno, u.getUno());
+	    int re = us.updateInfo(u.getName(), u.getEmail(), u.getPhone(), u.getNickname(), u.getFilename(), rno, u.getId());
 	    if(re == 1) {
 	    	if(fname != null && !fname.equals("") && oldFname != null && !oldFname.equals("")) {
 				File file = new File(path + "/"+oldFname);
@@ -89,13 +89,13 @@ public class MypageController {
     @GetMapping("/member/mypage/changePwd")
     public void changePwdPage(Model model) {
     	int uno = 101;
-    	String oldPwd = us.findById(uno).getU_pwd();
+    	String oldPwd = us.findById(uno).getPasswordHash();
     	model.addAttribute("oldPwd", oldPwd);
     }
     @PostMapping("/member/mypage/changePwd")
     public String changePwd(String newPassword) {
     	String viewPage = "redirect:/member/mypage/changePwd";
-    	int uno =101;
+    	long uno = (long)101;
     	us.updatePwd(newPassword, uno);
     	return viewPage;
     }
@@ -104,7 +104,7 @@ public class MypageController {
     @ResponseBody
     public boolean checkPassword(String u_pwd) {
     	int uno =101;
-        String dbPwd = us.findById(uno).getU_pwd();
+        String dbPwd = us.findById(uno).getPasswordHash();
         return u_pwd.equals(dbPwd);
     }
     
