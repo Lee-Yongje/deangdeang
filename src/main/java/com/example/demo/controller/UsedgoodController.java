@@ -169,11 +169,11 @@ public class UsedgoodController {
 		b.setB_date(now);
 
 		// 로그인 세션유지 하게 되면 이거 세션에서 아이디 가져와서 하는 걸로 수정해야됨!! 일단 101로 넣어놓음
-		int userId = 101;
-		if (b.getUsers() == null) {
-			b.setUsers(new Users());
+		long userId = (long)101;
+		if (b.getUser() == null) {
+			b.setUser(new Users());
 		}
-		b.getUsers().setUno(userId);
+		b.getUser().setId(userId);
 
 		// 파일 관련
 		MultipartFile uploadFile = b.getUploadFile();
