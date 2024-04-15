@@ -31,9 +31,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+			$.ajax({
+				type: "GET",
+				url: "/regionCode",
+				success: function (regionCodes) {
+					regionCodes.forEach(function (regionCode) {
+						$('#region').append($('<option>', {
+							value: regionCode.rno,
+							text: regionCode.r_name
+						}));
+					});
+				}
+			});
+			
 	        $("table tbody tr").click(function() {
 	            //각 행에 attr추가필
-	            var url = "/region/hospitalDetail";
+	            var phone = $(this).find("#phone").val();
+	            var url = "/region/hospitalDetail?phone="+phone;
 	            window.location.href = url;
 	        });
 	    });
@@ -90,13 +104,10 @@
 								<div class="row justify-content-center">
 									<form action="/searchHospital" method="get" class="search-form form-inline">
 										<select class="form-control" id="region">
-											<option>서울</option>
-											<option>인천</option>
-											<option>경기</option>
-											<option>강원</option>
+											<option value="">전체</option>
 										</select>&nbsp;
 										시군구: &nbsp;<input type="text" class="form-control" name="query">&nbsp;
-										병원명: &nbsp; <input type="text" class="form-control" name="query">&nbsp;
+										병원명: &nbsp; <input type="text" class="form-control" name="search">&nbsp;
 									</form>
 								</div>
 								<br />
@@ -112,20 +123,41 @@
 						    <!-- 테이블 시작 -->
 						    <div class="table-responsive">
 						        <table class="table">
-						            <thead>
-						                <tr>
-						                    <th scope="col">병원명</th>
-						                    <th scope="col">전화번호</th>
-						                    <th scope="col">주소</th>
-						                </tr>
-						            </thead>
-						            <tbody>
-						                <tr th:each="i : ${#numbers.sequence(1,10)}">
-									        <td th:text="'병원명 ' + ${i}"></td>
-									        <td th:text="'전화번호 ' + ${i}"></td>
-									        <td th:text="'주소 ' + ${i}"></td>
-									    </tr>
-						            </tbody>
+							        <thead>
+							            <tr>
+							                <th style="width: 35%;">병원 이름</th>
+							                <th style="width: 25%;">전화번호</th>
+							                <th style="width: 40%;">주소</th>
+							            </tr>
+							        </thead>
+							        <tbody>
+							            <tr th:each="hospital : ${list}">
+							                <td th:text="${hospital.fclty_NM}"></td>
+							                <!--전화번호 '-'표시 관련. 너무 지저분해서 나중에서 수정할 수 있으면 수정-->
+							                <td>
+												<span th:if="${hospital.tel_NO != null}">
+												    <span th:if="${hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 8}" 
+												          th:text="'0' + ${hospital.tel_NO.substring(0, 1)} + '-' + ${hospital.tel_NO.substring(1, 4)} + '-' + ${hospital.tel_NO.substring(4)}">
+												    </span>
+												    <span th:if="${hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 9}" 
+												          th:text="'0' + ${hospital.tel_NO.substring(0, 1)} + '-' + ${hospital.tel_NO.substring(1, 5)} + '-' + ${hospital.tel_NO.substring(5)}">
+												    </span>
+												    <span th:if="${!hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 9}" 
+												          th:text="'0' + ${hospital.tel_NO.substring(0, 2)} + '-' + ${hospital.tel_NO.substring(2, 5)} + '-' + ${hospital.tel_NO.substring(5)}">
+												    </span>
+												    <span th:if="${!hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 10}" 
+												          th:text="'0' + ${hospital.tel_NO.substring(0, 2)} + '-' + ${hospital.tel_NO.substring(2, 6)} + '-' + ${hospital.tel_NO.substring(6)}">
+												    </span>
+												    <span th:if="${!hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 11}" 
+												          th:text="'0' + ${hospital.tel_NO.substring(0, 3)} + '-' + ${hospital.tel_NO.substring(3, 7)} + '-' + ${hospital.tel_NO.substring(7)}">
+												    </span>
+												 </span>
+											</td>
+
+							                <td th:text="${hospital.rdnmadr_NM}"></td>
+							                <input type="hidden" id="phone" th:value="${hospital.tel_NO}" /> 
+							            </tr>
+							        </tbody>
 						        </table>
 						    </div>
 						    <!-- 테이블 끝 -->
@@ -135,13 +167,18 @@
                                 <div class="col text-center">
                                     <div class="block-27">
                                         <ul>
-                                            <li><a href="#">&lt;</a></li>
-                                            <li class="active"><span>1</span></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>
-                                            <li><a href="#">5</a></li>
-                                            <li><a href="#">&gt;</a></li>
+                                            <th:block th:if="${nowPage>5}">
+												<li><a th:href="@{/region/hospital(page=${startPage-1})}">&lt;</a></li>
+											</th:block>
+                                            <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+												<li th:class="${pageNum == nowPage} ? 'active' : ''">
+													<a th:href="@{'/region/hospital?page=' + ${pageNum}}"><span
+															th:text="${pageNum}"></span></a>
+												</li>
+											</th:block>
+											<th:block th:if="${endPage!=totalPage}">
+												<li><a th:href="@{/region/hospital(page=${endPage+1})}">&gt;</a></li>
+											</th:block>
                                         </ul>
                                     </div>
                                 </div>

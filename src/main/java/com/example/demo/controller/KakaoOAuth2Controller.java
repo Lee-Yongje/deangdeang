@@ -27,9 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.KakaoProfile;
 import com.example.demo.entity.OAuthToken;
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
 import com.example.demo.service.KakaoOAuth2Service;
-import com.example.demo.service.UserService;
+import com.example.demo.service.UsersService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,7 +51,7 @@ public class KakaoOAuth2Controller {
     private KakaoOAuth2Service kakaoOAuth2Service;
 
     @Autowired
-    private UserService userService;
+    private UsersService userService;
 
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(String code, HttpSession session, Model model) throws JsonProcessingException {
@@ -96,7 +96,7 @@ public class KakaoOAuth2Controller {
         String password = garbagePassword.toString(); // 랜덤 비밀번호를 생성
 
         // 사용자가 이미 등록되어 있는지 확인
-        User existingUser = userService.findByEmail(email);
+        Users existingUser = userService.findByEmail(email);
         if (existingUser == null) {
         	model.addAttribute("email", email);
         	return "redirect:/register_kakao?username=" + email;

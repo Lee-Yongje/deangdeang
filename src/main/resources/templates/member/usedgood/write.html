@@ -8,28 +8,85 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/animate.css}">
+	<link rel="stylesheet" th:href="@{/css/animate.css}">
 
-    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
 
-    <link rel="stylesheet" th:href="@{/css/aos.css}">
+	<link rel="stylesheet" th:href="@{/css/aos.css}">
 
-    <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+	<link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
-    <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
 
-    <link rel="stylesheet" th:href="@{/css/flaticon.css}">
-    <link rel="stylesheet" th:href="@{/css/icomoon.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/flaticon.css}">
+	<link rel="stylesheet" th:href="@{/css/icomoon.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 
 
 	<link rel="stylesheet" href="css/flaticon.css">
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/style.css">
 
+	<style>
+		#preview {
+			display: none;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$.ajax({
+				type: "GET",
+				url: "/regionCode",
+				success: function (regionCodes) {
+					regionCodes.forEach(function (regionCode) {
+						$('#region').append($('<option>', {
+							value: regionCode.rno,
+							text: regionCode.r_name
+						}));
+					});
+				}
+			});
+			$("#submitBtn").click(function () {
+				var regionSelected = $("#region").val() !== ""; // 지역 선택 확인
+				var titleFilled = $("#b_title").val() !== ""; // 제목 입력 확인
+				var contentFilled = $("#b_content").val() !== ""; // 내용 입력 확인
+				var priceFilled = $("#b_price").val() !== ""; // 가격 입력 확인
+				var fileAttached = $("#uploadFile").val() !== ""; // 파일 첨부 확인
+
+				// 모든 조건을 충족하면 폼 제출
+				if (regionSelected && titleFilled && contentFilled && priceFilled && fileAttached) {
+					var selectedRno = $("#region").val(); // 선택된 옵션의 값 가져오기
+					$("<input>").attr("type", "hidden").attr("name", "rno").attr("value", selectedRno).appendTo("#boardForm");
+					$("#boardForm").submit();
+				} else {
+					alert("모든 항목을 작성하고 사진을 첨부해주세요!");
+				}
+			});
+
+			//사진 미리보기
+			$('#fileInput').on('change', function () {
+				readURL(this);
+			});
+		});
+
+		//사진 미리보기용 함수
+		function readURL(input) {
+			if (input.files && input.files[0]) { //선택된 파일이 있는지 확인
+				var reader = new FileReader();
+				reader.readAsDataURL(input.files[0]); //파일 읽은 결과를 데이터 url로 얻기.
+				reader.onload = function (e) { //파일 읽은 후 실행될 함수 
+					$('#preview').attr('src', e.target.result); //객체가 읽은 파일의 내용으로 src를 설정
+				};
+			} else {
+				$('#preview').attr('src', ''); 
+			}
+			$('#preview').show() //안 보여졌다가 파일 있으면 보여주게 하려고 
+		}
+	</script>
 </head>
 
 <body class="goto-here">
@@ -49,52 +106,55 @@
 	</div>
 	<br />
 	<div class="container">
-				<div class="container">
-					<div class="container mt-5">
-						<div class="row">
-							<div class="col-md-8">
-								<h2>게시물 작성</h2>
-								<h5>중고장터</h5>
-							</div>
-							<div class="col-md-4 text-right">
-								<button class="btn btn-primary">글 등록</button>
-							</div>
-						</div>
-						<div class="row mt-3">
-							<div class="col-md-12">
-								<!--콤보박스-->
-								<div class="form-group">
-									<select class="form-control" id="reportType" style="width: 40%;">
-										<option value="">지역을 선택해 주세요</option>
-										<option value="02">서울</option>
-										<option value="031">경기</option>
-										<option value="032">인천</option>
-										<option value="033">강원</option>
-									</select>
-								</div>
-								<!--end콤보박스-->
-								<div class="form-group">
-									<input type="text" class="form-control" id="title" value="제목을 입력하세요"
-										onfocus="clearDefault(this)" onblur="restoreDefault(this)">
-								</div>
-								<div class="form-group">
-									<textarea class="form-control" id="content" rows="5" onfocus="clearDefault(this)"
-										onblur="restoreDefault(this)">내용을 입력하세요</textarea>
-								</div>
-								<div class="form-group">
-									<input type="text" class="form-control" id="title" value="가격을 입력하세요"
-										onfocus="clearDefault(this)" onblur="restoreDefault(this)" style="width: 30%;">
-								</div>
-								<div class="form-group">
-									<label for="file">파일 첨부</label>
-									<input type="file" class="form-control-file" id="file">
-								</div>
-							</div>
-						</div>
+		<div class="container">
+			<div class="container mt-5">
+				<div class="row">
+					<div class="col-md-8">
+						<h2>게시물 작성</h2>
+						<h5>중고장터</h5>
 					</div>
+					<div class="col-md-4 text-right">
+						<button class="btn btn-primary" id="submitBtn">글 등록</button>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-md-12">
+						<form action="/member/usedgood/insert/6" method="post" id="boardForm"
+							enctype="multipart/form-data">
+							<!--콤보박스-->
+							<div class="form-group">
+								<select class="form-control" id="region" name="regionCode.rno" style="width: 40%;">
+									<option value="">지역을 선택해 주세요</option>
+								</select>
+							</div>
+							<!--end콤보박스-->
+
+							<div class="form-group">
+								<input type="text" class="form-control" id="b_title" name="b_title"
+									placeholder="내용을 입력하세요" onfocus="clearDefault(this)" onblur="restoreDefault(this)">
+							</div>
+							<div class="form-group">
+								<textarea class="form-control" id="b_content" name="b_content" rows="5"
+									onfocus="clearDefault(this)" onblur="restoreDefault(this)"
+									placeholder="내용을 입력하세요"></textarea>
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" id="b_price" name="b_price"
+									placeholder="가격을 입력하세요" onfocus="clearDefault(this)" onblur="restoreDefault(this)"
+									style="width: 30%;">
+							</div>
+							<div class="form-group">
+								<label for="uploadFile">업로드할 물품의 사진을 반드시 첨부해 주세요!</label>
+								<input type="file" class="form-control-file" name="uploadFile" onchange="readURL(this)">
+							</div>
+						</form>
+						<img id="preview" width="200px" height="200px">
+					</div>
+				</div>
+			</div>
 
 
-				</div><!--/container -->
+		</div><!--/container -->
 	</div>
 	</section> <!-- .section -->
 	<br /><br />
@@ -132,21 +192,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-	<script>
-		function clearDefault(element) {
-			element.value = '';
-		}
 
-		function restoreDefault(element) {
-			if (element.value === '') {
-				if (element.id === 'title') {
-					element.value = '제목을 입력하세요';
-				} else if (element.id === 'content') {
-					element.value = '내용을 입력하세요';
-				}
-			}
-		}
-	</script>
 
 </body>
 

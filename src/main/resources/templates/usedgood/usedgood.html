@@ -1,179 +1,219 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<title>댕댕정보통 | 증고거래</title>
 	<link rel="icon" th:href="@{/images/icon.png}">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/animate.css}">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+		rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	<link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/animate.css}">
 
-    <link rel="stylesheet" th:href="@{/css/aos.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
 
-    <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+	<link rel="stylesheet" th:href="@{/css/aos.css}">
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
-    <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
 
-    <link rel="stylesheet" th:href="@{/css/flaticon.css}">
-    <link rel="stylesheet" th:href="@{/css/icomoon.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <style>
-    #region {
-        display: none;
-    }
+	<link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+
+	<link rel="stylesheet" th:href="@{/css/flaticon.css}">
+	<link rel="stylesheet" th:href="@{/css/icomoon.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<style>
+		#region {
+			display: none;
+		}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
-	    $(document).ready(function() {
-	        $('#category').change(function() {
-	            var selectedValue = $(this).val();
-	            if (selectedValue === '지역') {
-	                $('#region').show();
-	            } else {
-	                $('#region').hide();
-	            }
-	        });
-	    });
+		$(document).ready(function () {
+			// 검색 내용 검색창에 계속 보여주기 위함..
+			// 페이지 로드 시 localStorage에서 검색어를 가져와서 검색창에 채움
+			var previousSearch = localStorage.getItem("previousSearch");
+			if (previousSearch) {
+				$("#searchInput").val(previousSearch);
+			}
+
+			// 검색 버튼을 클릭했을 때 localStorage에 검색어 저장
+			$("button[type='submit']").click(function () {
+				var searchValue = $("#search").val();
+				localStorage.setItem("previousSearch", searchValue);
+			});
+
+			$('#category').change(function () {
+				var selectedValue = $(this).val();
+				if (selectedValue === 'b_title') {
+					$('#region').hide();
+				} else {
+					$('#region').show();
+				}
+			});
+
+			$.ajax({
+				type: "GET",
+				url: "/regionCode",
+				success: function (regionCodes) {
+					regionCodes.forEach(function (regionCode) {
+						$('#region').append($('<option>', {
+							value: regionCode.rno,
+							text: regionCode.r_name
+						}));
+					});
+				}
+			});
+		});
+
 	</script>
 
 </head>
+
 <body class="goto-here">
-    <!-- Header/nav -->
-    <div th:replace="header :: header-fragment"></div>
-    <!-- Header/nav nav -->
+	<!-- Header/nav -->
+	<div th:replace="header :: header-fragment"></div>
+	<!-- Header/nav nav -->
 
-    <div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
-	     <div class="container">
-            <div class="row no-gutters slider-text align-items-center justify-content-center">
-                <div class="col-md-9 ftco-animate text-center">
-                    <p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
-                    <h1 class="mb-0 bread">Community</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate text-center">
+					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
+					<h1 class="mb-0 bread">Community</h1>
+				</div>
+			</div>
+		</div>
+	</div>
 	<br />
-        <div class="container">
-                        <div class="container">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h2>중고장터</h2>
-                                <a href="/member/usedgood/write" class="btn btn-primary">글쓰기</a>
-                            </div>
-                            <br />
+	<div class="container">
+		<div class="container">
+			<div class="d-flex justify-content-between align-items-center">
+				<h2><a th:href="@{/usedgood/usedgood?reset=1}" th:text="중고장터"></a></h2>
+				<a href="/member/usedgood/write" class="btn btn-primary">글쓰기</a>
+			</div>
+			<br />
 
-                            <!-- 4by4 사진형 게시판 -->
-                            <div class="row">
-                                <!-- 반복문 시작 -->
-                                <div class="col-md-3" th:each="num: ${#numbers.sequence(1,16)}">
-                                    <!-- 사진 하나 시작 -->
-                                    <div class="ftco-animate">
-                                        <div class="product">
-											<a th:href="@{/member/usedgood/detail}" class="img-prod">
-												<img class="img-fluid" th:src="@{/images/product-1.jpg}" alt="Colorlib Template">
-												<div class="overlay"></div>
-											</a>
+			<!-- 4by4 사진형 게시판 -->
+			<div class="row">
+				<!-- 반복문 시작 -->
+				<div class="col-md-3" th:each="b: ${list}">
+					<!-- 사진 하나 시작 -->
+					<div class="ftco-animate">
+						<div class="product">
+							<a th:href="@{'/member/usedgood/detail/6/' + ${b.id.bno}}" class="img-prod">
+								<img class="img-fluid" th:src="@{'/images/' + ${b.b_fname}}">
+								<div class="overlay"></div>
+							</a>
 
-                                            <div class="text py-3 pb-4 px-3 text-center">
-                                                <h3><a href="/member/usedgood/detail">어쩌구사료</a></h3>
-                                                <div class="d-flex">
-                                                    <div class="pricing">
-                                                        <p class="price"><span class="price-sale">12000원</span></p>
-                                                    </div>
-                                                </div>
-                                                <!-- 혹시 몰라 남겨두는 좋아요 -->
-                                                <div class="bottom-area d-flex px-3">
-                                                    <div class="m-auto d-flex">
-                                                        <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                                            <span><i class="ion-ios-heart"></i></span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- 사진 하나 끝 -->
-                                </div>
-                                <!-- 반복문 끝 -->
-                            </div>
-
-                            <div class="row mt-5">
-                                <!-- 페이징 -->
-                                <div class="col text-center">
-                                    <div class="block-27">
-                                        <ul>
-                                            <li><a href="#">&lt;</a></li>
-                                            <li class="active"><span>1</span></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>
-                                            <li><a href="#">5</a></li>
-                                            <li><a href="#">&gt;</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <br />
-							<!--검색창-->
-							<div class="container">
-							    <div class="row justify-content-center">
-							        <form action="/search" method="get" class="search-form form-inline">
-							            <div class="form-group">
-							                <select class="form-control" id="category">
-							                    <option>제목</option>
-							                    <option>지역</option>
-							                </select>
-							            </div>
-							            <div class="form-group ml-md-3">
-							                <select class="form-control" id="region">
-							                    <option>서울</option>
-							                    <option>인천</option>
-							                    <option>경기</option>
-							                    <option>강원</option>
-							                </select>
-							            </div>
-							            <div class="form-group ml-md-3">
-							                <input type="text" class="form-control" placeholder="Search..." name="query">
-							            </div>
-							            <button type="submit" class="btn btn-primary ml-md-3">검색</button>
-							        </form>
-							    </div>
+							<div class="text py-3 pb-4 px-3 text-center">
+								<h3><a th:href="@{'/member/usedgood/detail/6/' + ${b.id.bno}}"
+										th:text="${b.b_title}"></a></h3>
+								<div class="d-flex">
+									<div class="pricing">
+										<p class="price"><span class="price-sale" th:text="${b.b_price}+'원'"></span></p>
+									</div>
+								</div>
+								<!-- 혹시 몰라 남겨두는 좋아요 -->
+								<div class="bottom-area d-flex px-3">
+									<div class="m-auto d-flex">
+										<a href="#" class="heart d-flex justify-content-center align-items-center ">
+											<span><i class="ion-ios-heart"></i></span>
+										</a>
+									</div>
+								</div>
 							</div>
-							<!--/검색창-->
-						    </div><!--container-->
-                        </div>
-            <br /><br />
-        </div>
+						</div>
+					</div>
+					<!-- 사진 하나 끝 -->
+				</div>
+				<!-- 반복문 끝 -->
+			</div>
+			<div th:text="${session.search}"></div>
+			<div th:text="${session.category}"></div>
+			<div th:text="${session.rno}"></div>
+			<div class="row mt-5">
+				<!-- 페이징 -->
+				<div class="col text-center">
+					<div class="block-27">
+						<ul>
+							<th:block th:if="${nowPage>5}">
+								<li><a th:href="@{/usedgood/usedgood(page=${startPage-1})}">&lt;</a></li>
+							</th:block>
+							<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+								<li th:class="${pageNum == list.number + 1} ? 'active' : ''">
+									<a th:href="@{'/usedgood/usedgood?page=' + ${pageNum}}"><span
+											th:text="${pageNum}"></span></a>
+								</li>
+							</th:block>
+							<th:block th:if="${endPage!=totalPage}">
+								<li><a th:href="@{/usedgood/usedgood(page=${endPage+1})}">&gt;</a></li>
+							</th:block>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<br />
+			<!--검색창-->
+			<div class="container">
+				<div class="row justify-content-center">
+					<form action="/usedgood/usedgood" method="get" class="search-form form-inline">
+						<div class="form-group">
+							<select class="form-control" id="category" name="category">
+								<option value="b_title" th:selected="${session.category == 'b_title'}">제목</option>
+								<option value="rno" th:selected="${session.category == 'rno'}">지역</option>
+							</select>
+						</div>
+						<div class="form-group ml-md-3">
+							<select class="form-control" id="region" name="rno">
+							</select>
+						</div>
+						<div class="form-group ml-md-3">
+							<input type="text" class="form-control" placeholder="Search..." id="search" name="search"
+								th:value="${session.search}">
+						</div>
+						<button type="submit" class="btn btn-primary ml-md-3">검색</button>
+					</form>
+				</div>
+			</div>
+			<!--/검색창-->
+		</div><!--container-->
+	</div>
+	<br /><br />
+	</div>
 
-    <!-- footer -->
-    <div th:replace="footer :: footer"></div>
-    <!-- footer end -->
+	<!-- footer -->
+	<div th:replace="footer :: footer"></div>
+	<!-- footer end -->
 
-    <!-- loader -->
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00" />
+		</svg></div>
 
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/jquery.easing.1.3.js}"></script>
-    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
-    <script th:src="@{/js/jquery.stellar.min.js}"></script>
-    <script th:src="@{/js/owl.carousel.min.js}"></script>
-    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-    <script th:src="@{/js/aos.js}"></script>
-    <script th:src="@{/js/jquery.animateNumber.min.js}"></script>
-    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
-    <script th:src="@{/js/scrollax.min.js}"></script>
-    <script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+	<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/js/jquery.stellar.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/aos.js}"></script>
+	<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+	<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/js/scrollax.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
 </body>
+
 </html>

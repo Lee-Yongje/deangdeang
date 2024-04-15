@@ -13,7 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 import com.example.demo.service.CustomOAuth2UserService;
 import com.example.demo.service.CustomUserDetailsService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.UsersService;
 
 @SuppressWarnings("deprecation")
 @Configuration

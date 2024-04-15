@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.UserRepository;
 import com.example.demo.entity.AuthType;
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
 
 import java.util.Map;
 

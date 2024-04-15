@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>댕댕정보통 | 댕댕스케줄</title>
+    <title>댕댕정보통 | 댕댕일지</title>
 	<link rel="icon" th:href="@{/images/icon.png}">
 	
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
@@ -28,7 +28,7 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-	
+
 <style>
 	.tagcloud span {
 	  text-transform: uppercase;
@@ -48,64 +48,11 @@
 	.feelings{
 		margin-top: 1rem !important;
 	}
-	.form-group{
-		margin-bottom:30px;
-	}
-	
-	.pet-selection{
-		text-align:left; 
-		margin-bottom:20px;
-	}	
-	.pet-selected{
-		flex:1 1 calc(33.33% - 10px);
-		text-align:center;
-		margin-bottom:10px;
-	}
-	.pet-selected img {
-	  width: 150px; 
-	  height: 150px; 
-	  border-radius: 50%;
-	}
-	.pet-selected p{
-		margin-top:10px;
-	}
-	.pets-container{
-		display:flex;
-		flex-wrap:wrap;
-		gap:10px;
-		justify-content:flex-start;
-		margin-top:20px;
-	}
-	.pet-selected:nth-child(3n){
-		margin-right:0;
-	}
-	
-	.pet-image{
-		cursor:pointer;
-	}
-	.pet-image.active{
-		border: 4px solid blue;
-		padding:-4px;
-	}
-	.pet-image:hover{
-		border:4px solid blue;
-	}
-	#datepicker-container{
-		padding:10px;
-		border: 1px solid #ccc;
-		background-color:#f9f9f9;
-	}
-	
-	.ui-datepicker{
-		width:500px; height:auto;
-	}
-	
+	  
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $(function() {
 	$('.tagcloud span').click(function(){
@@ -123,29 +70,6 @@ $(function() {
 			}).data('isClicked',true);
 		}
 	});
-	
-	$('.pet-image').on('click',function(){
-		$('.pet-image').not(this).removeClass('active');
-		$(this).toggleClass('active');
-	});
-	
-	$("#datepicker").datepicker({
-		dateFormat: "yy-mm-dd",
-		onSelect:function(dateText){
-			$("#selected-date").text("선택된 날짜: "+dateText);
-		}
-	});
-	
-	$("#datepicker-button").on("click", function(e) {
-        e.preventDefault(); // 클릭하면 페이지 새로고침 되는것 방지
-        $("#datepicker-container").toggle();
-    });
-	
-	$("#confirm-date").on("click", function(e) {
-        e.preventDefault(); 
-        $("#datepicker-container").hide();
-    });
-	
 });
 </script>
 </head>
@@ -154,12 +78,12 @@ $(function() {
    	<div th:replace="header :: header-fragment"></div>
     <!-- Header/nav nav -->
 
-	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
+	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">\
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
           	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
-            <h1 class="mb-0 bread">Blog</h1>
+            <h1 class="mb-0 bread">집사일지</h1>
           </div>
         </div>
       </div>
@@ -169,74 +93,73 @@ $(function() {
       <div class="container">
         <div class="row">
 			<div class="col-lg-3 sidebar ftco-animate">
-					<div class="sidebar-box ftco-animate">
+				<div class="sidebar-box ftco-animate">
 					<h3 class="heading">댕댕수첩</h3>
-						<ul class="categories">
-							<li><a href="/member/diary/scheduler">댕댕스케줄</a></li>
-							<li><a href="/member/diary/diary">집사일지</a></li>
-						</ul>
-					</div>
+					<ul class="categories">
+						<li><a href="/member/diary/scheduler">댕댕스케줄</a></li>
+						<li><a href="/member/diary/diary">집사일지</a></li>
+					</ul>
 				</div>
-
-
+			</div>       
+        
+        
         <!-- 자세한 내용 -->
-          <div class="col-lg-9 ftco-animate">
+          <div class="col-lg-8 ftco-animate">
 <!--           	<form action="url" method="post" enctype="multipart/form-data">-->
-				<form>
  					<div class="row">
 					<div class="col-md-8">
-						<h2>일정 추가하기</h2>
+						<h2>게시물 작성</h2>
+						<h5>댕댕육아일기</h5>
 					</div>
-					<div class="col-md-4 text-right">
-						<button class="btn btn-primary">일정 등록</button>
-					</div>
-				</div> 
-				<div class="row mt-3">
-					<div class="col-md-12">
-					
-						<div class="pet-selection">
-							<h5>반려동물 선택</h5>						
-							<!-- db연결 시
-						        <div th:each="dog : ${dogs}" class="pet-selected">
-								    <img th:src="@{${dog.imagePath}}" class="pet-image" alt="Pet Image">
-								    <p th:text="${dog.name}">Pet Name</p>
-								</div>						      -->
-
-							<div class="pets-container">
-								<div class="pet-selected">
-								    <img src="@{/images/angryDog.jpg}" class="pet-image">
-								    <p>달래</p>
-							    </div>
-							    <div class="pet-selected">
-								    <img src="@{/images/sampledog.jpg}" class="pet-image">
-								    <p>빵떡이</p>
-							    </div>
-							    <div class="pet-selected">
-								    <img th:src="@{/images/angryDog.jpg}" class="pet-image">
-								    <p>동식이</p>
-							    </div>						    							    
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<h5>댕댕스케줄</h5>
-							<input type="text" class="form-control" id="title" name="title"
-								placeholder="내용을 입력하세요" style="color:#ced4da">
-						</div>
-						
-						<!-- 강아지 선택 -->
-						<div>
-						
-						</div>
-						
-						
-						<div class="form-group">
-							<h5>날짜 선택</h5>
-							<input type="text" id="datepicker">
-						</div>
-						
-					</div>
+<!-- 					<div class="col-md-4 text-right">
+						<button class="btn btn-primary">글 등록</button>
+					</div> -->
 				</div>
+				
+					<div class="row mt-3">
+						<div class="col-md-12">
+							<form th:action="@{/member/diary/updateDiary/{dno}(dno=${diary.dno})}" th:object="${diary}" method="post" enctype="multipart/form-data">
+							    <div class="form-group">
+                					<input type="text" class="form-control" id="title" name="d_title" th:value="${diary.d_title}" placeholder="제목">
+							    </div>
+							    <div class="form-group">
+					                <textarea class="form-control" id="content" rows="10" name="d_content" placeholder="내용" th:text="${diary.d_content}"></textarea>
+							    </div>
+							    <div class="form-group">
+							        <label for="file">파일 첨부</label>
+							        <div th:if="${diary.d_fname}">
+								        <p>현재 파일: <span th:text="${diary.d_fname}"></span></p>
+								    </div>
+								    <input type="hidden" name="existingFileName" th:value="${diary.d_fname}" />
+								    <input type="file" class="form-control-file" id="file" name="uploadFile">
+							        
+							        
+							    </div>
+							    <button type="submit" class="btn btn-primary">글 등록</button>
+							</form>
+						</div>
+					</div>
+				 
+				<!-- 기분 버튼 -->
+				<input type="hidden" name="seletedTags" id="selectedTags" value="">
+	            <div class="tag-widget post-tag-container mb-5 mt-5 feelings">
+	              <div class="tagcloud">
+	                <span class="tag-cloud-link" style="border: 2px solid #ff0000">산책완료</span>
+	                <span class="tag-cloud-link" style="border: 2px solid #FF6347">즐거움</span >
+	                <span class="tag-cloud-link" style="border: 2px solid orange">보통</span >
+	              </div>
+	              <div class="tagcloud">
+	                <span class="tag-cloud-link" style="border: 2px solid #4682B4">우울함</span>
+	                <span class="tag-cloud-link" style="border: 2px solid #6495ED">슬픔</span>
+	                <span class="tag-cloud-link" style="border: 2px solid #20B2AA">외로움</span>
+	              </div>
+	              
+	              <div class="tagcloud">
+	                <span class="tag-cloud-link" style="border: 2px solid #8B008B">매우화남</span>
+	                <span class="tag-cloud-link" style="border: 2px solid #9400D3">짜증남</span>
+	                <span class="tag-cloud-link" style="border: 2px solid #9370DB">어이없음</span>
+	              </div>     
+	            </div> <!-- 기분버튼 종료 -->
  			</form>   <!-- form태그 종료 -->       
           </div> <!-- .col-md-8 내용 입력 완료--> 
 
@@ -267,5 +190,6 @@ $(function() {
     <script th:src="@{/js/bootstrap-datepicker.js}"></script>
     <script th:src="@{/js/scrollax.min.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+    
   </body>
 </html>

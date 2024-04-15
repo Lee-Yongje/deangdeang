@@ -70,36 +70,27 @@
                 <div class="col-lg-8 ftco-animate">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2>마이펫</h2>
-                        <a href="/insertPuppy" class="btn btn-primary">강아지 등록</a>
+                        <a href="/member/mypage/insertPuppy" class="btn btn-primary">강아지 등록</a>
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-md-12 d-flex ftco-animate">
-                            <div class="blog-entry align-self-stretch d-md-flex">
-                                <a href="/insertPuppy">
-                                    <img class="img-fluid" th:src="@{/images/angrydog.jpg}" style="max-height: 500px;"/>
-                                </a>
-                                <div class="text d-block pl-md-4">
-                                    <h3><a href="/insertPuppy">코코</a></h3>
-                                    <h6>2024-04-01</h6>
-                                    <h6>여</h6>
-                                    <h6>중성화 완료</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 d-flex ftco-animate">
-                            <div class="blog-entry align-self-stretch d-md-flex">
-                                <a href="/insertPuppy">
-                                    <img class="img-fluid" th:src="@{/images/angrydog.jpg}" style="max-height: 500px;"/>
-                                </a>
-                                <div class="text d-block pl-md-4">
-                                    <h3><a href="/insertPuppy">코코</a></h3>
-                                    <h6>2024-04-01</h6>
-                                    <h6>여</h6>
-                                    <h6>중성화 완료</h6>
-                                </div>
-                            </div>
-                        </div>
+						<div class="col-md-12 ftco-animate">
+						    <div th:each="p : ${puppy}">
+						        <div class="blog-entry align-self-stretch d-md-flex" style="width: 100%">
+						            <div class="text-center">
+						                <a th:href="@{'/member/mypage/insertPuppy/'+${p.pno}}">
+						                    <img class="img-fluid col-md-auto" th:src="@{'/images/'+${p.p_fname}}" style="object-fit: cover; width: 200px; height: 200px;"/>
+						                </a>
+						            </div>
+						            <div class="text d-block pl-md-4 col-md-8">
+						                <h3><a th:href="@{'/member/mypage/insertPuppy'+${p.pno}}" th:text="${p.p_name}"></a></h3>
+						                <h6 th:text="${p.p_birth}"></h6>
+						                <h6 th:text="${p.p_birth==1?'남':'여'}"></h6>
+						                <h6 th:text="${p.p_neuter==1?'중성화 완료':'중성화 미완료'}"></h6> 
+						            </div>
+						        </div>
+						    </div>
+						</div>
                     </div>
                 </div> <!-- .col-md-8 -->
 

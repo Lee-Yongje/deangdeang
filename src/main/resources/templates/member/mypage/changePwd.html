@@ -21,6 +21,43 @@
     <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+	    $(function(){
+	    	$('#changePwdForm').submit(function(event) {
+
+	            event.preventDefault(); // 폼 제출 방지
+	            
+	            var u_pwd = $('#u_pwd').val(); // 현재 비밀번호
+	            var newPassword = $('#newPassword').val(); // 새로운 비밀번호
+	            var confirmPassword = $('#confirmPassword').val(); // 비밀번호 확인
+	
+	            // AJAX 요청
+	            $.ajax({
+	            	type : "POST",
+	                url: "/check-password", // 비밀번호 확인을 위한 서버 엔드포인트
+	                data: {u_pwd: u_pwd}, // 현재 비밀번호 전송
+	                success: function(response) {
+	                    if (response) {
+	                        // 현재 비밀번호가 일치하는 경우
+	                        if (newPassword === confirmPassword) {
+	                            // 새로운 비밀번호와 비밀번호 확인이 일치하는 경우
+	                            // 폼을 제출하여 비밀번호를 변경
+	                            $('#changePwdForm').unbind('submit').submit();
+	                        } else {
+	                            // 새로운 비밀번호와 비밀번호 확인이 일치하지 않는 경우
+	                            alert('변경하실 비밀번호를 다시 입력해주세요.');
+	                        }
+	                    } else {
+	                        // 현재 비밀번호가 일치하지 않는 경우
+	                        alert('현재 비밀번호가 일치하지 않습니다.');
+	                    }
+	                }
+	            });
+	        });
+	    }) 
+    </script>
+    
 </head>
 <body class="goto-here">
     <!-- Header/nav -->
@@ -63,18 +100,18 @@
                                     <div class="card">
                                         <div class="card-header" th:style="'background-color: #82AE46; color: white;'">비밀번호 변경</div>
                                         <div class="card-body">
-                                            <form>
+                                            <form id="changePwdForm" action="/member/mypage/changePwd" method="post">
                                                 <div class="form-group">
                                                     <label for="u_pwd">현재 비밀번호</label>
-                                                    <input type="password" class="form-control" id="u_pwd" placeholder="현재 비밀번호 입력">
+                                                    <input type="password" class="form-control" id="u_pwd" name="u_pwd" placeholder="현재 비밀번호 입력">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="newPassword">새로운 비밀번호</label>
-                                                    <input type="password" class="form-control" id="newPassword" placeholder="새로운 비밀번호 입력">
+                                                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="새로운 비밀번호 입력">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="confirmPassword">비밀번호 확인</label>
-                                                    <input type="password" class="form-control" id="confirmPassword" placeholder="비밀번호 확인">
+                                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인">
                                                 </div>
                                                 <button type="submit" class="btn btn-primary" th:style="'background-color: #82AE46;'">변경</button>
                                             </form>
@@ -118,5 +155,6 @@
     <script th:src="@{/js/scrollax.min.js}"></script>
     <script th:src="@{/js/google-map.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+
 </body>
 </html>

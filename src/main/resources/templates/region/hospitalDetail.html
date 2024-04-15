@@ -37,6 +37,9 @@
             width: 60%; 
             margin: auto; 
         }
+         p {
+	        margin: 5px 0;
+	    }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script th:src="@{/js/jquery.min.js}"></script>
@@ -56,12 +59,21 @@
     <script th:src="@{/js/main.js}"></script>
     <script>
         $(document).ready(function() {
-            $("table tbody tr").click(function() {
-                //각 행에 attr추가필요
-                var url = "/hospitalDetail";
-                window.location.href = url;
-            });
+			var tel = $("#tel").val();
+			tel = formatPhoneNumber(tel);
+			$("#showTel").html(tel)
         });
+        function formatPhoneNumber(phoneNumber) {
+			if (phoneNumber.startsWith("2")){
+      			  return '0' + phoneNumber.slice(0, 1) + '-' + phoneNumber.slice(1, phoneNumber.length - 4) + '-' + phoneNumber.slice(-4);
+			}else{
+				if(phoneNumber.length!=11){
+      				  return '0' + phoneNumber.slice(0, 2) + '-' + phoneNumber.slice(2, phoneNumber.length - 4) + '-' + phoneNumber.slice(-4);
+				}else{
+      				  return '0' + phoneNumber.slice(0, 3) + '-' + phoneNumber.slice(3, phoneNumber.length - 4) + '-' + phoneNumber.slice(-4);					
+			}
+		}
+    }
     </script>
 </head>    
 <body class="goto-here">
@@ -87,9 +99,18 @@
                 <h2>동물병원 상세</h2>
             </div>
             <br />
-            <h4>강아지굿병원</h4>
-            <h5>02-123-1234</h5>
-            <h5>서울시 마포구 월드컵북로32길 34</h5>
+            <input type="hidden" th:value="${h.tel_NO}" id="tel"/>
+            <h3 th:text="${h.fclty_NM}" style="text-decoration: underline;"></h3>
+            <h5 id="showTel"></h5>
+            <h5 th:text="${h.rdnmadr_NM}"></h5>
+            <h6 th:text="'(지번 주소: '+${h.lnm_ADDR}+' )'"></h6>
+			<p th:if="${h.rstde_GUID_CN}" th:text="'휴일: ' + ${h.rstde_GUID_CN}"></p>
+			<p th:if="${h.oper_TIME}" th:text="'영업시간: ' + ${h.oper_TIME}"></p>
+			<p th:if="${h.parkng_POSBL_AT}" th:text="'주차 가능 여부: ' + ${h.parkng_POSBL_AT}"></p>
+            <p><a th:href="@{${h.hmpg_URL}}">>>공식 페이지 바로가기</a></p>
+            <input type="hidden" id="lat" th:value="${h.lc_LA}"/>
+            <input type="hidden" id="lon" th:value="${h.lc_LO}"/>
+            <br />
             <br />
             <div class="row">
                 <div class="col-sm-12 col-md-10">
@@ -98,16 +119,19 @@
             </div>
             <script type="text/javascript" th:src="@{'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey}}"></script>
             <script>
+				var lat = $("#lat").val();
+				var lon = $("#lon").val();
+				
                 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
                     mapOption = { 
-                        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                        center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표
                         level: 3 // 지도의 확대 레벨
                     };
                 
                 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
                 
                 // 마커가 표시될 위치입니다 
-                var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
+                var markerPosition  = new kakao.maps.LatLng(lat, lon); 
                 
                 // 마커를 생성합니다
                 var marker = new kakao.maps.Marker({

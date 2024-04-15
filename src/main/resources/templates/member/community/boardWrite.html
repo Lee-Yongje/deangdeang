@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+	<title th:text="'댕댕정보통 | ' + ${b_name}"></title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -30,15 +30,33 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     
     <style>
-		.combobox{
-			display: none;	
-		}
+    #region {
+        display: none;
+    }
 	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script th:inline="javascript">
+	$(document).ready(function() {
+	    $.ajax({
+	        type: "GET",
+	        url: "/regionCode", 
+	        success: function(regionCodes) {
+	            regionCodes.forEach(function(regionCode) { 
+	                $('#region').append($('<option>', {
+	                    value: regionCode.rno,
+	                    text: regionCode.r_name
+	                }));
+	            });
+	        }
+	    });
+	});
+
+	</script>
 </head>
 
 <body class="goto-here">
 	<!-- Header/nav -->
-	<div th:replace="header :: header-fragment"></div>
+	<div th:replace="~{header :: header-fragment}"></div>
 	<!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
@@ -59,9 +77,9 @@
 					<h3 class="heading">커뮤니티</h3>
 					<ul class="categories">
 						<li><a href="/community/boast">전국댕댕자랑</a></li>
-						<li><a href="#">자유게시판</a></li>
-						<li><a href="#">질문게시판</a></li>
-						<li><a href="#">산책해요</a></li>
+						<li><a href="/community/board?b_name=자유게시판">자유게시판</a></li>
+						<li><a href="/community/board?b_name=질문게시판">질문게시판</a></li>
+						<li><a href="/community/board?b_name=산책해요">산책해요</a></li>
 						<li><a href="/community/report">신고/제보</a></li>
 					</ul>
 				</div>
@@ -73,7 +91,7 @@
 						<div class="row">
 							<div class="col-md-8">
 								<h2>게시물 작성</h2>
-								<h5>어쩌구게시판</h5>
+								<h5><span th:text="${b_name}"></span></h5>
 							</div>
 							<div class="col-md-4 text-right">
 								<button class="btn btn-primary">글 등록</button>
@@ -82,24 +100,20 @@
 						<div class="row mt-3">
 							<div class="col-md-12">
 								<form action="">
-								<!--콤보박스: 신고/제보 게시판인 경우에는 보이게 설정.-->
-								<div class="form-group combobox">
-									<select class="form-control" id="reportType" style="width: 40%;">
+								<!--콤보박스 시작 : 신고/제보, 산책모임 게시판인 경우에는 지역 선택창이 보이게 설정.-->
+								<div class="form-group">
+									<select class="form-control" id="region" name="regionCode.rno" style="width: 40%;">
 										<option value="">지역을 선택해 주세요</option>
-										<option value="02">서울</option>
-										<option value="031">경기</option>
-										<option value="032">인천</option>
-										<option value="033">강원</option>
 									</select>
 								</div>
-								<!--end콤보박스-->
+								<!--콤보박스 끝 -->
 								<div class="form-group">
-									<input type="text" class="form-control" id="title" value="제목을 입력하세요"
+									<input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" required
 										onfocus="clearDefault(this)" onblur="restoreDefault(this)">
 								</div>
 								<div class="form-group">
 									<textarea class="form-control" id="content" rows="5" onfocus="clearDefault(this)"
-										onblur="restoreDefault(this)">내용을 입력하세요</textarea>
+										onblur="restoreDefault(this)" required placeholder="내용을 입력하세요"></textarea>
 								</div>
 								<div class="form-group">
 									<label for="file">파일 첨부</label>
@@ -118,7 +132,7 @@
 	</section> <!-- .section -->
 	<br /><br />
 	<!--footer  -->
-	<div th:replace="footer :: footer"></div>
+	<div th:replace="~{footer :: footer}"></div>
 	<!--footer end  -->
 
 
@@ -146,21 +160,6 @@
 	<script th:src="@{/js/scrollax.min.js}"></script>
 	<script th:src="@{/js/google-map.js}"></script>
 	<script th:src="@{/js/main.js}"></script>
-	<script>
-		function clearDefault(element) {
-			element.value = '';
-		}
-
-		function restoreDefault(element) {
-			if (element.value === '') {
-				if (element.id === 'title') {
-					element.value = '제목을 입력하세요';
-				} else if (element.id === 'content') {
-					element.value = '내용을 입력하세요';
-				}
-			}
-		}
-	</script>
 
 </body>
 

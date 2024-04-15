@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.entity.RegionCode;
+import com.example.demo.entity.Users;
 
 import java.util.List;
 
@@ -15,3 +16,4 @@ public interface RegionCodeDAO extends JpaRepository<RegionCode, String> {
 	@Query(value="select * from regioncode where rno=?", nativeQuery = true)
 	public RegionCode findByRno(String rno);
 }
+

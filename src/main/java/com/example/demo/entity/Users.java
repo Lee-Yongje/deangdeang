@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @Table(name = "user")
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +51,7 @@ public class User {
     @Transient
     private MultipartFile uploadFile;
 
-	public User orElseGet(Object object) {	
+	public Users orElseGet(Object object) {	
 	    return null;
 	}
 }

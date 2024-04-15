@@ -61,7 +61,8 @@
     <div th:replace="header :: header-fragment"></div>
     <!-- Header/nav nav -->
 
-    <div class="hero-wrap hero-bread" style="background-image: url('@{/images/bg_1.jpg}');">
+	
+    <div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
         <div class="container">
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
@@ -101,51 +102,35 @@
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
                                     <div class="tab-pane active in" id="profile">
-                                        <form id="profileForm">
+                                        <form id="profileForm" action="/member/mypage/changeInfo" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="u_nickname" class="font-weight-bold">닉네임</label>
-                                                <input type="text" class="form-control" id="u_nickname" value="코코아빠">
+                                                <input type="text" class="form-control" id="u_nickname" name="u_nickname" th:value=${u.u_nickname}>
                                             </div>
                                             <div class="form-group">
                                                 <label for="u_name" class="font-weight-bold">이름</label>
-                                                <input type="text" class="form-control" id="u_name" value="이문관">
+                                                <input type="text" class="form-control" id="u_name" name="u_name" th:value="${u.u_name}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="u_email" class="font-weight-bold">이메일</label>
-                                                <input type="email" class="form-control" id="u_email" value="email@naver.com">
+                                                <input type="email" class="form-control" id="u_email" name="u_email" th:value="${u.u_email}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="u_phone" class="font-weight-bold">전화번호</label>
-                                                <input type="email" class="form-control" id="u_phone" value="010-1111-1111">
+                                                <input type="text" class="form-control" id="u_phone" name="u_phone" th:value="${u.u_phone}">
                                             </div>
                                             <div class="form-group d-flex align-items-start">
-                                                <img src="/images/강아지.jpg" alt="프로필 이미지" class="img-fluid" style="max-height: 100px; width: 100%;">
+                                                <img th:src="@{'/images/'+${u.u_fname}}" alt="프로필 이미지" class="img-fluid" style="max-height: 100px; width: 100%;">
                                                 <div class="ml-3 d-flex flex-column justify-content-between" style="height: 100px;">
                                                     <label for="u_fname" class="font-weight-bold">프로필 이미지</label>
-                                                    <input type="file" class="form-control">
+                                                    <input type="hidden" th:value="${u.u_fname}" name="u_fname" />
+                                                    <input type="file" class="form-control" name="uploadFile">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="rno" class="font-weight-bold">거주지</label>
-                                                <select class="form-control" id="rno">
-                                                    <option value="02">서울</option>
-                                                    <option value="031">경기</option>
-                                                    <option value="032">인천</option>
-                                                    <option value="033">강원</option>
-                                                    <option value="041">충남</option>
-                                                    <option value="042">대전</option>
-                                                    <option value="043">충북</option>
-                                                    <option value="044">세종</option>
-                                                    <option value="051">부산</option>
-                                                    <option value="052">울산</option>
-                                                    <option value="053">대구</option>
-                                                    <option value="054">경북</option>
-                                                    <option value="055">경남</option>
-                                                    <option value="061">전남</option>
-                                                    <option value="062">경주</option>
-                                                    <option value="063">전북</option>
-                                                    <option value="064">제주</option>
-                                                    <!-- 나머지 옵션들 추가 -->
+                                                <select class="form-control" id="rno" name="rno">
+                                                    <option th:each="r : ${region}" th:value="${r.rno}" th:text="${r.r_name}" name="rno" th:selected="${r.rno == u.regioncode.rno}"></option>
                                                 </select>
                                             </div>
                                             <button type="submit" class="btn btn-primary">수정</button>
