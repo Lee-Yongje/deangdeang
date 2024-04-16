@@ -21,7 +21,7 @@ public class RegionCodeController {
 	@Autowired
 	private RegionCodeDAO dao;
 	
-    @GetMapping("/regionCode")
+    @GetMapping("/region/regionCode")
     public List<RegionCode> getAllRegionCodes() {
         return dao.findAll();
     }

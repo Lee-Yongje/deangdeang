@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/css/aos.css">
+
+    <link rel="stylesheet" href="/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="/css/flaticon.css">
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+	$(function(){
+		setInterval(function(){
+			$.ajax({
+			url:"/seats",
+			success:function(data){
+				$("#seats").html(data);
+			}			
+			});
+		},3000);
+		
+		var arr;
+		var pageSIZE=10; //한 화면에 보여줄 레코드의 수
+		var pageGROUP=10;//한 화면에 보여줄 페이지의 수
+		var totalRecord;
+		var totalPage;
+		
+		$("#paging").on("click",".page", function(){
+			var pageNUM = eval($(this).attr("pageNUM"));
+			loadData(pageNUM);
+		});
+		
+		function loadData(pageNUM){
+			$("#list").empty();
+			var start = (pageNUM-1)*pageSIZE;
+			var end = start+pageSIZE;
+			if(end > totalRecord-1){
+				end = totalRecord-1;
+			}
+			for(i = start; i<=end; i++){
+				var book = arr[i];
+				var title = book.title;
+				var link = book.link;
+				var a = $("<a></a>").html(title).attr("href",link);
+				var li = $("<li></li>");
+				$(li).append(a);
+				$("#list").append(li);
+			}
+			printPage(pageNUM);
+		}	
+		
+		function printPage(pageNUM){			
+			$("#paging").empty();		
+				              
+			var startPage = parseInt((pageNUM-1)/pageGROUP)*pageGROUP+1;			
+			var endPage = startPage + pageGROUP - 1;
+			
+			if(  startPage > 1  ){
+				var span = $("<span></span>").html("[이전]").addClass("page").attr("pageNUM", startPage-1 );
+				$("#paging").append(span);
+			}
+						
+			for(i=startPage; i<=endPage; i++){
+				var span = $("<span></span>").html(i).addClass("page").attr("pageNUM",i);
+				$("#paging").append(span);
+			}
+			
+			if(  endPage < totalPage  ){
+				var span = $("<span></span>").html("[다음]").addClass("page").attr("pageNUM", endPage+1 );
+				$("#paging").append(span);
+			}
+			
+		}	
+				
+		$.ajax({
+			url:"/newbook",
+			success:function(r){
+				arr = r;
+				totalRecord = arr.length;
+				totalPage = Math.ceil(totalRecord / pageSIZE);
+				console.log("totalRecord:"+totalRecord);
+				console.log("totalPage:"+totalPage);
+				loadData(1);				
+			}
+		});
+		
+		
+		
+	});
+  </script>
+  <body class="goto-here">
+	<!-- Header/nav -->
+   	<div th:replace="header :: header-fragment"></div>
+    <!-- Header/nav nav -->
+	<section class="ftco-section ftco-degree-bg">
+	    <div class="container">
+	        <h3><a href="https://www.pet-news.or.kr/">출처: 한국반려동물신문</a></h3>
+	        <div class="row">
+	            <div class="col-lg-12 ftco-animate">
+	                <div class="row">
+	                    <!-- 뉴스 리스트를 루프하여 표시 -->
+	                    <div class="col-md-12 d-flex ftco-animate" th:each="news : ${newsList}">
+	                        <div class="blog-entry align-self-stretch d-md-flex">
+	                            <a href="#" class="thumb"><img th:src="${news.imageUrl}" alt="News Thumbnail"></a>
+	                            <div class="text d-block pl-md-4">
+	                                <div class="meta mb-3">
+	                                    <div><a href="#"> <span th:text="${news.date}">July 20, 2019</span> </a></div>
+	                                    <div><a href="#"> <span th:text="${news.author}">Admin</span> </a></div>
+	                                    <!-- 여기에 댓글 수 등의 추가 정보가 들어갈 수 있습니다. -->
+	                                </div>
+	                                <h3 class="heading"><a href="#" th:text="${news.title}">뉴스 제목</a></h3>
+	                                <p th:text="${news.summary}">뉴스 요약</p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+	
+    <!--footer  -->
+	 <div th:replace="footer :: footer"></div>
+    <!--footer end  -->
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.1.3.js"></script>
+  <script src="/js/jquery.waypoints.min.js"></script>
+  <script src="/js/jquery.stellar.min.js"></script>
+  <script src="/js/owl.carousel.min.js"></script>
+  <script src="/js/jquery.magnific-popup.min.js"></script>
+  <script src="/js/aos.js"></script>
+  <script src="/js/jquery.animateNumber.min.js"></script>
+  <script src="/js/bootstrap-datepicker.js"></script>
+  <script src="/js/scrollax.min.js"></script>
+  <script src="/js/google-map.js"></script>
+  <script src="/js/main.js"></script>
+    
+  </body>
+</html>

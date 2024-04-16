@@ -61,7 +61,7 @@
 
 			$.ajax({
 				type: "GET",
-				url: "/regionCode",
+				url: "/region/regionCode",
 				success: function (regionCodes) {
 					regionCodes.forEach(function (regionCode) {
 						$('#region').append($('<option>', {
