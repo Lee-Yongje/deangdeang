@@ -54,7 +54,7 @@ public class WebSecurityConfig {
                 .loginPage("/login")
                 .defaultSuccessUrl("/index", true)
                 .failureUrl("/login?error=true")
-
+                .permitAll()
             )
             .oauth2Login(oauth2Login -> oauth2Login
                 .loginPage("/login")
@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                 .userService(customOAuth2UserService)  // Ensure CustomOAuth2UserService is correctly autowired
                 .and()
                 .defaultSuccessUrl("/index", true)
+                .permitAll()
             );
         return http.build();
     }
