@@ -46,7 +46,7 @@ public class WebSecurityConfig {
         http
             .authorizeRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers("/", "/index", "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", 
-                             "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**", "/register", "/register_kakao")
+                             "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**", "/register", "/register_kakao", "/news/**")
                 .permitAll()
                 .anyRequest().authenticated()
             )
@@ -54,7 +54,7 @@ public class WebSecurityConfig {
                 .loginPage("/login")
                 .defaultSuccessUrl("/index", true)
                 .failureUrl("/login?error=true")
-                .permitAll()
+
             )
             .oauth2Login(oauth2Login -> oauth2Login
                 .loginPage("/login")
@@ -62,7 +62,6 @@ public class WebSecurityConfig {
                 .userService(customOAuth2UserService)  // Ensure CustomOAuth2UserService is correctly autowired
                 .and()
                 .defaultSuccessUrl("/index", true)
-                .permitAll()
             );
         return http.build();
     }
