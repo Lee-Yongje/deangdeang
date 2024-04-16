@@ -19,6 +19,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardDAO extends JpaRepository<Board, Integer> {
 	
+//	사진 없는 게시판 메소드 시작
+	
+	// 사진 없는 게시판 조회
+	@Query(value = "SELECT b.*, u.u_name FROM board b INNER JOIN users u ON b.uno = u.uno WHERE b_code = ?1 order by b_date desc", nativeQuery = true)
+	public List<Map<String ,Object>> findByBcode(int b_code);
+	
+	
+//	사진 없는 게시판 메소드 끝
+	
+	
 	//중고거래(사진형게시판) 16개씩 조회(페이징용)
     @Query(value = "SELECT * FROM board WHERE b_code = ?1 ORDER BY b_date DESC", 
     		countQuery = "select count(*) from board where b_code=?1",
