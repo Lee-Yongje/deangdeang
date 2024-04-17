@@ -94,5 +94,20 @@ public class BoardService {
 	   dao.updateHit(bno, b_code);
    }
    
+   //게시판 글 삭제 (기본 delete를 안 쓴 이유: 반환값이 void라서)
+   public int deleteBoard( int b_code, int bno) {
+	   return dao.deleteBoard(b_code, bno);
+	   
+   }
+   
+   //게시판 글 수정
+   public Board update(Board b) {
+	   return dao.save(b);
+   }
+   
+   //bno랑 b_code로 게시글 Board 찾기
+   public Board findBoardByBnoAndBCode(int b_code, int bno) {
+	   return dao.findBoardByBnoAndBCode(b_code, bno);
+   }
    
 }

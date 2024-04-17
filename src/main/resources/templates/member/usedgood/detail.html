@@ -30,6 +30,25 @@
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		    $("#btnDelete").click(function () {
+				var bno = $("#bno").val();
+				var b_code = $("#b_code").val();
+				if(confirm("정말로 삭제하시겠습니까?")){
+			        window.location.href = "/member/usedgood/delete/"+b_code+"/"+bno;				
+				}
+		    });
+		    $("#btnUpdate").click(function () {
+				var bno = $("#bno").val();
+				var b_code = $("#b_code").val();
+			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;				
+				
+		    });
+		});
+	</script>
+	
 	<style>
 		.img-fluid{
 			margin-bottom: 10px;
@@ -55,13 +74,15 @@
 			</div>
 		</div>
 	</div>
+	<!--테스트용-->
 
 	<div class="container text">
 		<div class="container mt-5">
 			<h2>중고장터</h2>
+				<input type="hidden" id ="bno" th:value="${bno}"/>
+				<input type="hidden" id ="b_code" th:value="${b_code}"/>
 			<br />
 			<div class="row">
-
 				<div class="col-md-6">
 					<!-- 사진 -->
 					<img th:src="@{'/images/' + ${b.b_fname}}" class="img-fluid"
@@ -81,8 +102,8 @@
 					</div>
 					<br/>
 					<div> <!-추후 세션 받아서 조건 줘서 보이도록 수정해-->
-						<button class="btn btn-primary">수정</button> 
-						<button class="btn btn-primary">삭제</button> 
+						<button id="btnUpdate" class="btn btn-primary">수정</button> 
+						<button id="btnDelete" class="btn btn-primary">삭제</button> 
 					</div>
 				</div>
 			</div>

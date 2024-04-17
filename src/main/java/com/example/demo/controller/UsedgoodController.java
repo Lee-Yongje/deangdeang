@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -48,7 +49,7 @@ public class UsedgoodController {
 	                         @RequestParam(required = false) String search,
 	                         @RequestParam(required = false) String rno,
 	                         @RequestParam(value = "page", defaultValue = "1") int page,
-	                         @RequestParam(value = "reset", defaultValue = "0") String reset,
+	                         @RequestParam(value = "reset", defaultValue = "1") String reset,
 	                         HttpSession session,
 	                         Model model) {
 	    int pageSize = 8; //한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
@@ -127,11 +128,94 @@ public class UsedgoodController {
 	@GetMapping("/member/usedgood/detail/{b_code}/{bno}")
 	public String usedgoodDetailPage(@PathVariable int b_code, @PathVariable int bno, Model model) {
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
+		model.addAttribute("bno",bno);
+		model.addAttribute("b_code",b_code);
 		bs.updateHit(bno, b_code);
 		return "/member/usedgood/detail";
 	}
+	
+	//중고거래 글 삭제 delete
+	@GetMapping("/member/usedgood/delete/{b_code}/{bno}")
+	public String delete(@PathVariable int b_code, @PathVariable int bno) {
+		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
+		int re = bs.deleteBoard(b_code, bno);
+		System.out.println(b);
+		String fname = b.getB_fname();
+		
+		String path = null;
+		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
+		try {
+			path = resource.getFile().getAbsolutePath();
+		} catch (IOException e) {
+			System.out.println("경로 가져오는 중 예외 발생:" + e);
+		}
+		if(re!=0) {
+			File file = new File(path+"/"+fname);
+			file.delete();		
+		}
+		return "redirect:/usedgood/usedgood";
+	}
+	
+	//중고거래 글 수정 페이지로 가기
+	@GetMapping("/member/usedgood/update/{b_code}/{bno}")
+	public String updateForm(@PathVariable int b_code, @PathVariable int bno, Model model) {
+		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
+		System.out.println(b);
+		model.addAttribute("b",b);
+		return "/member/usedgood/update";
+	}
+	
+	//중고거래 글 수정 update
+	@PostMapping("/member/usedgood/update/{b_code}/{bno}")
+	public String update(Board b, @PathVariable int b_code, @PathVariable int bno) {
+		Board ob = bs.findBoardByBnoAndBCode(b_code, bno);
+		String oldFname = ob.getB_fname();
+		System.out.println("old b:"+ob);
+		System.out.println("새로 받은 b:"+b);
+		
+		// 파일 관련
+		MultipartFile uploadFile = b.getUploadFile();
+		String newFname = b.getUploadFile().getOriginalFilename();
+		String path = null;
+		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
+		try {
+			path = resource.getFile().getAbsolutePath();
+			System.out.println(path);
+		} catch (IOException e) {
+			System.out.println("경로 가져오는 중 예외 발생:" + e);
+		}
 
-	// 중고거래 글 등록 페이지
+		if (newFname != null && !newFname.equals("") &&!newFname.equals(oldFname)) {
+			try {
+				byte[] data = uploadFile.getBytes();
+				FileOutputStream fos = new FileOutputStream(path + "/" + newFname);
+				fos.write(data);
+				fos.close();
+				ob.setB_fname(newFname);
+			} catch (IOException e) {
+				System.out.println("파일등록예외발생:" + e.getMessage());
+			}
+		}else {
+			ob.setB_fname(oldFname);
+		}
+		
+		RegionCode regionCode = new RegionCode();
+		regionCode.setRno(b.getRegionCode().getRno());
+		ob.setRegionCode(regionCode);
+		ob.setB_content(b.getB_content());
+		ob.setB_title(b.getB_title());
+		ob.setB_price(b.getB_price());
+		
+		Board re = bs.update(ob);
+		if(re!=null &&oldFname!=null &&newFname!=null&& newFname!="" &&!oldFname.equals(newFname)) {
+			File file = new File(path+"/"+oldFname);
+			file.delete();		
+		}
+		return "redirect:/usedgood/usedgood";
+	}
+	
+	
+	// 중고거래 글 등록 페이지로 가기
 	@GetMapping("/member/usedgood/write")
 	public void usedgoodWritePage() {
 	}
@@ -179,7 +263,6 @@ public class UsedgoodController {
 		MultipartFile uploadFile = b.getUploadFile();
 		String fname = b.getUploadFile().getOriginalFilename();
 		String path = null;
-//			String path = request.getServletContext().getRealPath("classpath:/static/images");실패
 		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
 		try {
 			path = resource.getFile().getAbsolutePath();
@@ -210,4 +293,7 @@ public class UsedgoodController {
 		bs.insertUsedgood(b);
 		return "redirect:/usedgood/usedgood";
 	}
+	
+	
+	
 }

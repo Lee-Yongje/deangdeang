@@ -66,5 +66,15 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     		countQuery = "select count(*) from board where b_code=?1 AND rno = ?2 AND b_title LIKE CONCAT('%', ?3, '%')",
     		nativeQuery = true)
     public Page<Board> searchBoardByBTitleAndRegion(int b_code ,String rno, String search, Pageable pageable);
+
+    //b_code랑 bno로 삭제
+    @Modifying
+    @Transactional
+    @Query(value="DELETE FROM board WHERE b_code = ?1 AND bno = ?2", nativeQuery = true)
+    public int deleteBoard(int b_code, int bno);
+    
+    @Query(value="SELECT * from board where b_code = ?1 and bno = ?2", nativeQuery = true)
+    public Board findBoardByBnoAndBCode(int b_code, int bno);
+    
 }
 
