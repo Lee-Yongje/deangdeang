@@ -47,12 +47,17 @@ public class CommunityController {
 	//----------게시판형(자유,질문,모임)----------
 	// 게시판 조회
 	@GetMapping("/community/board")
-	public void boardPage(int b_code, HttpSession session, Model model) {
+	public String boardPage(int b_code, HttpSession session, Model model) {
 
 		String b_name = bs.findBNameByBCode(b_code);
-		System.out.println(bs.findByBcode(b_code).size());
-		model.addAttribute("list", bs.findByBcode(b_code));
 		model.addAttribute("b_name", b_name);
+		
+		if( b_code == 4 ) {
+			model.addAttribute("list", bs.findClubByBcode(b_code));
+			return "/community/boardClub";
+		}
+		model.addAttribute("list", bs.findByBcode(b_code));
+		return "/community/board";
 	}
 	
 	// 게시물 상세보기

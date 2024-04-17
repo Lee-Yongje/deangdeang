@@ -123,7 +123,7 @@
 							        <div class="col-5"></div>
 							        <!-- 회원명 -->
 							        <div class="input-group col-3">
-							            <input class="form-control bg-transparent border-dark" type="text" id="u_name" name="u_name" value="용제" disabled>
+							            <input class="form-control bg-transparent border-dark" type="text" id="u_name" name="u_name" th:value="${session.userSession.name}" disabled>
 							        </div>
 							    </div>
 							    <!-- 제목 -->

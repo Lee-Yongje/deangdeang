@@ -21,9 +21,21 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 	
 //	사진 없는 게시판 메소드 시작
 	
-	// 사진 없는 게시판 조회
-	@Query(value = "SELECT b.*, u.u_name FROM board b INNER JOIN users u ON b.uno = u.uno WHERE b_code = ?1 order by b_date desc", nativeQuery = true)
+	// 자유, 질문 게시판 조회
+	@Query(value = "SELECT b.*, u_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno "
+			+ "WHERE b_code = ?1 order by b_date desc",
+			countQuery = "select count(*) from board where b_code=?1",
+			nativeQuery = true)
 	public List<Map<String ,Object>> findByBcode(int b_code);
+	
+	// 모임 게시판 조회
+	@Query(value = "SELECT b.*, u_name, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ? order by b_date desc;",
+			countQuery = "select count(*) from board where b_code=?1",
+			nativeQuery = true)
+	public List<Map<String ,Object>> findClubByBcode(int b_code);
 	
 	
 //	사진 없는 게시판 메소드 끝

@@ -41,9 +41,14 @@ public class BoardService {
 	   return codedao.findBNameByBCode(b_code);
    }
    
-   // 조회
+   // 자유, 질문 게시판 조회
    public List<Map<String ,Object>> findByBcode(int b_code) {
 	   return dao.findByBcode(b_code);
+   }
+   
+   // 모임 게시판 조회
+   public List<Map<String ,Object>> findClubByBcode(int b_code) {
+	   return dao.findClubByBcode(b_code);
    }
    
  //게시판용 getNextNo
