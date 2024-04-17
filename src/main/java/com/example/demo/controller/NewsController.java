@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class NewsController {
 	@Autowired
     private NewsService newsService;
 
-    @GetMapping("/member/news")
+    @GetMapping("/news/news")
     public String getNews(Model model) {
         // NewsService에서 뉴스 데이터를 가져옵니다.
         List<News> newsList = newsService.crawlDataFromWebPage();
@@ -30,6 +31,6 @@ public class NewsController {
         model.addAttribute("newsList", newsList);
         
         // 뉴스를 보여줄 뷰의 이름을 반환합니다. (예: "News.html"의 Thymeleaf 템플릿)
-        return "/member/news"; // Thymeleaf 템플릿 파일 이름 (확장자 제외)
+        return "/news/news"; // Thymeleaf 템플릿 파일 이름 (확장자 제외)
     }
 }
