@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.LoginFormDTO;
 import com.example.demo.entity.Board;
+import com.example.demo.entity.BoardCode;
 import com.example.demo.entity.BoardId;
 import com.example.demo.entity.RegionCode;
 import com.example.demo.entity.Users;
@@ -101,15 +102,20 @@ public class CommunityController {
     //---------게시판형, 사진형 공통---------------
     // 글 작성 페이지 이동
     @GetMapping("/member/community/boardInsert")
-    public void boardInsert(String b_name, HttpSession session, Model model) {
+    public String boardInsert(String b_name, HttpSession session, Model model) {
     	int b_code = bs.findBCodeByBName(b_name);
     	model.addAttribute("b_code", b_code);
     	model.addAttribute("b_name", b_name);
+    	
+    	if( b_code == 4) {
+    		return "/member/community/boardClubInsert";
+    	}
+    	return "/member/community/boardInsert";
     }
     
     // 글 작성 등록
-    @PostMapping("/member/community/boardInsert/{b_code}")
-    public String boardInsert(Board b, @PathVariable int b_code) {
+    @PostMapping("/member/community/boardInsert/{b_code}/{u_name}")
+    public String boardInsert(Board b, @PathVariable int b_code, @PathVariable String u_name ) {
     	
     	// 현재시간
     	LocalDateTime now = LocalDateTime.now();
@@ -118,13 +124,20 @@ public class CommunityController {
     	int bno = bs.getNextBno(b_code);
     	
     	// RegionCode 객체 생성 및 설정
-    	RegionCode regionCode = new RegionCode();    	
-    	if( b.getRegionCode().getRno() != null && !b.getRegionCode().getRno().equals("")) {
-        	regionCode.setRno(b.getRegionCode().getRno());
+    	RegionCode regionCode = new RegionCode();
+    	if(b_code == 4) {
+    		regionCode.setRno(b.getRegionCode().getRno());
     	}else {
     		regionCode = null;
     	}
-    	b.setRegionCode(regionCode);
+    	b.setRegionCode(regionCode);    		
+
+		// BoardCode 객체 생성 및 설정
+		if (b.getBoardcode() == null) {
+			b.setBoardcode(new BoardCode());
+		}
+		b.getBoardcode().setB_code(b_code);
+		
     	// 복합키 처리
     	BoardId boardId = new BoardId();
     	boardId.setB_code(b_code);
@@ -132,16 +145,18 @@ public class CommunityController {
     	b.setId(boardId);
 
     	b.setB_date(now);
+    	b.setOngoing(1);
     	
     	// 로그인 세션유지시 us.findUnoByUName 으로 수정
-    	long userId = (long)104;
-		if (b.getUser() == null) {
+//    	long userId = bs.findByUName(u_name);
+    	long userId = (long)102;
+    	if (b.getUser() == null) {
 			b.setUser(new Users());
 		}
 		b.getUser().setId(userId);
     	
-    	// 파일 관련
-    	MultipartFile uploadFile = b.getUploadFile();
+		// 파일 관련
+		MultipartFile uploadFile = b.getUploadFile();
 		String fname = b.getUploadFile().getOriginalFilename();
 		String path = null;
 		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.BoardCodeDAO;
 import com.example.demo.dao.BoardDAO;
+import com.example.demo.dao.UsersDAO;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.News;
 import com.example.demo.entity.Users;
@@ -29,7 +30,15 @@ public class BoardService {
    @Autowired
    private BoardCodeDAO codedao;
    
+   @Autowired
+   private UsersDAO udao;
+   
 //   사진 없는 게시판 조회 시작
+   
+   // 회원명으로 회원번호 가져오기 
+   public Long findByUName(String u_name) {
+	   return udao.findByUName(u_name);
+   }
    
    // 게시판명으로 게시판 번호 가져오기
    public int findBCodeByBName(String b_name) {
