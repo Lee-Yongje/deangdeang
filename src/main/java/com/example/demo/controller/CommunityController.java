@@ -99,7 +99,7 @@ public class CommunityController {
     
     
     
-    //---------게시판형, 사진형 공통---------------
+    //---------게시판형, 사진형 공통(X)---------------
     // 글 작성 페이지 이동
     @GetMapping("/member/community/boardInsert")
     public String boardInsert(String b_name, HttpSession session, Model model) {
