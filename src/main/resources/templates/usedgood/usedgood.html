@@ -121,7 +121,10 @@
 										th:text="${b.b_title}"></a></h3>
 								<div class="d-flex">
 									<div class="pricing">
-										<p class="price"><span class="price-sale" th:text="${b.b_price}+'원'"></span></p>
+										<p class="price">
+											<span th:if="${b.b_price>0}" th:text="${b.b_price}+'원'"></span> 
+											<span th:if="${b.b_price==0}" style="color:darkgreen">무료나눔</span> 
+										</p>
 									</div>
 								</div>
 								<!-- 혹시 몰라 남겨두는 좋아요 -->
