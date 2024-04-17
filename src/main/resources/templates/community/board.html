@@ -30,10 +30,10 @@
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-<style>
-    #region {
-        display: none;
-    }
+	<style>
+	    #region {
+	        display: none;
+	    }
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
@@ -91,9 +91,9 @@
 					<h3 class="heading">커뮤니티</h3>
 					<ul class="categories">
 						<li><a href="/community/boast">전국댕댕자랑</a></li>
-						<li><a href="/community/board?b_name=자유게시판">자유게시판</a></li>
-						<li><a href="/community/board?b_name=질문게시판">질문게시판</a></li>
-						<li><a href="/community/board?b_name=산책해요">산책해요</a></li>
+						<li><a href="/community/board?b_code=2">자유게시판</a></li>
+						<li><a href="/community/board?b_code=3">질문게시판</a></li>
+						<li><a href="/community/board?b_code=4">산책해요</a></li>
 						<li><a href="/community/report">신고/제보</a></li>
 					</ul>
 				</div>
@@ -103,7 +103,7 @@
 				<div class="container-fluid">
 					<div class="d-flex justify-content-between align-items-center">
 						<h2><a th:href="@{/community/board(b_name=${b_name})}"><span th:text="${b_name}"></span></a></h2>
-						<a th:href="@{/member/community/boardWrite(b_name=${b_name})}" class="btn btn-primary">글쓰기</a>
+						<a th:href="@{/member/community/boardInsert(b_name=${b_name})}" class="btn btn-primary">글쓰기</a>
 					</div>
 					<br />
 
@@ -112,26 +112,21 @@
 						<table class="container-fluid table-bordered"style="text-align: center;">
 							<thead>
 								<tr>
-									<th scope="col" width="10%">글번호</th>
+									<th scope="col" width="10%">게시물명</th>
 									<th scope="col" width="">제목</th>
 									<th scope="col" width="10%">작성자</th>
-									<th scope="col" width="10%">작성일</th>
+									<th scope="col" width="15%">작성일</th>
 									<th scope="col" width="10%">조회수</th>
 								</tr>
 							</thead>
 							<tbody>
-								<!--<tr th:each="i : ${#numbers.sequence(1,10)}">
-									<td th:text="'제목 ' + ${i}"></td>
-									<td th:text="'작성자 ' + ${i}"></td>
-									<td th:text="'작성일 ' + ${i}"></td>
-									<td th:text="'조회수 ' + ${i}"></td>
-								</tr>-->
-								<tr>
-									<td>1</td>
-									<td>제목1</td>
-									<td>홍길동</td>
-									<td>24-04-02</td>
-									<td>100</td>
+								<tr th:each="b: ${list}">
+									<td th:text="${b_name}"></td>
+									<td><a th:href="@{'/member/community/boardDetail/'+${b.b_code}+'/'+ ${b.bno}}"
+										th:text="${b.b_title}"></a></td>
+									<td th:text="${b.u_name}"></td>
+									<td th:text="${#dates.format(b.b_date, 'yyyy-MM-dd')}"></td>
+									<td th:text="${b.b_hit}"></td>
 								</tr>
 							</tbody>
 						</table>

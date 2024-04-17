@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>댕댕정보통 | 신고/제보게시판</title>
+    <title th:text="'댕댕정보통 | ' + ${b_name}"></title>
 	<link rel="icon" th:href="@{/images/icon.png}">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -42,7 +42,7 @@
 
 <body class="goto-here">
 	<!-- Header/nav -->
-	<div th:replace="header :: header-fragment"></div>
+	<div th:replace="~{header :: header-fragment}"></div>
 	<!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
@@ -74,34 +74,38 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
 					<div class="container mt-5 text">
-						<h2>신고/제보 게시판</h2>
-						<br />
+						<h2><a th:href="@{/community/board(b_code=${b_code})}"><span th:text="${b_name}"></span></a></h2>
+						<hr>
+						
+						<!--  게시글 상세보기 시작 -->
 						<div class="row">
 							<div class="col-md-6">
 								<!-- 사진 -->
 								<img src="/images/sampledog.jpg" class="img-fluid"
-									style="max-width: 100%; height: auto; max-height: 800px">
+									style="max-width: 100%; height: auto; max-height: 800px;">
 							</div>
 							<div class="col-md-6">
 								<!-- 제목 -->
-								<h2 class="post-title">중계동 은행사거리에 돌아다니는 강아지 있어요</h2>
-								<h4>서울</h4>
+								<h2 class="post-title" th:text="${b.b_title}"></h2>
 								<!-- 작성자, 작성일 -->
 								<div class="post-meta">
-									<span>작성자 이름</span><br />
-									<span>2024-03-29 18:05</span>
+									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
+										class="rounded-circle">
+									<span th:text="${b.u_name}"></span><br />
+									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
 							</div>
 						</div>
 						<div class="row mt-3">
 							<div class="col-md-12">
 								<!-- 게시글 내용 -->
-								<div class="post-details">
-									<p class="post-content">게시글 내용을 이곳에 표시합니다.시글 내용을 이곳에 표시합니다.시글 내용을 이곳에 표시합니다.시글 내용을
-										이곳에 표시합니다.시글 내용을 이곳에 표시합니다.</p>
+								<div class="post-details" style="white-space: pre;">
+									<p class="post-content" th:text="${b.b_content}"></p>
 								</div>
 							</div>
 						</div>
+						<!--  게시글 상세보기 끝 -->
+						
 						<!-- 댓글 -->
 						<div class="row mt-3">
 							<div class="col-md-12">
@@ -113,7 +117,7 @@
 											style="width: 50px; height: 50px;">
 										<div class="ml-3">
 											<div class="comment-meta">
-												<span class="font-weight-bold">작성자2</span>
+												<span class="font-weight-bold">작성자1</span>
 												<span>2024-03-29 12:00</span>
 											</div>
 											<div class="comment-content">
@@ -150,24 +154,18 @@
 						</div>
 					</div>
 
-
-
-
-
 					<div class="row mt-5">
-
 
 					</div>
 				</div><!--/container -->
 			</div> <!-- .col-md-8 -->
-
 
 		</div>
 	</div>
 	</section> <!-- .section -->
 
 	<!--footer  -->
-	<div th:replace="footer :: footer"></div>
+	<div th:replace="~{footer :: footer}"></div>
 	<!--footer end  -->
 
 
@@ -181,19 +179,20 @@
 
 
 	<script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/jquery.easing.1.3.js}"></script>
-    <script th:src="@{/js/jquery.waypoints.min.js}"></script>
-    <script th:src="@{/js/jquery.stellar.min.js}"></script>
-    <script th:src="@{/js/owl.carousel.min.js}"></script>
-    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-    <script th:src="@{/js/aos.js}"></script>
-    <script th:src="@{/js/jquery.animateNumber.min.js}"></script>
-    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
-    <script th:src="@{/js/scrollax.min.js}"></script>
-    <script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+	<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/js/jquery.stellar.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/aos.js}"></script>
+	<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+	<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/js/scrollax.min.js}"></script>
+	<script th:src="@{/js/google-map.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
 	<!--게시판상세글용-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

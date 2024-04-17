@@ -70,7 +70,8 @@
 			
 	        $("table tbody tr").click(function() {
 	            var phone = $(this).find("#phone").val();
-	            var url = "/region/hospitalDetail?phone="+phone;
+	            var h_name = $(this).find("#h_name").val();
+	            var url = "/region/hospitalDetail?phone="+phone+"&h_name="+h_name;
 	            window.location.href = url;
 	        });
 	        
@@ -186,6 +187,7 @@
 
 							                <td th:text="${hospital.rdnmadr_NM}"></td>
 							                <input type="hidden" id="phone" th:value="${hospital.tel_NO}" /> 
+							                <input type="hidden" id="h_name" th:value="${hospital.fclty_NM}" /> 
 							            </tr>
 							        </tbody>
 						        </table>
