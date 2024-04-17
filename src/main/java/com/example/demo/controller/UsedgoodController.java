@@ -256,6 +256,7 @@ public class UsedgoodController {
 		b.setId(boardId);
 
 		b.setB_date(now);
+		b.setOngoing(1);
 
 		// 로그인 세션유지 하게 되면 이거 세션에서 아이디 가져와서 하는 걸로 수정해야됨!! 일단 101로 넣어놓음
 		long userId = (long)101;
@@ -290,11 +291,6 @@ public class UsedgoodController {
 			}
 		}
 		
-		//테스트용
-		System.out.println("b" + b);
-		System.out.println("bno: " + b.getId().getBno());
-		System.out.println("b_code: " + b.getId().getB_code());
-
 		bs.insertUsedgood(b);
 		return "redirect:/usedgood/usedgood";
 	}
