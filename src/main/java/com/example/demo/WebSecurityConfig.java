@@ -14,8 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import com.example.demo.service.CustomOAuth2UserService;
 import com.example.demo.service.CustomUserDetailsService;
 import com.example.demo.service.UsersService;
-
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -23,7 +21,6 @@ public class WebSecurityConfig {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
-    
     @Autowired
     private CustomUserDetailsService userDetailsService;
     
@@ -35,18 +32,18 @@ public class WebSecurityConfig {
         return http.getSharedObject(AuthenticationManagerBuilder.class).build();
     }
     
-    
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
     
+    @SuppressWarnings("deprecation")
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers("/", "/index", "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
-                             "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**", "/register", "/register_kakao")
+                             "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**", "/register", "/register_kakao", "/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/news/**")
                 .permitAll()
                 .anyRequest().authenticated()
             )
@@ -56,16 +53,20 @@ public class WebSecurityConfig {
                 .failureUrl("/login?error=true")
                 .permitAll()
             )
+            .logout(logout -> logout
+                .logoutSuccessUrl("/login?logout=true")
+                .permitAll()
+            )
             .oauth2Login(oauth2Login -> oauth2Login
                 .loginPage("/login")
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService)  // Ensure CustomOAuth2UserService is correctly autowired
+                .userService(customOAuth2UserService)
                 .and()
                 .defaultSuccessUrl("/index", true)
                 .permitAll()
-            );
+            )
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedPage("/403"));
         return http.build();
     }
-
-
 }

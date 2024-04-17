@@ -32,10 +32,17 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class LoginController {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+	
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -53,20 +60,21 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-            );
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            return "redirect:/index";
-        } catch (AuthenticationException e) {
-            model.addAttribute("loginError", "Invalid username or password.");
-            return "login";
-        }
-    }
-
+//    @PostMapping("/login")
+//    public String processLogin(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
+//        try {
+//            Authentication auth = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(username, password)
+//            );
+//            SecurityContextHolder.getContext().setAuthentication(auth);
+//            return "redirect:/index";
+//        } catch (AuthenticationException e) {
+//            model.addAttribute("loginError", "Invalid username or password.");
+//            return "login";
+//        }
+//    }
+    
+    
     @GetMapping("/login-error")
     public String loginError(@RequestParam Optional<Boolean> error, Model model) {
         if (error.isPresent() && error.get()) {
