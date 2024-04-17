@@ -73,8 +73,14 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     @Query(value="DELETE FROM board WHERE b_code = ?1 AND bno = ?2", nativeQuery = true)
     public int deleteBoard(int b_code, int bno);
     
+    //게시판 코드랑 번호로 게시판 찾기
     @Query(value="SELECT * from board where b_code = ?1 and bno = ?2", nativeQuery = true)
     public Board findBoardByBnoAndBCode(int b_code, int bno);
     
+    //판매완료로 변경
+    @Modifying
+    @Transactional
+    @Query(value="UPDATE board SET ongoing=0 WHERE b_code=?1 and bno=?2", nativeQuery = true)
+    public void usedgoodSold(int b_code, int bno);
 }
 

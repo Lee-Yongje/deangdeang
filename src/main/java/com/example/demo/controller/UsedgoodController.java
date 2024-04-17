@@ -213,6 +213,12 @@ public class UsedgoodController {
 		return "redirect:/usedgood/usedgood";
 	}
 	
+	//판매완료로 변경
+	@GetMapping("/member/usedgood/sold/{b_code}/{bno}")
+	public String changeSold(@PathVariable int b_code, @PathVariable int bno) {
+		bs.usedgoodSold(b_code, bno);
+		return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+	}
 	
 	// 중고거래 글 등록 페이지로 가기
 	@GetMapping("/member/usedgood/write")

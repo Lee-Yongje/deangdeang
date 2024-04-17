@@ -46,6 +46,12 @@
 			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;				
 				
 		    });
+		    $("#btnSold").click(function () {
+				var bno = $("#bno").val();
+				var b_code = $("#b_code").val();
+			    window.location.href = "/member/usedgood/sold/"+b_code+"/"+bno;				
+				
+		    });
 		});
 	</script>
 	
@@ -55,6 +61,13 @@
 		}
 		.text{
 			color: black;
+		}
+		.green-text {
+		    color: darkgreen
+		}
+		
+		.red-text {
+		    color: orangered
 		}
 	</style>
 </head>
@@ -88,6 +101,7 @@
 				</div>
 				<div class="col-md-6">
 					<!-- 제목 -->
+					<h5 id="ongoing" th:text="${b.ongoing == 1} ? '판매중' : '판매완료'" th:class="${b.ongoing == 1} ? 'green-text' : 'red-text'"></h5>
 					<h2 class="post-title" th:text="${b.b_title}"></h2>
 					<h4 th:text="${b.b_price}+'원'"></h4>
 					<h4 th:text="${b.r_name}"></h4>
@@ -100,8 +114,11 @@
 					</div>
 					<br/>
 					<div th:if="${session.userSession.id==writer}"> 
-						<button id="btnUpdate" class="btn btn-primary">수정</button> 
-						<button id="btnDelete" class="btn btn-primary">삭제</button> 
+						<th:block th:if ="${b.ongoing==1}"> <!--만약 거래가 완료되면 수정, 삭제, 판매완료로 변경 불가-->
+							<button id="btnUpdate" class="btn btn-primary">수정</button> 
+							<button id="btnDelete" class="btn btn-primary">삭제</button>
+							<button id="btnSold" class="btn btn-primary">판매완료</button>
+						</th:block>  
 					</div>
 				</div>
 			</div>

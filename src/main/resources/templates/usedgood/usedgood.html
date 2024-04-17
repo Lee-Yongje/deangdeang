@@ -109,7 +109,11 @@
 						<div class="product">
 							<a th:href="@{'/member/usedgood/detail/6/' + ${b.id.bno}}" class="img-prod">
 								<img class="img-fluid" th:src="@{'/images/' + ${b.b_fname}}">
-								<div class="overlay"></div>
+								<span class="status" th:if="${b.ongoing == 1}"  th:text="'판매중'"> 
+								</span>
+								<span class="status" th:if="${b.ongoing == 0}"  style="background-color: grey;" th:text="'판매완료'"> 
+								</span>
+
 							</a>
 
 							<div class="text py-3 pb-4 px-3 text-center">
