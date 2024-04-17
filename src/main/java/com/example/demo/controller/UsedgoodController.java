@@ -171,8 +171,6 @@ public class UsedgoodController {
 	public String update(Board b, @PathVariable int b_code, @PathVariable int bno) {
 		Board ob = bs.findBoardByBnoAndBCode(b_code, bno);
 		String oldFname = ob.getB_fname();
-		System.out.println("old b:"+ob);
-		System.out.println("새로 받은 b:"+b);
 		
 		// 파일 관련
 		MultipartFile uploadFile = b.getUploadFile();
