@@ -31,7 +31,7 @@ public class RegionController {
     @Autowired
     private ResourceLoader resourceLoader;
     
-    // JSON 형식의 데이터 Hospital객체의 list로 반환하는 메소드
+    // JSON 형식의 데이터 Hospital을 객체의 list로 반환하는 메소드
     private List<Hospital> loadHospitals() throws IOException {
 		Resource resource = resourceLoader.getResource("classpath:static/data/hospital.json");
 		ObjectMapper objectMapper = new ObjectMapper();	
@@ -92,12 +92,8 @@ public class RegionController {
 				vregion2 = region2;
 			}
     		
-    		
-    		System.out.println("vsearch:"+vsearch); 
-    		System.out.println("vregion1:"+vregion1); 
-    		System.out.println("vregion2:"+vregion2); 
 			
-			//hospital에서 해당 시도를 하나하나 찾아서 다시 hospitals에 넣기
+			//hospitas에서 해당 시도를 하나하나 찾아서 다시 hospitals에 넣기
 			List<Hospital> filteredHospitals = new ArrayList<>();
 			if (vregion1 != null) {
 			    for (Hospital hospital : hospitals) {
@@ -110,7 +106,7 @@ public class RegionController {
 			}
 			hospitals = filteredHospitals;
 			
-			//hospital에서 해당 시군구를 하나하나 찾아서 다시 hospitals에 넣기
+			//hospitals에서 해당 시군구를 하나하나 찾아서 다시 hospitals에 넣기
 			List<Hospital> filteredHospitals2 = new ArrayList<>();
 			if (vregion2 != null) {
 			    for (Hospital hospital : hospitals) {
@@ -123,7 +119,7 @@ public class RegionController {
 			}
 			hospitals = filteredHospitals2;
 			
-			//hospital에서 검색 건을 하나하나 찾아서 다시 hospitals에 넣기
+			//hospitals에서 검색 건을 하나하나 찾아서 다시 hospitals에 넣기
 			List<Hospital> filteredHospitals3 = new ArrayList<>();
 			if (vsearch != null) {
 			    for (Hospital hospital : hospitals) {
@@ -136,8 +132,6 @@ public class RegionController {
 			}
 			hospitals = filteredHospitals3;
 
-			
-			
 			int size=10;
 			int startIndex = (page-1) * size;
 			int endIndex = Math.min(startIndex + size, hospitals.size());
@@ -155,7 +149,6 @@ public class RegionController {
 		    int endPage = Math.min(startPage + pagingSize - 1, totalPage); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
 		    
 			
-//			System.out.println("hospitalsPerpage: "+hospitalsPerPage.get(0));
 			model.addAttribute("list", hospitalsPerPage);
 			model.addAttribute("nowPage", page);
 			model.addAttribute("startPage", startPage);
@@ -166,21 +159,27 @@ public class RegionController {
     
     //병원 상세(지도 포함)
     @GetMapping("/region/hospitalDetail")
-    public void hospitalDetailPage(Model model, @RequestParam String phone) throws IOException {
+    public void hospitalDetailPage(Model model,
+    								@RequestParam String phone,
+    								@RequestParam String h_name) throws IOException {
+    
     	List<Hospital> hospitals = loadHospitals();
     	Hospital h = null;
     	for (Hospital hospital : hospitals) {
-    	    if (phone.equals(hospital.getTel_NO())) {
-    	        h = hospital;
-    	        System.out.println(h);
-    	        model.addAttribute("h", h);
-    	        break;
-    	    }else {
-    	    	// 해당 전화번호를 가진 hospital을 찾지 못한 경우 처리 (미완)
-    	    }
+    		if(phone!=null&&!phone.equals("")) {
+	    	    if (phone.equals(hospital.getTel_NO())){
+	    	        h = hospital;
+	    	        model.addAttribute("h", h);
+	    	        break;
+	    	    }
+    		}else { //전화번호가 없는 경우 처리
+    			if( h_name.equals(hospital.getFclty_NM())){
+    				h = hospital;
+	    	        model.addAttribute("h", h);
+	    	        break;
+    			}
+    		}
     	}
-    	
-    	
     	model.addAttribute("kakaoApiKey", kakaoApiKey);
     }
     

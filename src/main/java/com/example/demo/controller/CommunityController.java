@@ -129,11 +129,11 @@ public class CommunityController {
     	b.setB_date(now);
     	
     	// 로그인 세션유지시 us.findUnoByUName 으로 수정
-//    	int userId = 104;
-//    	if (b.getUsers() == null) {
-//    		b.setUsers(new Users());
-//    	}
-//    	b.getUsers().setUno(userId);
+    	long userId = (long)104;
+		if (b.getUser() == null) {
+			b.setUser(new Users());
+		}
+		b.getUser().setId(userId);
     	
     	// 파일 관련
     	MultipartFile uploadFile = b.getUploadFile();

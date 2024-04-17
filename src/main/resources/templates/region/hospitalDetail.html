@@ -99,7 +99,7 @@
                 <h2>동물병원 상세</h2>
             </div>
             <br />
-            <input type="hidden" th:value="${h.tel_NO}" id="tel"/>
+            <input type="hidden" th:if="${h.tel_NO}" th:value="${h.tel_NO}" id="tel"/>
             <h3 th:text="${h.fclty_NM}" style="text-decoration: underline;"></h3>
             <h5 id="showTel"></h5>
             <h5 th:text="${h.rdnmadr_NM}"></h5>

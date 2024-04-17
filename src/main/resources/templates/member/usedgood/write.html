@@ -40,7 +40,7 @@
 		$(document).ready(function () {
 			$.ajax({
 				type: "GET",
-				url: "/regionCode",
+				url: "/region/regionCode",
 				success: function (regionCodes) {
 					regionCodes.forEach(function (regionCode) {
 						$('#region').append($('<option>', {
@@ -121,6 +121,7 @@
 					<div class="col-md-12">
 						<form action="/member/usedgood/insert/6" method="post" id="boardForm"
 							enctype="multipart/form-data">
+							<input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
 							<!--콤보박스-->
 							<div class="form-group">
 								<select class="form-control" id="region" name="regionCode.rno" style="width: 40%;">
