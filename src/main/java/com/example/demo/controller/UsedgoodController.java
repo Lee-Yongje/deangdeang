@@ -128,6 +128,7 @@ public class UsedgoodController {
 	@GetMapping("/member/usedgood/detail/{b_code}/{bno}")
 	public String usedgoodDetailPage(@PathVariable int b_code, @PathVariable int bno, Model model) {
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
+		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
 		bs.updateHit(bno, b_code);

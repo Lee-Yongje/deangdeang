@@ -74,8 +74,6 @@
 			</div>
 		</div>
 	</div>
-	<!--테스트용-->
-
 	<div class="container text">
 		<div class="container mt-5">
 			<h2>중고장터</h2>
@@ -101,7 +99,7 @@
 						<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 					</div>
 					<br/>
-					<div> <!-추후 세션 받아서 조건 줘서 보이도록 수정해-->
+					<div th:if="${session.userSession.id==writer}"> 
 						<button id="btnUpdate" class="btn btn-primary">수정</button> 
 						<button id="btnDelete" class="btn btn-primary">삭제</button> 
 					</div>
