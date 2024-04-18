@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
 	public Users findByEmail(String email);
-//    Optional<Users> findByEmail(String email);
 
     @Modifying
 	@Query(value = "update users set u_name=?, u_email=?, u_phone=?, u_nickname=?, u_fname=?, rno=? where uno=?", nativeQuery = true)

@@ -17,11 +17,6 @@ public class UsersService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Registers a new user with STANDARD authentication type.
-     * @param userDto the data transfer object containing user details
-     * @return the saved user entity
-     */
     public Users registerNewStandardUser(Users userDto) {
         // Check if user already exists
         if (emailExist(userDto.getEmail())) {
