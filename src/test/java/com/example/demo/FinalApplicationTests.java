@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.dao.UserRepository;
+import com.example.demo.dao.UsersDAO;
 import com.example.demo.entity.Users;
 
 @SpringBootTest
