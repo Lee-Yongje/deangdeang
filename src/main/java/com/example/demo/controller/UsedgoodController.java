@@ -102,7 +102,7 @@ public class UsedgoodController {
 	    	list = bs.searchUsedgoodByTitleAndRegion(6, vrno, vsearch, pageable);
 	    }
 	    
-	    //페이징
+	    //페이징 
 	    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
 	    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
 	    int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지

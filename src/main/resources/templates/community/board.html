@@ -114,7 +114,7 @@
 									<th:block th:if="${nowPage>5}">
 										<li><a
 											th:href="@{'/community/board/'+${b_code}+'?page='+${startPage-1}}">&lt;</a></li>
-									</th:block>
+									</th:block> 
 									<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
 										<li th:class="${pageNum == list.number + 1} ? 'active' : ''">
 											<a th:href="@{'/community/board/'+${b_code}+'?page=' + ${pageNum}}">
