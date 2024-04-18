@@ -70,6 +70,7 @@ public class CommunityController {
 		model.addAttribute("nowPage",page);
 	    model.addAttribute("startPage",startPage);
 	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",list.getTotalPages());
 		return "/community/board";
 	}
 	
@@ -97,6 +98,7 @@ public class CommunityController {
 		model.addAttribute("nowPage",page);
 	    model.addAttribute("startPage",startPage);
 	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",list.getTotalPages());
 		return "/community/boardClub";
 	}
 	
@@ -199,7 +201,10 @@ public class CommunityController {
 		
 		bs.insertUsedgood(b);
 		
-		return "redirect:/community/board?b_code="+b_code;
+		if( b_code == 4 ) {
+			return "redirect:/community/boardClub/"+b_code;			
+		}
+		return "redirect:/community/board/"+b_code;
     }
     
 }
