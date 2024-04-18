@@ -202,7 +202,7 @@
 								<caption>List of users</caption>
 								<thead>
 									<tr>
-										<th scope="col" width="10%">글번호</th>
+										<th scope="col" width="10%">게시판</th>
 										<th scope="col" width="">제목</th>
 										<th scope="col" width="10%">작성일</th>
 										<th scope="col" width="10%">조회수</th>
@@ -214,11 +214,11 @@
 										<td th:text="'작성일 ' + ${i}"></td>
 										<td th:text="'조회수 ' + ${i}"></td>
 									</tr>-->
-									<tr>
-										<td>1</td>
-										<td>제목1</td>
-										<td>24-04-02</td>
-										<td>100</td>
+									<tr th:each = "b,index : ${boards}">
+										<td th:text="${boardNames[index.index]}"></td> <!-- boardNames의 요소 중에서 현재 반복 중인 index에 해당하는 요소의 값을 가져오는 것 -->
+										<td th:text="${b.b_title}"></td>
+										<td th:text="${formattedDates[index.index]}"></td> <!-- #dates.format은 Thymeleaf의 내장 기능 중 하나로 날짜를 특정 형식으로 포맷하는 기능을 담당 -->
+										<td th:text="${b.b_hit}"></td>
 									</tr>
 								</tbody>
 							</table>

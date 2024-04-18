@@ -24,7 +24,7 @@ public interface UsersDAO extends JpaRepository<Users, Long> {
     @Modifying
 	@Query(value = "update users set u_name=?, u_email=?, u_phone=?, u_nickname=?, u_fname=?, rno=? where uno=?", nativeQuery = true)
 	@Transactional
-	public int updateInfo(String u_name, String u_email, String u_phone, String u_nickname, String u_fname, String rno, Long uno);
+	public int updateInfo(String name, String email, String phone, String nickname, String filename, String rno, Long uno);
 
 	@Modifying
 	@Query(value = "update users set u_pwd=? where uno=?", nativeQuery = true)
