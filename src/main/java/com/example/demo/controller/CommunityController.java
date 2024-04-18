@@ -115,29 +115,7 @@ public class CommunityController {
     } 
 	
 	
-	
-	
-	//-----------사진형--------------
-	//전국댕댕자랑 조회
-	@GetMapping("/community/boast")
-    public void boastPage() {
-    }
-	
-	//신고제보 조회
-    @GetMapping("/community/report")
-    public void reportPage() {
-    }
-   
-    //전국댕댕자랑 상세
-    @GetMapping("/member/community/boastDetail")
-    public void boastDetailPage() {
-    }
-    
-    //신고제보 상세
-    @GetMapping("/member/community/reportDetail")
-    public void reportDetail() {
-    }
-    
+
     
     
     //---------게시판형, 사진형 공통(X)---------------
