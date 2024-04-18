@@ -123,7 +123,7 @@
 									<div class="pricing">
 										<p class="price">
 											<span th:if="${b.b_price>0}" th:text="${b.b_price}+'원'"></span> 
-											<span th:if="${b.b_price==0}" style="color:darkgreen">무료나눔</span> 
+											<span th:unless="${b.b_price>0}" style="color:darkgreen">무료나눔</span> 
 										</p>
 									</div>
 								</div>

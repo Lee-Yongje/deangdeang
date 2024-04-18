@@ -83,6 +83,11 @@ public class BoardService {
 	   return dao.searchBoardByBTitleAndRegion(b_code, rno, search,pageable);
    }
    
+   //지역으로만 검색
+   public Page<Board> searchBoardByRegion(int b_code, String rno, Pageable pageable){
+	   return dao.searchBoardByRegion(b_code, rno, pageable);
+   }
+   
    //일단 중고장터용 getNextNo
    public int getNextUsedgoodBno() {
 	   return dao.getNextBno(6);

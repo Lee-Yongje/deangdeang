@@ -70,6 +70,7 @@ public class CommunityController {
 		model.addAttribute("nowPage",page);
 	    model.addAttribute("startPage",startPage);
 	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",list.getTotalPages());
 		return "/community/board";
 	}
 	
@@ -97,6 +98,7 @@ public class CommunityController {
 		model.addAttribute("nowPage",page);
 	    model.addAttribute("startPage",startPage);
 	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",list.getTotalPages());
 		return "/community/boardClub";
 	}
 	
@@ -113,29 +115,7 @@ public class CommunityController {
     } 
 	
 	
-	
-	
-	//-----------사진형--------------
-	//전국댕댕자랑 조회
-	@GetMapping("/community/boast")
-    public void boastPage() {
-    }
-	
-	//신고제보 조회
-    @GetMapping("/community/report")
-    public void reportPage() {
-    }
-   
-    //전국댕댕자랑 상세
-    @GetMapping("/member/community/boastDetail")
-    public void boastDetailPage() {
-    }
-    
-    //신고제보 상세
-    @GetMapping("/member/community/reportDetail")
-    public void reportDetail() {
-    }
-    
+
     
     
     //---------게시판형, 사진형 공통(X)---------------
@@ -221,7 +201,10 @@ public class CommunityController {
 		
 		bs.insertUsedgood(b);
 		
-		return "redirect:/community/board?b_code="+b_code;
+		if( b_code == 4 ) {
+			return "redirect:/community/boardClub/"+b_code;			
+		}
+		return "redirect:/community/board/"+b_code;
     }
     
 }
