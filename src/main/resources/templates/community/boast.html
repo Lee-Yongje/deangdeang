@@ -30,6 +30,26 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+		
+		function truncateString(text){
+			if (text.length <= 15) {
+		        return text;
+		    } else {
+		        return text.substring(0, 15) + '...';
+		    }
+		}
+		
+		$(document).ready(function(){
+		    $(".originalContent").each(function(){
+		        var originalText = $(this).val();
+		        var truncateText = truncateString(originalText);
+		        $(this).siblings(".truncateContent").html(truncateText);
+		    });
+		});
+		
+	</script>
 	<style>
 		a{
 			color: black;
@@ -88,8 +108,9 @@
 							<div class="text py-3 pb-4 px-3 text-center">
 								<h3><a th:href="@{'/member/community/photoDetail/1/'+ ${b.id.bno}}"
 										th:text="${b.b_title}"></a></h3>
-								<div class="d-flex">
-									<span th:text="${b.b_content}"></span>
+								<div class="d-flex justify-content-center align-items-center">
+									<span class="truncateContent"></span>
+									<input type="hidden" class="originalContent" th:value="${b.b_content}"></span>
 								</div>
 								<!-- 혹시 몰라 남겨두는 좋아요 -->
 								<div class="bottom-area d-flex px-3">
