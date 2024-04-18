@@ -49,9 +49,9 @@ public class MypageController {
 	private ResourceLoader resourceLoader;
 
 	@GetMapping("/member/mypage/changeInfo")
-    public void changeInfoPage(Model model, HttpSession session) {
-		Users user = (Users)session.getAttribute("userSession");
-		Long uno = user.getId();
+	public void changeInfoPage(Model model, HttpSession session) {
+		Users users = (Users)session.getAttribute("userSession");
+		Long uno = users.getId();
 		model.addAttribute("u",us.findById(uno));
 		model.addAttribute("region",rd.findAll());
     }

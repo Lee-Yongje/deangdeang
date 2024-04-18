@@ -27,7 +27,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "WHERE b_code = ?1 order by b_date desc",
 			countQuery = "select count(*) from board where b_code=?1",
 			nativeQuery = true)
-	public List<Map<String ,Object>> findByBcode(int b_code);
+	public Page<List<Map<String, Object>>> findByBcode(int b_code, Pageable pageable);
 	
 	// 모임 게시판 조회
 	@Query(value = "SELECT b.*, u_name, r_name FROM board b "
@@ -35,7 +35,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "WHERE b_code = ? order by b_date desc;",
 			countQuery = "select count(*) from board where b_code=?1",
 			nativeQuery = true)
-	public List<Map<String ,Object>> findClubByBcode(int b_code);
+	public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable);
 	
 //	사진 없는 게시판 메소드 끝
 	
