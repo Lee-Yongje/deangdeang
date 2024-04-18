@@ -86,7 +86,8 @@
 							</div>
 							<div class="col-md-6">
 								<!-- 제목 -->
-								<h2 class="post-title" th:text="${b.b_title}"></h2>
+								<h2 class="post-title" th:if="${b.r_name != null}" th:text="'| '+${b.r_name}+' | '+${b.b_title}"></h2>
+								<h2 class="post-title" th:if="${b.r_name == null}" th:text="${b.b_title}"></h2>
 								<!-- 작성자, 작성일 -->
 								<div class="post-meta">
 									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"

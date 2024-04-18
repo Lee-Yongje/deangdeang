@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.UserRepository;
+import com.example.demo.entity.Users;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.example.demo.entity.Users user = userRepository.findByEmail(email);
+        Users user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
@@ -29,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPasswordHash())  // Ensure you are using encoded passwords
-                .authorities("ROLE_USER") // Customize this as necessary
                 .build();
     }
 }

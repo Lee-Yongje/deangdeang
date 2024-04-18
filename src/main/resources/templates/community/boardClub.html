@@ -30,9 +30,22 @@
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 	    $(document).ready(function() {
+		    $.ajax({
+		        type: "GET",
+		        url: "/region/regionCode", 
+		        success: function(regionCodes) {
+		            regionCodes.forEach(function(regionCode) { 
+		                $('#region').append($('<option>', {
+		                    value: regionCode.rno,
+		                    text: regionCode.r_name
+		                }));
+		            });
+		        }
+		    });
 		});
 
 	</script>
@@ -97,7 +110,7 @@
 								<tr th:each="b: ${list}">
 									<td th:text="${b.bno}"></td>
 									<td><a th:href="@{'/member/community/boardDetail/'+${b.b_code}+'/'+ ${b.bno}}"
-										th:text="${b.b_title}"></a></td>
+										th:text="'| '+${b.r_name}+' | '+${b.b_title}"></a></td>
 									<td th:text="${b.u_name}"></td>
 									<td th:text="${#dates.format(b.b_date, 'yyyy-MM-dd')}"></td>
 									<td th:text="${b.b_hit}"></td>
@@ -127,17 +140,18 @@
 					<!--검색창 시작-->
 					<div class="container">
 							    <div class="row justify-content-center">
-							        <form action="" method="get" class="search-form form-inline">
-							            <div class="form-group">
+							        <form action="#" method="get" class="search-form form-inline">
+							            <div class="form-group-inline">
+							                <select class="form-control rounded" id="region" name="rno">
+							                    <option value="rno">지역</option>
+							                </select>					             
 							                <select class="form-control rounded" id="category" name="category">
 							                    <option value="b_title">제목</option>
 							                    <option value="u_name">작성자</option>
 							                </select>
-							            </div>
-							            <div class="form-group ml-md-3">
 							                <input type="text" class="form-control" placeholder="Search..." name="search">
+							            	<button type="submit" class="btn btn-primary">검색</button>
 							            </div>
-							            <button type="submit" class="btn btn-primary ml-md-3">검색</button>
 							        </form>
 							    </div>
 							</div>

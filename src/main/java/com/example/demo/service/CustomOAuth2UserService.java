@@ -28,28 +28,52 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuthUser(OAuth2User oAuth2User) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttribute("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+        if (kakaoAccount == null) {
+            throw new OAuth2AuthenticationException("No kakao account data available");
+        }
 
-        String nickname = profile != null ? (String) profile.get("nickname") : "Default Nickname";
-        String email = kakaoAccount != null ? (String) kakaoAccount.get("email") : "No Email Provided";
-
-        // Use these details to update your user management system or database
-        System.out.println("Nickname: " + nickname);
-        System.out.println("Email: " + email);
-
-        return oAuth2User;
+        String email = (String) kakaoAccount.get("email");
+        if (email == null) {
+            throw new OAuth2AuthenticationException("Email not provided by Kakao");
+        }
+        
+        Users user = userRepository.findByEmail(email);
+        if (user == null) {
+            // User not found, create a new user
+            user = new Users();
+            user.setEmail(email);
+            user.setAuthType(AuthType.KAKAO);
+            // Set other necessary default values or extract from kakaoAccount if available
+            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+            if (profile != null) {
+                user.setNickname((String) profile.get("nickname"));
+            } else {
+                user.setNickname("Default Nickname");
+            }
+        } else {
+            // Update existing user's details
+            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+            if (profile != null) {
+                user.setNickname((String) profile.get("nickname"));
+            }
+        }
+        
+        userRepository.save(user);
+        return oAuth2User; // You might need to convert this to your own UserDetails implementation if needed
     }
-//    private OAuth2User processOAuthUser(OAuth2User oAuth2User) {
-//        // Extract details from OAuth2User and convert them to your User entity
-//        // Save or update user in your database
-//        String email = oAuth2User.getAttribute("email");
-//        User user = userRepository.findByEmail(email);
-//        if (user == null) {
-//            user = new User();
-//            user.setEmail(email);
-//            user.setAuthType(AuthType.KAKAO);
-//            userRepository.save(user);
-//        }
-//        return oAuth2User;
-//    }
+
 }
+
+//private OAuth2User processOAuthUser(OAuth2User oAuth2User) {
+//// Extract details from OAuth2User and convert them to your User entity
+//// Save or update user in your database
+//String email = oAuth2User.getAttribute("email");
+//User user = userRepository.findByEmail(email);
+//if (user == null) {
+//  user = new User();
+//  user.setEmail(email);
+//  user.setAuthType(AuthType.KAKAO);
+//  userRepository.save(user);
+//}
+//return oAuth2User;
+//}
