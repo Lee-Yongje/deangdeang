@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dao.UsersDAO;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.entity.Users;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UsersDAO userRepository;  // Directly use UserRepository if it provides necessary methods
+    private UserRepository userRepository;  // Directly use UserRepository if it provides necessary methods
 
     @Autowired
     private PasswordEncoder passwordEncoder;
