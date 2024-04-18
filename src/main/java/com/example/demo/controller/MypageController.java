@@ -23,6 +23,7 @@ import com.example.demo.service.PuppyService;
 import com.example.demo.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MypageController {
@@ -40,8 +41,9 @@ public class MypageController {
 	private ResourceLoader resourceLoader;
 
 	@GetMapping("/member/mypage/changeInfo")
-    public void changeInfoPage(Model model) {
-		int uno = 101;
+	public void changeInfoPage(Model model, HttpSession session) {
+		Users users = (Users)session.getAttribute("userSession");
+		Long uno = users.getId();
 		model.addAttribute("u",us.findById(uno));
 		model.addAttribute("region",rd.findAll());
     }
