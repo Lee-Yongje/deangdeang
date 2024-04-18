@@ -77,7 +77,13 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     		countQuery = "select count(*) from board where b_code=?1 AND rno = ?2 AND b_title LIKE CONCAT('%', ?3, '%')",
     		nativeQuery = true)
     public Page<Board> searchBoardByBTitleAndRegion(int b_code ,String rno, String search, Pageable pageable);
-
+    
+    //지역으로만 검색
+    @Query(value="SELECT * FROM board WHERE b_code = ?1 AND rno = ?2 ORDER BY b_date DESC", 
+    		countQuery = "select count(*) from board where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
+    		nativeQuery = true)
+    public Page<Board> searchBoardByRegion(int b_code, String rno ,Pageable pageable);
+    
     //b_code랑 bno로 삭제
     @Modifying
     @Transactional

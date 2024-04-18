@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>댕댕정보통 | 증고장터</title>
+	<link rel="icon" th:href="@{/images/icon.png}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/animate.css}">
+
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+
+	<link rel="stylesheet" th:href="@{/css/aos.css}">
+
+	<link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+
+	<link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+
+	<link rel="stylesheet" th:href="@{/css/flaticon.css}">
+	<link rel="stylesheet" th:href="@{/css/icomoon.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+
+
+	<link rel="stylesheet" href="css/flaticon.css">
+	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<style>
+		#preview {
+			display: none;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			var b_code = $("#b_code").val();
+			$.ajax({
+				type: "GET",
+				url: "/region/regionCode",
+				success: function (regionCodes) {
+					regionCodes.forEach(function (regionCode) {
+						$('#region').append($('<option>', {
+							value: regionCode.rno,
+							text: regionCode.r_name
+						}));
+					});
+				}
+			});
+			$("#submitBtn").click(function () {
+				var regionSelected = $("#region").val() !== ""; // 지역 선택 확인
+				var titleFilled = $("#b_title").val() !== ""; // 제목 입력 확인
+				var contentFilled = $("#b_content").val() !== ""; // 내용 입력 확인
+				var fileAttached = $("#uploadFile").val() !== ""; // 파일 첨부 확인
+
+				// 모든 조건을 충족하면 폼 제출
+				if (regionSelected && titleFilled && contentFilled && fileAttached) {
+					var selectedRno = $("#region").val(); // 선택된 옵션의 값 가져오기
+					$("<input>").attr("type", "hidden").attr("name", "rno").attr("value", selectedRno).appendTo("#boardForm");
+					$("#boardForm").attr("action", "/member/community/photoBoardInsert/"+b_code);
+					$("#boardForm").submit();
+				} else {
+					alert("모든 항목을 작성하고 사진을 첨부해주세요!");
+				}
+			});
+
+			//사진 미리보기
+			$('#fileInput').on('change', function () {
+				readURL(this);
+			});
+		});
+
+		//사진 미리보기용 함수
+		function readURL(input) {
+			if (input.files && input.files[0]) { //선택된 파일이 있는지 확인
+				var reader = new FileReader();
+				reader.readAsDataURL(input.files[0]); //파일 읽은 결과를 데이터 url로 얻기.
+				reader.onload = function (e) { //파일 읽은 후 실행될 함수 
+					$('#preview').attr('src', e.target.result); //객체가 읽은 파일의 내용으로 src를 설정
+				};
+			} else {
+				$('#preview').attr('src', ''); 
+			}
+			$('#preview').show() //안 보여졌다가 파일 있으면 보여주게 하려고 
+		}
+	</script>
+</head>
+
+<body class="goto-here">
+	<!-- Header/nav -->
+	<div th:replace="~{header :: header-fragment}"></div>
+	<!-- Header/nav nav -->
+
+	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate text-center">
+					<h1 class="mb-0 bread">community</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="container">
+		<div class="container">
+			<div class="container mt-5">
+				<div class="row">
+					<div class="col-md-8">
+						<h2>게시물 작성</h2>
+						<h5 th:text="${b_name}"></h5>
+					</div>
+					<div class="col-md-4 text-right">
+						<button class="btn btn-primary" id="submitBtn">글 등록</button>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-md-12">
+						<form method="post" id="boardForm"
+							enctype="multipart/form-data">
+							<input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
+							<input type="hidden" id="b_code" th:value="${b_code}"/>
+							<!--콤보박스-->
+							<div class="form-group" th:if="${b_code==5}">
+								<select class="form-control" id="region" name="regionCode.rno" style="width: 40%;">
+									<option value="">지역을 선택해 주세요</option>
+								</select>
+							</div>
+							<!--end콤보박스-->
+
+							<div class="form-group">
+								<input type="text" class="form-control" id="b_title" name="b_title"
+									placeholder="내용을 입력하세요" onfocus="clearDefault(this)" onblur="restoreDefault(this)">
+							</div>
+							<div class="form-group">
+								<textarea class="form-control" id="b_content" name="b_content" rows="5"
+									onfocus="clearDefault(this)" onblur="restoreDefault(this)"
+									placeholder="내용을 입력하세요"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="uploadFile">업로드할 사진을 반드시 첨부해 주세요!</label>
+								<input type="file" class="form-control-file" id="uploadFile" name="uploadFile" onchange="readURL(this)">
+							</div>
+						</form>
+						<img id="preview" width="200px" height="200px">
+					</div>
+				</div>
+			</div>
+
+
+		</div><!--/container -->
+	</div>
+	</section> <!-- .section -->
+	<br /><br />
+	<!--footer  -->
+	<div th:replace="~{footer :: footer}"></div>
+	<!--footer end  -->
+
+
+
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00" />
+		</svg></div>
+
+
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+	<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/js/jquery.stellar.min.js}"></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script th:src="@{/js/aos.js}"></script>
+	<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+	<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+	<script th:src="@{/js/scrollax.min.js}"></script>
+	<script th:src="@{/js/google-map.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<!--게시판상세글용-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+</body>
+
+</html>

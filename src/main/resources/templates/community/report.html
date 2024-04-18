@@ -28,6 +28,30 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+		$(document).ready(function(){
+			$.ajax({
+				type: "GET",
+				url: "/region/regionCode",
+				success: function (regionCodes) {
+					regionCodes.forEach(function (regionCode) {
+						$('#region').append($('<option>', {
+							value: regionCode.rno,
+							text: regionCode.r_name
+						}));
+					});
+				}
+			});
+			
+			$('#region').change(function(){
+				var selectedRegion = $(this).val();
+				var url = "/community/report?region="+selectedRegion;
+				window.location.href=url;
+			})
+		})
+	</script>
 </head>
 
 <body class="goto-here">
@@ -39,7 +63,6 @@
 		<div class="container">
 			<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
 					<h1 class="mb-0 bread">Community</h1>
 				</div>
 			</div>
@@ -64,79 +87,91 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
 					<div class="d-flex justify-content-between align-items-center">
-						<h2>제보/신고 게시판</h2>
-						<a href="/member/community/boardWrite" class="btn btn-primary">글쓰기</a>
+						<h2><a th:href="@{/community/report?reset=1}" th:text="신고제보게시판"></a></h2>
+						
+						<a th:href="@{/member/community/photoBoardInsert/5}" class="btn btn-primary">글쓰기</a>
 					</div>
+					
 					<br />
 					<!--콤보박스-->
 					<div class="form-group">
-						<select class="form-control" id="reportType" style="width: 30%;">
-							<option value="02">서울</option>
-							<option value="031">경기</option>
-							<option value="032">인천</option>
-							<option value="033">강원</option>
+						<select class="form-control" id="region" style="width: 30%;">
+							<option value="0">지역 전체</option>
 						</select>
 					</div>
-					<!-- 4by4 사진형 게시판 -->
-					<div class="row">
-						<!-- 반복문 시작 -->
-						<div class="col-md-3" th:each="num: ${#numbers.sequence(1,16)}">
-							<!-- 사진 하나 시작 -->
-							<div class="ftco-animate">
-								<div class="product">
-									<a href="/member/community/reportDetail" class="img-prod"><img class="img-fluid"
-											th:src="@{/images/sampledog.jpg}" alt="Colorlib Template">
-										<div class="overlay"></div>
-									</a>
-									<div class="text py-3 pb-4 px-3 text-center">
-										<h3><a href="/reportDetail">잃어버리신 분</a></h3>
-										<div class="d-flex">
-											<div class="pricing">
-												<p class="price"><span class="price-sale">서울</span></p>
-											</div>
-										</div>
+								<!-- 4by4 사진형 게시판 -->
+			<div class="row">
+				<!-- 반복문 시작 -->
+				<div class="col-md-3" th:each="b: ${list}">
+					<!-- 사진 하나 시작 -->
+					<div class="ftco-animate">
+						<div class="product">
+							<a th:href="@{'/member/community/photoDetail/5/'+ ${b.id.bno}}" class="img-prod">
+								<img class="img-fluid" th:src="@{'/images/' + ${b.b_fname}}">
+							</a>
+
+							<div class="text py-3 pb-4 px-3 text-center">
+								<h3><a th:href="@{'/member/community/photoDetail/5/'+ ${b.id.bno}}"
+										th:text="${b.b_title}"></a></h3>
+								<div class="d-flex">
+									<span th:text="${b.regionCode.r_name}"></span>
+								</div>
+								<!-- 혹시 몰라 남겨두는 좋아요 -->
+								<div class="bottom-area d-flex px-3">
+									<div class="m-auto d-flex">
+										<a href="#" class="heart d-flex justify-content-center align-items-center ">
+											<span><i class="ion-ios-heart"></i></span>
+										</a>
 									</div>
 								</div>
 							</div>
-							<!-- 사진 하나 끝 -->
 						</div>
-						<!-- 반복문 끝 -->
 					</div>
+					<!-- 사진 하나 끝 -->
+				</div>
+				<!-- 반복문 끝 -->
+			</div>
 
 					<div class="row mt-5">
 						<!-- 페이징 -->
 						<div class="col text-center">
-							<div class="block-27">
-								<ul>
-									<li><a href="#">&lt;</a></li>
-									<li class="active"><span>1</span></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#">&gt;</a></li>
-								</ul>
-							</div>
-						</div>
+					<div class="block-27">
+						<ul>
+							<th:block th:if="${nowPage>5}">
+								<li><a th:href="@{/community/report(page=${startPage-1})}">&lt;</a></li>
+							</th:block>
+							<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+								<li th:class="${pageNum == list.number + 1} ? 'active' : ''">
+									<a th:href="@{'/community/report?page=' + ${pageNum}}"><span
+											th:text="${pageNum}"></span></a>
+								</li>
+							</th:block>
+							<th:block th:if="${endPage!=totalPage}">
+								<li><a th:href="@{/community/report(page=${endPage+1})}">&gt;</a></li>
+							</th:block>
+						</ul>
+					</div>
+				</div>
 					</div>
 					<!-- 검색창 -->
-					<div class="row mt-3">
-						<div class="col-md-6 offset-md-3 ftco-animate">
-							<div class="sidebar-box">
-								<form action="#" class="search-form">
-									<div class="form-group">
-										<span class="icon ion-ios-search"></span>
-										<input type="text" class="form-control" placeholder="제목으로 검색...">
-									</div>
-								</form>
-							</div>
+					<!--검색창-->
+					<div class="container">
+						<div class="row justify-content-center">
+							<form action="/community/report" method="get" class="search-form form-inline">
+								<div class="form-group ml-md-3">
+									<input type="text" class="form-control" placeholder="제목으로 검색" id="search" name="search"
+										th:value="${session.search}">
+								</div>
+								<button type="submit" class="btn btn-primary ml-md-3">검색</button>
+							</form>
 						</div>
 					</div>
+					<!--/검색창-->
 				</div>
 			</div> <!-- .col-md-8 -->
 		</div>
 	</div>
-
+	<br /><br />
 	<!-- footer -->
 	<div th:replace="footer :: footer"></div>
 	<!-- footer end -->

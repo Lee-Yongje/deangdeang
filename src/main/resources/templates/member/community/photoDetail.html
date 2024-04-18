@@ -29,7 +29,24 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		    $("#btnDelete").click(function () {
+				var bno = $("#bno").val();
+				var b_code = $("#b_code").val();
+				if(confirm("정말로 삭제하시겠습니까?")){
+			        window.location.href = "/member/community/photoBoardDelete/"+b_code+"/"+bno;				
+				}
+		    });
+		    $("#btnUpdate").click(function () {
+				var bno = $("#bno").val();
+				var b_code = $("#b_code").val();
+			    window.location.href = "/member/community/photoBoardUpdate/"+b_code+"/"+bno;				
+				
+		    });
+		});
+	</script>
 	<style>
 		.img-fluid{
 			margin-bottom: 10px;
@@ -74,30 +91,36 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
 					<div class="container mt-5 text">
-						<h2>전국댕댕자랑</h2>
+						<h2 th:text="${b_name}"></h2>
+						<input type="hidden" id ="bno" th:value="${bno}"/>
+						<input type="hidden" id ="b_code" th:value="${b_code}"/>
 						<br />
 						<div class="row">
 							<div class="col-md-6">
 								<!-- 사진 -->
-								<img src="/images/sampledog.jpg" class="img-fluid"
-									style="max-width: 100%; height: auto; max-height: 800px;">
+								<img th:src="@{'/images/' + ${b.b_fname}}" class="img-fluid"
+						style="max-width: 100%; height: auto; max-height: 500px;">
 							</div>
 							<div class="col-md-6">
+								<h4 th:if="${b_code==5}" th:text="${b.r_name}"></h4>
 								<!-- 제목 -->
-								<h2 class="post-title">우리 개 좀 보세여</h2>
+								<h2 class="post-title" th:text="${b.b_title}"></h2>
 								<!-- 작성자, 작성일 -->
 								<div class="post-meta">
-									<span>작성자 이름</span><br />
-									<span>2024-03-29 18:00</span>
+									<span th:text="${b.u_name}">작성자 이름</span><br />
+									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+								</div>
+								<div th:if="${session.userSession.id==writer}"> 
+									<button id="btnUpdate" class="btn btn-primary">수정</button> 
+									<button id="btnDelete" class="btn btn-primary">삭제</button>
 								</div>
 							</div>
 						</div>
 						<div class="row mt-3">
 							<div class="col-md-12">
 								<!-- 게시글 내용 -->
-								<div class="post-details">
-									<p class="post-content">게시글 내용을 이곳에 표시합니다.시글 내용을 이곳에 표시합니다.시글 내용을 이곳에 표시합니다.시글 내용을
-										이곳에 표시합니다.시글 내용을 이곳에 표시합니다.</p>
+								<div class="post-details" style="white-space: pre;">
+									<p class="post-content" th:text="${b.b_content}"></p>
 								</div>
 							</div>
 						</div>

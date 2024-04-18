@@ -57,11 +57,6 @@ public class UsedgoodController {
 	    String vsearch = null;
 	    String vrno = null;
 	    
-	    System.out.println("넘어온search: "+search);
-	    System.out.println("넘어온category: "+category);
-	    System.out.println("넘어온rno: "+rno);
-	    
-	    
 	    //중고장터 메인 누르면 검색했던 것 초기화 상태로 돌려놓기 위해
 	    if(reset.equals("1")) {
 	    	System.out.println("reset equals 1");
@@ -112,11 +107,6 @@ public class UsedgoodController {
 	    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
 	    int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
 	    
-	    
-	    System.out.println("vsearch: "+vsearch);
-	    System.out.println("vcategory: "+vcategory);
-	    System.out.println("vrno: "+vrno);
-	    
 	    model.addAttribute("list",list);
 	    model.addAttribute("nowPage",page);
 	    model.addAttribute("startPage",startPage);
@@ -135,8 +125,8 @@ public class UsedgoodController {
 		return "/member/usedgood/detail";
 	}
 	
-	//중고거래 글 삭제 delete
-	@GetMapping("/member/usedgood/delete/{b_code}/{bno}")
+	//사진형 게시판 글 삭제 delete
+	@GetMapping("/member/community/photoBoardDelete/{b_code}/{bno}")
 	public String delete(@PathVariable int b_code, @PathVariable int bno) {
 		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
 		int re = bs.deleteBoard(b_code, bno);
@@ -154,7 +144,13 @@ public class UsedgoodController {
 			File file = new File(path+"/"+fname);
 			file.delete();		
 		}
-		return "redirect:/usedgood/usedgood";
+		String url= "";
+		switch(b_code) {
+			case 1: url = "/community/boast"; break;
+			case 5: url = "/community/report"; break;
+			case 6: url = "/usedgood/usedgood"; break;
+		}
+		return "redirect:"+url;
 	}
 	
 	//중고거래 글 수정 페이지로 가기
