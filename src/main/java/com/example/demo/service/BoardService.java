@@ -51,13 +51,13 @@ public class BoardService {
    }
    
    // 자유, 질문 게시판 조회
-   public List<Map<String ,Object>> findByBcode(int b_code) {
-	   return dao.findByBcode(b_code);
+   public Page<List<Map<String, Object>>> findByBcode(int b_code, Pageable pageable) {
+	   return dao.findByBcode(b_code, pageable);
    }
    
    // 모임 게시판 조회
-   public List<Map<String ,Object>> findClubByBcode(int b_code) {
-	   return dao.findClubByBcode(b_code);
+   public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable) {
+	   return dao.findClubByBcode(b_code, pageable);
    }
    
  //게시판용 getNextNo

@@ -20,4 +20,9 @@ public interface PuppyDAO extends JpaRepository<Puppy, Integer> {
 	@Query(value = "select ifnull(max(pno),0)+1 from puppy", nativeQuery = true)
 	public int getNextPno();
 	
+	@Modifying
+	@Query(value = "delete from puppy where pno=?", nativeQuery = true)
+	@Transactional
+	public int deletePuppy(int pno);
+	
 }

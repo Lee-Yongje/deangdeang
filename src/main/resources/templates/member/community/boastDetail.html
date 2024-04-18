@@ -2,8 +2,9 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:text="'댕댕정보통 | ' + ${b_name}"></title>
-	<meta charset="UTF-8">
+    <title>댕댕정보통 | 전국댕댕자랑</title>
+	<link rel="icon" th:href="@{/images/icon.png}">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
@@ -28,52 +29,20 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    
-    <style>
-		#preview {
-			display: none;
+
+	<style>
+		.img-fluid{
+			margin-bottom: 10px;
+		}
+		.text{
+			color: black;
 		}
 	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script th:inline="javascript">
-	$(document).ready(function() {
-		$.ajax({
-			type: "GET",
-			url: "/region/regionCode",
-			success: function (regionCodes) {
-				regionCodes.forEach(function (regionCode) {
-					$('#region').append($('<option>', {
-						value: regionCode.rno,
-						text: regionCode.r_name
-					}));
-				});
-			}
-		});
-		
-		$('#fileInput').on('change', function () {
-			readURL(this);
-		});
-	});
-
-	//사진 미리보기용 함수
-	function readURL(input) {
-		if (input.files && input.files[0]) { //선택된 파일이 있는지 확인
-			var reader = new FileReader();
-			reader.readAsDataURL(input.files[0]); //파일 읽은 결과를 데이터 url로 얻기.
-			reader.onload = function (e) { //파일 읽은 후 실행될 함수 
-				$('#preview').attr('src', e.target.result); //객체가 읽은 파일의 내용으로 src를 설정
-			};
-		} else {
-			$('#preview').attr('src', ''); 
-		}
-		$('#preview').show() //안 보여졌다가 파일 있으면 보여주게 하려고 
-	}
-	</script>
 </head>
 
 <body class="goto-here">
 	<!-- Header/nav -->
-	<div th:replace="~{header :: header-fragment}"></div>
+	<div th:replace="header :: header-fragment"></div>
 	<!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
@@ -104,60 +73,100 @@
 
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
-					<div class="container mt-5">
+					<div class="container mt-5 text">
+						<h2>전국댕댕자랑</h2>
+						<br />
 						<div class="row">
-							<div class="col-md-8">
-								<h2>게시물 작성</h2>
-								<h5><span th:text="${b_name}"></span></h5>
+							<div class="col-md-6">
+								<!-- 사진 -->
+								<img src="/images/sampledog.jpg" class="img-fluid"
+									style="max-width: 100%; height: auto; max-height: 800px;">
+							</div>
+							<div class="col-md-6">
+								<!-- 제목 -->
+								<h2 class="post-title">우리 개 좀 보세여</h2>
+								<!-- 작성자, 작성일 -->
+								<div class="post-meta">
+									<span>작성자 이름</span><br />
+									<span>2024-03-29 18:00</span>
+								</div>
 							</div>
 						</div>
 						<div class="row mt-3">
-							<!-- 게시물 등록 Form 시작 -->
-							<form th:action="@{'/member/community/boardInsert/'+${b_code}+'/'+${session.userSession.name}}"
-									class="col-md-12 text-start p-5" method="post" enctype="multipart/form-data">
-							    <div class="mb-3 d-flex">
-							    	<!-- 지역 선택 -->
-							        <select class="form-control me-2 col-4" id="region" name="regionCode.rno" style="width: 40%;">
-							            <option value="">지역을 선택해 주세요</option>
-							        </select>
-							        <div class="col-4"></div>
-							        <!-- 회원명 -->
-							        <div class="col-4">
-							        	<label for="u_name" class="form-label">작성자</label>
-							            <input class="form-control bg-transparent border-dark" type="text" id="u_name" name="u_name" th:value="${session.userSession.name}" disabled>
-							        </div>
-							    </div>
-							    <!-- 제목 -->
-							    <div class="mb-3">
-							        <label for="b_title" class="form-label">제목</label>
-							        <input class="form-control bg-transparent border-dark" type="text" id="b_title" name="b_title" placeholder="제목을 입력하세요" required>
-							    </div>
-							    <!-- 글 내용 -->
-							    <div class="mb-3">
-							        <textarea class="form-control bg-transparent border-dark" id="b_content" name="b_content" cols="30" rows="5" placeholder="내용을 입력하세요" required></textarea>
-							    </div>
-							    <!-- 첨부파일 -->
-							    <div class="input-group mb-3">
-							        <input type="file" class="form-control-file" name="uploadFile" onchange="readURL(this)">
-							    </div>
-							    <!-- 등록 -->
-							    <input type="submit" value="등록">
-							</form>
-							<!-- 파일 미리보기 -->
-							<img id="preview" width="200px" height="200px">
-							<!-- 게시물 등록 Form 끝 -->
+							<div class="col-md-12">
+								<!-- 게시글 내용 -->
+								<div class="post-details">
+									<p class="post-content">게시글 내용을 이곳에 표시합니다.시글 내용을 이곳에 표시합니다.시글 내용을 이곳에 표시합니다.시글 내용을
+										이곳에 표시합니다.시글 내용을 이곳에 표시합니다.</p>
+								</div>
+							</div>
+						</div>
+						<!-- 댓글 -->
+						<div class="row mt-3">
+							<div class="col-md-12">
+								<h5>댓글(2)</h5>
+								<!-- 기존 댓글 표시 -->
+								<div class="comment">
+									<div class="d-flex align-items-center">
+										<img src="/images/category.jpg" alt="작성자 사진" class="rounded-circle"
+											style="width: 50px; height: 50px;">
+										<div class="ml-3">
+											<div class="comment-meta">
+												<span class="font-weight-bold">작성자1</span>
+												<span>2024-03-29 12:00</span>
+											</div>
+											<div class="comment-content">
+												댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+								<div class="comment">
+									<div class="d-flex align-items-center">
+										<img src="/images/category.jpg" alt="작성자 사진" class="rounded-circle"
+											style="width: 50px; height: 50px;">
+										<div class="ml-3">
+											<div class="comment-meta">
+												<span class="font-weight-bold">작성자2</span>
+												<span>2024-03-29 12:00</span>
+											</div>
+											<div class="comment-content">
+												댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 댓글 작성 폼 -->
+								<form class="mt-3">
+									<div class="form-group">
+										<label for="comment">댓글 작성</label>
+										<textarea class="form-control" id="comment" rows="2"></textarea>
+									</div>
+									<button type="submit" class="btn btn-primary">댓글 작성</button>
+								</form>
+							</div>
 						</div>
 					</div>
+
+
+
+
+
+					<div class="row mt-5">
+
+
+					</div>
 				</div><!--/container -->
-			</div>
+			</div> <!-- .col-md-8 -->
 
 
 		</div>
 	</div>
+	</section> <!-- .section -->
 
-	<br /><br />
 	<!--footer  -->
-	<div th:replace="~{footer :: footer}"></div>
+	<div th:replace="footer :: footer"></div>
 	<!--footer end  -->
 
 
@@ -185,6 +194,10 @@
 	<script th:src="@{/js/scrollax.min.js}"></script>
 	<script th:src="@{/js/google-map.js}"></script>
 	<script th:src="@{/js/main.js}"></script>
+	<!--게시판상세글용-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 
