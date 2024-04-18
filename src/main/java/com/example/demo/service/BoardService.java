@@ -127,5 +127,10 @@ public class BoardService {
    //중고장터 판매완료시키기
    public void usedgoodSold(int b_code, int bno){
 	   dao.usedgoodSold(b_code, bno);
-   }   
+   }
+   
+   //내 글 보기(마이페이지)
+   public Page<Board> findByUno(Long uno, Pageable pageable){
+	   return dao.findByUno(uno,pageable);
+   }
 }

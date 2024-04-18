@@ -2,18 +2,26 @@ package com.example.demo.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -253,29 +261,44 @@ public class MypageController {
 
     
 
-//    @GetMapping("/member/mypage/myPosts")
-//    public void myPostsPage(Model model) {
-//    	int uno = 101;
-//    	List<Board> boards = bs.findByUno(uno);
-//    	List<String> boardNames = new ArrayList<>();
-//    	List<String> formattedDates = new ArrayList<>(); // 변경된 날짜 형식을 담을 리스트
-//    	
-//    	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-//    	
-//    	for(Board board : boards) {
-//    		String b_name = bcs.findById(board.getId().getB_code());
-//    		boardNames.add(b_name);
-//    		
-//    		 // 게시물의 작성 날짜를 가져와서 원하는 형식으로 변환
-//            LocalDateTime createDate = board.getB_date();
-//            String formattedDate = createDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); // DateTimeFormatter 클래스의 ofPattern 메서드를 사용하여 원하는 날짜 및 시간 형식을 지정 
-//            formattedDates.add(formattedDate); // 변환된 날짜를 리스트에 추가
-//    	}
-//    	
-//    	model.addAttribute("boards", boards);
-//    	model.addAttribute("boardNames", boardNames);
-//    	model.addAttribute("formattedDates", formattedDates);
-//    }
+    @GetMapping("/member/mypage/myPosts")
+    public void myPostsPage(@RequestParam(value = "page",defaultValue = "1")int page, Model model, HttpSession session) {
+    	Users user = (Users)session.getAttribute("userSession");
+    	Long uno = user.getId();
+    	
+    	// 페이징 작업
+    	int pageSize = 8; //한 페이지에 보여질 내 게시글 수
+    	Pageable pageable = PageRequest.of(page-1, pageSize);
+    	Page<Board> boards = bs.findByUno(uno,pageable); // Page는 List와 같은 기능을 하는데 아래에 있는 getTotalPages메소드를 사용할 수 있는 객체.
+    	int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
+	    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
+	    int endPage = Math.min(startPage + pagingSize - 1, boards.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
+    	
+    	List<String> boardNames = new ArrayList<>();
+    	List<String> formattedDates = new ArrayList<>(); // 변경된 날짜 형식을 담을 리스트
+    	
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    	
+    	for(Board board : boards) {
+    		String b_name = bcs.findById(board.getId().getB_code());
+    		boardNames.add(b_name);
+    		
+    		 // 게시물의 작성 날짜를 가져와서 원하는 형식으로 변환
+            LocalDateTime createDate = board.getB_date();
+            String formattedDate = createDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); // DateTimeFormatter 클래스의 ofPattern 메서드를 사용하여 원하는 날짜 및 시간 형식을 지정 
+            formattedDates.add(formattedDate); // 변환된 날짜를 리스트에 추가
+    	}
+    	
+    	
+    	model.addAttribute("boards", boards);
+    	model.addAttribute("boardNames", boardNames);
+    	model.addAttribute("formattedDates", formattedDates);
+    	
+    	model.addAttribute("nowPage",page);
+	    model.addAttribute("startPage",startPage);
+	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",boards.getTotalPages());
+    }
 
     
 }
