@@ -216,13 +216,13 @@ public class UsedgoodController {
 	
 	
 	// 중고거래 글 등록 페이지로 가기
-		@GetMapping("/member/usedgood/write")
-		public void usedgoodWritePage() {
-		}
+	@GetMapping("/member/usedgood/write")
+	public void usedgoodWritePage() {
+	}
 		
 	// 중고거래 글 등록 insert
 	@PostMapping("/member/usedgood/insert/{b_code}")
-	public String usedgoodInsert(Board b, @PathVariable int b_code, HttpSession session) {
+	public String insert(Board b, @PathVariable int b_code, HttpSession session) {
 
 		// 현재시간
 		LocalDateTime now = LocalDateTime.now();
