@@ -35,7 +35,7 @@ import com.example.demo.service.BoardService;
 import com.example.demo.service.PuppyService;
 import com.example.demo.service.UsersService;
 import jakarta.servlet.http.HttpSession;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 @Controller
 public class MypageController {
 	
@@ -56,6 +56,10 @@ public class MypageController {
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
+	
+	//비밀번호 재설정용
+	@Autowired
+    PasswordEncoder passwordEncoder; 
 
 	// 회원정보수정 GET
 	@GetMapping("/member/mypage/changeInfo")
@@ -127,18 +131,27 @@ public class MypageController {
     	String viewPage = "redirect:/member/mypage/changePwd";
     	Users user = (Users)session.getAttribute("userSession");
     	Long uno = user.getId();
-    	us.updatePwd(newPassword, uno);
+    	us.updatePwd(passwordEncoder.encode(newPassword), uno);
     	return viewPage;
     }
     
+    
+    
     // 비밀번호 확인 POST
     @PostMapping("/region/check-password")
+    @ResponseBody
     public boolean checkPassword(String u_pwd, HttpSession session) {
+    	boolean result = false;
     	System.out.println("111111111111111111111111");
     	Users user = (Users)session.getAttribute("userSession");
     	Long uno = user.getId();
         String dbPwd = us.findById(uno).getPasswordHash();
-        return u_pwd.equals(dbPwd);
+        System.out.println("dbPwd"+dbPwd);
+        System.out.println("u_Pwd"+u_pwd);
+        if(passwordEncoder.matches(u_pwd, dbPwd)) {
+        	result = true;
+        }
+        return result;
     }
     
     // 내 반려견 조회하기

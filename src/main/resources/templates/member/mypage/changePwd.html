@@ -6,7 +6,9 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+ 	<meta name="_csrf" th:content="${_csrf.token}">
+ 
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
@@ -22,11 +24,10 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
     <script>
 	    $(function(){
 	    	$('#changePwdForm').submit(function(event) {
-	    		
-	    		alert($('#passwordHash').val());
 
 	            event.preventDefault(); // 폼 제출 방지
 	            
@@ -49,17 +50,19 @@
 	            if (confirmPassword == "") {
 	                $("#confirmPassword-error").text("새로운 비밀번호를 입력하세요.");
 	            }
-	
+				var header = $("meta[name='_csrf_header']").attr('content');
+				var token = $("meta[name='_csrf']").attr('content');
 	            // AJAX 요청
 	            $.ajax({
 	            	type : "POST",
 	                url: "/region/check-password", // 비밀번호 확인을 위한 서버 엔드포인트
+	                beforeSend: function(xhr){
+				        xhr.setRequestHeader(header, token);
+				    },
 	                data: {
-	                	"${_csrf.parameterName}": "${_csrf.token}", // CSRF 토큰 추가
 	                	u_pwd: u_pwd
-	                	}, // 현재 비밀번호 전송
+	                }, // 현재 비밀번호 전송
 	                success: function(response) {
-	                	alert("ㅇㅀㅇㅀ")
 	                    if (response) {
 	                        // 현재 비밀번호가 일치하는 경우
 	                        if (newPassword == confirmPassword) {
