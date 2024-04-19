@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dao.RegionCodeDAO;
 import com.example.demo.entity.Board;
+import com.example.demo.entity.BoardId;
 import com.example.demo.entity.Puppy;
 import com.example.demo.entity.Users;
 import com.example.demo.service.BoardCodeService;
@@ -298,10 +299,10 @@ public class MypageController {
     	for(Board board : boards) {
     		String b_name = bcs.findById(board.getId().getB_code());
     		boardNames.add(b_name);
-    		
+    		System.out.println("코드 확인 : "+board.getId().getB_code());
     		 // 게시물의 작성 날짜를 가져와서 원하는 형식으로 변환
             LocalDateTime createDate = board.getB_date();
-            String formattedDate = createDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); // DateTimeFormatter 클래스의 ofPattern 메서드를 사용하여 원하는 날짜 및 시간 형식을 지정 
+            String formattedDate = createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // DateTimeFormatter 클래스의 ofPattern 메서드를 사용하여 원하는 날짜 및 시간 형식을 지정 
             formattedDates.add(formattedDate); // 변환된 날짜를 리스트에 추가
     	}
     	
@@ -314,6 +315,17 @@ public class MypageController {
 	    model.addAttribute("startPage",startPage);
 	    model.addAttribute("endPage",endPage);
 	    model.addAttribute("totalPage",boards.getTotalPages());
+    }
+    
+    @GetMapping("/member/mypage/detail/{b_code}/{bno}")
+    public String detailBoard(@PathVariable int b_code, @PathVariable int bno) {
+    	String viewPage = "/member/community/photoBoardDetail/"+b_code+"/"+bno;
+    	if(b_code==4 || b_code==2 || b_code==3){
+    		viewPage = "/member/community/boardDetail/"+b_code+"/"+bno;
+    	}else if(b_code == 6) {
+    		viewPage = "/member/usedgood/detail/"+b_code+"/"+bno;
+    	}    	
+    	return "redirect:"+viewPage;
     }
 
     
