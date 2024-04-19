@@ -200,7 +200,7 @@ public class CommunityPhotoController {
 		int pageSize = 8; // 한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
 		String vsearch = null;
 
-// 메인 누르면 검색했던 것 초기화 상태로 돌려놓기 위해
+		// 메인 누르면 검색했던 것 초기화 상태로 돌려놓기 위해
 		if (reset.equals("1")) {
 			session.removeAttribute("search");
 		}
@@ -208,23 +208,22 @@ public class CommunityPhotoController {
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		Page<Board> list = bs.listUsedgood(1, pageable);
 
-//session에 값 있으면 가져와
+		//session에 값 있으면 가져와
 		if (session.getAttribute("search") != null) {
 			vsearch = (String) session.getAttribute("search");
 		}
 
-//검색어가 있으면 session에 값 유지
+		//검색어가 있으면 session에 값 유지
 		if (search != null) {
 			vsearch = search;
 			session.setAttribute("search", vsearch);
 		}
-
-//검색
+		//검색
 		if (vsearch != null) {
 			list = bs.searchUsedgoodByTitle(1, vsearch, pageable);
 		}
 
-//페이징
+		//페이징
 		int pagingSize = 5; // 페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
 		int startPage = ((page - 1) / pagingSize) * pagingSize + 1;
 		int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); // 5개씩 보여주기. 마지막 페이지는 마지막페이지까지
@@ -245,8 +244,6 @@ public class CommunityPhotoController {
 			@RequestParam(defaultValue = "0") String reset,
 			HttpSession session, Model model) {
 
-		System.out.println("넘어온 search:" + search);
-		System.out.println("넘어온 region:" + region);
 		int pageSize = 8; // 한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
 		String vsearch = null;
 		String vregion = null;
@@ -321,6 +318,6 @@ public class CommunityPhotoController {
 		return "/member/community/photoDetail";
 	}
 
-	// 사진게시판 글삭제
+	// 사진게시판 글삭제 => UsedgoodController에 통일
 
 }

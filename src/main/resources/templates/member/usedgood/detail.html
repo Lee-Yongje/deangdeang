@@ -33,22 +33,17 @@
 	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		$(document).ready(function(){
+			var bno = $("#bno").val();
+			var b_code = $("#b_code").val();
 		    $("#btnDelete").click(function () {
-				var bno = $("#bno").val();
-				var b_code = $("#b_code").val();
 				if(confirm("정말로 삭제하시겠습니까?")){
 			        window.location.href = "/member/community/photoBoardDelete/"+b_code+"/"+bno;				
 				}
 		    });
 		    $("#btnUpdate").click(function () {
-				var bno = $("#bno").val();
-				var b_code = $("#b_code").val();
-			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;				
-				
+			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;
 		    });
 		    $("#btnSold").click(function () {
-				var bno = $("#bno").val();
-				var b_code = $("#b_code").val();
 			    window.location.href = "/member/usedgood/sold/"+b_code+"/"+bno;				
 				
 		    });
@@ -102,10 +97,12 @@
 					<!-- 제목 -->
 					<h5 id="ongoing" th:text="${b.ongoing == 1} ? '판매중' : '판매완료'" th:class="${b.ongoing == 1} ? 'green-text' : 'red-text'"></h5>
 					<h2 class="post-title" th:text="${b.b_title}"></h2>
+					<!--가격-->
 					<h4 th:if="${b.b_price>0}" th:text="${b.b_price}+'원'"></h4>
 					<h4 th:unless="${b.b_price > 0}" style="color: darkgreen">무료나눔</h4>
+					<!--지역-->
 					<h4 th:text="${b.r_name}"></h4>
-					<!-- 작성자, 작성일 -->
+					<!--작성자 (프로필사진, 작성자이름(추후 닉네임으로 변경예정), 작성시간)-->
 					<div class="post-meta">
 						<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
 							class="rounded-circle">

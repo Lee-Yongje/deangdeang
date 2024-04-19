@@ -67,15 +67,14 @@
 				// 모든 조건을 충족하면 폼 제출
 				if (regionSelected && titleFilled && contentFilled && priceFilled) {
 					var selectedRno = $("#region").val(); // 선택된 옵션의 값 가져오기
-					$("<input>").attr("type", "hidden").attr("name", "rno").attr("value", selectedRno).appendTo("#boardForm");
+					//$("<input>").attr("type", "hidden").attr("name", "rno").attr("value", selectedRno).appendTo("#boardForm");
 					$("#boardForm").attr("action", "/member/usedgood/update/"+b_code+"/"+bno);
            			$("#boardForm").submit(); // 폼 제출
 				} else {
-					alert("모든 항목을 작성하고 사진을 첨부해주세요!");
+					alert("모든 항목을 작성해 주세요!");
 				}
 			});
 			
-
 			//사진 미리보기
 			$('#fileInput').on('change', function () {
 				readURL(this);
