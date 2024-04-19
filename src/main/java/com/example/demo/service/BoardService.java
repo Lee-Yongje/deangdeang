@@ -88,10 +88,7 @@ public class BoardService {
 	   return dao.searchBoardByRegion(b_code, rno, pageable);
    }
    
-   //일단 중고장터용 getNextNo
-   public int getNextUsedgoodBno() {
-	   return dao.getNextBno(6);
-   }
+   
    
    //중고장터 게시글 insert
    public void insertUsedgood(Board b) {

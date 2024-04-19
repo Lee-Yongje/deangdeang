@@ -56,13 +56,13 @@ public class CommunityPhotoController {
 
 	// 사진형 게시판 글 등록
 	@PostMapping("/member/community/photoBoardInsert/{b_code}")
-	public String photoBoardInsert(Board b, @PathVariable int b_code) {
+	public String photoBoardInsert(Board b, @PathVariable int b_code, HttpSession session) {
 
 		// 현재시간
 		LocalDateTime now = LocalDateTime.now();
 
 		// 게시판번호에 따른 게시글번호 증가
-		int bno = bs.getNextUsedgoodBno();
+		int bno = bs.getNextBno(b_code);
 
 		// RegionCode 객체 생성 및 설정 (지역 있을 때)
 		if (b.getRegionCode() != null) {
@@ -85,8 +85,8 @@ public class CommunityPhotoController {
 
 		b.setB_date(now);
 
-		// 로그인 세션유지 하게 되면 이거 세션에서 아이디 가져와서 하는 걸로 수정해야됨!! 일단 101로 넣어놓음
-		long userId = (long) 101;
+		Users user = (Users)session.getAttribute("userSession");
+		Long userId = user.getId();
 		if (b.getUser() == null) {
 			b.setUser(new Users());
 		}
@@ -275,14 +275,12 @@ public class CommunityPhotoController {
 		}
 
 		if (region != null) {
-			if (region.equals("0")) {
+			if (region.equals("지역 전체")) {
 				region = null;
 			}
 			vregion = region;
 			session.setAttribute("region", vregion);
 		}
-		System.out.println("최종 vsearch:" + vsearch);
-		System.out.println("최종 vregion:" + vregion);
 		// 검색
 		if (vsearch != null) {
 			System.out.println("vsearch null아님");
@@ -305,6 +303,10 @@ public class CommunityPhotoController {
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("totalPage", list.getTotalPages());
+		model.addAttribute("region",vregion);
+		if(vregion==null) {
+			model.addAttribute("region","지역 전체");
+		}
 	}
 
 	// 사진게시판 상세 - 댕댕자/신고제보

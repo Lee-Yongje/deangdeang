@@ -226,13 +226,13 @@ public class UsedgoodController {
 
 	// 중고거래 글 등록 insert
 	@PostMapping("/member/usedgood/insert/{b_code}") //사실 여긴 b_code말고 걍 6 때려넣으면 되지만 딴데서 쓰려고 일단 일케 함
-	public String usedgoodInsert(Board b, @PathVariable int b_code) {
+	public String usedgoodInsert(Board b, @PathVariable int b_code, HttpSession session) {
 
 		// 현재시간
 		LocalDateTime now = LocalDateTime.now();
 
 		// 게시판번호에 따른 게시글번호 증가
-		int bno = bs.getNextUsedgoodBno();
+		int bno = bs.getNextBno(6);
 
 		// RegionCode 객체 생성 및 설정
 		RegionCode regionCode = new RegionCode();
@@ -254,8 +254,8 @@ public class UsedgoodController {
 		b.setB_date(now);
 		b.setOngoing(1);
 
-		// 로그인 세션유지 하게 되면 이거 세션에서 아이디 가져와서 하는 걸로 수정해야됨!! 일단 101로 넣어놓음
-		long userId = (long)101;
+		Users user = (Users)session.getAttribute("userSession");
+		Long userId = user.getId();
 		if (b.getUser() == null) {
 			b.setUser(new Users());
 		}

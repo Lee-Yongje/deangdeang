@@ -32,13 +32,12 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-		
+		//15자 이상일 때 맨 뒤에 '...' 붙여서 반환하는 함수
 		function truncateString(text){
-			if (text.length <= 15) {
-		        return text;
-		    } else {
-		        return text.substring(0, 15) + '...';
-		    }
+			if (text.length > 15) {
+				return text.substring(0, 15) + '...';
+		    } 
+		    return text;
 		}
 		
 		$(document).ready(function(){
@@ -107,7 +106,7 @@
 
 							<div class="text py-3 pb-4 px-3 text-center">
 								<h3><a th:href="@{'/member/community/photoDetail/1/'+ ${b.id.bno}}"
-										th:text="${b.b_title}"></a></h3>
+										th:text="${b.b_title}" style="font-weight: bold;"></a></h3>
 								<div class="d-flex justify-content-center align-items-center">
 									<span class="truncateContent"></span>
 									<input type="hidden" class="originalContent" th:value="${b.b_content}"></span>

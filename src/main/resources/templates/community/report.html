@@ -43,11 +43,17 @@
 							text: regionCode.r_name
 						}));
 					});
+					//콤보박스에 검색했던 지역 유지
+					var searchedRegion = $("#searchedRegion").val();
+		            $("#region").val(searchedRegion);
 				}
 			});
-
+			
+			
+			
 			$('#region').change(function () {
 				var selectedRegion = $(this).val();
+				//localStorage.setItem('selectedRegion', selectedRegion);
 				var url = "/community/report?region=" + selectedRegion;
 				window.location.href = url;
 			})
@@ -95,8 +101,9 @@
 					<br />
 					<!--콤보박스-->
 					<div class="form-group">
+						<input type="hidden" id="searchedRegion" th:value="${region}"/>
 						<select class="form-control" id="region" style="width: 30%;">
-							<option value="0">지역 전체</option>
+							<option>지역 전체</option>
 						</select>
 					</div>
 					<th:block th:if="${list.totalElements>0}">
