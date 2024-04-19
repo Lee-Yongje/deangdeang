@@ -28,8 +28,6 @@
     <script>
 	    $(function(){
 	    	$('#changePwdForm').submit(function(event) {
-	    		
-	    		alert($('#passwordHash').val());
 
 	            event.preventDefault(); // 폼 제출 방지
 	            
@@ -65,7 +63,6 @@
 	                	u_pwd: u_pwd
 	                }, // 현재 비밀번호 전송
 	                success: function(response) {
-	                	alert("ㅇㅀㅇㅀ")
 	                    if (response) {
 	                        // 현재 비밀번호가 일치하는 경우
 	                        if (newPassword == confirmPassword) {
