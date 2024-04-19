@@ -230,13 +230,18 @@
 							<div class="col text-center">
 								<div class="block-27">
 									<ul>
-										<li><a href="#">&lt;</a></li>
-										<li class="active"><span>1</span></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">5</a></li>
-										<li><a href="#">&gt;</a></li>
+										<th:block th:if="${nowPage>5}">
+											<li><a th:href="@{/usedgood/usedgood(page=${startPage-1})}">&lt;</a></li>
+										</th:block>
+										<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+											<li th:class="${pageNum == boards.number + 1} ? 'active' : ''">
+												<a th:href="@{'/member/mypage/myPosts?page=' + ${pageNum}}"><span
+														th:text="${pageNum}"></span></a>
+											</li>
+										</th:block>
+										<th:block th:if="${endPage!=totalPage}">
+											<li><a th:href="@{/member/mypage/myPosts(page=${endPage+1})}">&gt;</a></li>
+										</th:block>
 									</ul>
 								</div>
 							</div>

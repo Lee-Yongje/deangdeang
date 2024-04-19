@@ -99,5 +99,10 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     @Transactional
     @Query(value="UPDATE board SET ongoing=0 WHERE b_code=?1 and bno=?2", nativeQuery = true)
     public void usedgoodSold(int b_code, int bno);
+    
+    //고객번호로 게시글 조회 - countQuery는 Pageable를 통해서 한 페이지에 가져올 게시물의 개수를 설정하기 위함. 즉, Pageable를 사용하려면 countQuery를 해야 함.
+    @Query(value = "select b.* from board b inner join users u on b.uno=u.uno where b.uno=?",countQuery = "select count(*) from board where uno=?", nativeQuery = true)
+    public Page<Board> findByUno(Long uno, Pageable pageable);
+    
 }
 
