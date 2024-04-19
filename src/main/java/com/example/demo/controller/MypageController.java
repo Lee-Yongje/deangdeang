@@ -56,6 +56,7 @@ public class MypageController {
 	@Autowired
 	private ResourceLoader resourceLoader;
 
+	// 회원정보수정 GET
 	@GetMapping("/member/mypage/changeInfo")
 	public void changeInfoPage(Model model, HttpSession session) {
 		Users users = (Users)session.getAttribute("userSession");
@@ -64,6 +65,7 @@ public class MypageController {
 		model.addAttribute("region",rd.findAll());
     }
 	
+	// 회원정보수정 POST
 	@PostMapping("/member/mypage/changeInfo")
 	public String changeInfo(Users u, String rno, HttpSession session) {
 		Users user = (Users)session.getAttribute("userSession");
@@ -90,6 +92,10 @@ public class MypageController {
 	            } catch (Exception e) {
 	            	System.out.println("예외발생 : "+e.getMessage());
 	            }
+	        }else if(oldFname != null && !oldFname.equals("")) {
+	        	u.setFilename(oldFname);
+	        }else {
+	        	u.setFilename(null);
 	        }
 	    }
 	    int re = us.updateInfo(u.getName(), u.getEmail(), u.getPhone(), u.getNickname(), u.getFilename(), rno, u.getId());
@@ -105,6 +111,7 @@ public class MypageController {
 	}
 
 	
+	// 비밀번호수정 GET
     @GetMapping("/member/mypage/changePwd")
     public void changePwdPage(Model model, HttpSession session) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -112,6 +119,8 @@ public class MypageController {
     	String oldPwd = us.findById(uno).getPasswordHash();
     	model.addAttribute("oldPwd", oldPwd);
     }
+    
+    // 비밀번호 수정 POST
     @PostMapping("/member/mypage/changePwd")
     public String changePwd(String newPassword, HttpSession session) {
     	String viewPage = "redirect:/member/mypage/changePwd";
@@ -121,15 +130,17 @@ public class MypageController {
     	return viewPage;
     }
     
-    @PostMapping("/check-password")
-    public boolean checkPassword(String passwordHash, HttpSession session) {
+    // 비밀번호 확인 POST
+    @PostMapping("/region/check-password")
+    public boolean checkPassword(String u_pwd, HttpSession session) {
     	System.out.println("111111111111111111111111");
     	Users user = (Users)session.getAttribute("userSession");
     	Long uno = user.getId();
         String dbPwd = us.findById(uno).getPasswordHash();
-        return passwordHash.equals(dbPwd);
+        return u_pwd.equals(dbPwd);
     }
     
+    // 내 반려견 조회하기
     @GetMapping("/member/mypage/listPuppy")
     public void listPuppyForm(Model model, HttpSession session) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -138,6 +149,7 @@ public class MypageController {
     	model.addAttribute("puppy", puppy);
     }
       
+    // 반려견,등록,수정,삭제 GET
     @GetMapping({"/member/mypage/insertPuppy","/member/mypage/insertPuppy/{pno}"})
     public String insertPuppyPage(@PathVariable(required = false) Integer pno, Model model) { //pno가 null인지 아닌지 파악하기 위해 자료형을 Integer로 설정.
         int p = (pno != null) ? pno : 0; // pno가 null인 경우 기본값 0으로 설정
@@ -149,6 +161,7 @@ public class MypageController {
         return viewPage;
     }
 
+    // 반려견 수정 POST
     @PostMapping("/member/mypage/insertPuppy")
     public String insertPuppy(Puppy p,HttpSession session,Model model) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -188,6 +201,7 @@ public class MypageController {
     }
     
     
+    // 반려견 수정 POST
     @PostMapping("/member/mypage/updatePuppy")
     public String updatePuppy(Puppy p, HttpSession session) {
     	String viewPage = "redirect:/member/mypage/listPuppy";
@@ -236,6 +250,7 @@ public class MypageController {
     }
 
     
+    // 반려견 삭제 POST
     @PostMapping("/member/mypage/deletePuppy")
     public String deletePuppy(int pno) {
     	String viewPage = "redirect:/member/mypage/listPuppy";
@@ -261,6 +276,7 @@ public class MypageController {
 
     
 
+    // 내 글 조회하기 GET
     @GetMapping("/member/mypage/myPosts")
     public void myPostsPage(@RequestParam(value = "page",defaultValue = "1")int page, Model model, HttpSession session) {
     	Users user = (Users)session.getAttribute("userSession");
