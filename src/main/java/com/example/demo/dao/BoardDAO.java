@@ -27,7 +27,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "WHERE b_code = ?1 order by b_date desc",
 			countQuery = "select count(*) from board where b_code=?1",
 			nativeQuery = true)
-	public List<Map<String ,Object>> findByBcode(int b_code);
+	public Page<List<Map<String, Object>>> findByBcode(int b_code, Pageable pageable);
 	
 	// 모임 게시판 조회
 	@Query(value = "SELECT b.*, u_name, r_name FROM board b "
@@ -35,7 +35,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "WHERE b_code = ? order by b_date desc;",
 			countQuery = "select count(*) from board where b_code=?1",
 			nativeQuery = true)
-	public List<Map<String ,Object>> findClubByBcode(int b_code);
+	public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable);
 	
 //	사진 없는 게시판 메소드 끝
 	
@@ -77,7 +77,13 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     		countQuery = "select count(*) from board where b_code=?1 AND rno = ?2 AND b_title LIKE CONCAT('%', ?3, '%')",
     		nativeQuery = true)
     public Page<Board> searchBoardByBTitleAndRegion(int b_code ,String rno, String search, Pageable pageable);
-
+    
+    //지역으로만 검색
+    @Query(value="SELECT * FROM board WHERE b_code = ?1 AND rno = ?2 ORDER BY b_date DESC", 
+    		countQuery = "select count(*) from board where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
+    		nativeQuery = true)
+    public Page<Board> searchBoardByRegion(int b_code, String rno ,Pageable pageable);
+    
     //b_code랑 bno로 삭제
     @Modifying
     @Transactional
@@ -93,5 +99,10 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     @Transactional
     @Query(value="UPDATE board SET ongoing=0 WHERE b_code=?1 and bno=?2", nativeQuery = true)
     public void usedgoodSold(int b_code, int bno);
+    
+    //고객번호로 게시글 조회 - countQuery는 Pageable를 통해서 한 페이지에 가져올 게시물의 개수를 설정하기 위함. 즉, Pageable를 사용하려면 countQuery를 해야 함.
+    @Query(value = "select b.* from board b inner join users u on b.uno=u.uno where b.uno=?",countQuery = "select count(*) from board where uno=?", nativeQuery = true)
+    public Page<Board> findByUno(Long uno, Pageable pageable);
+    
 }
 

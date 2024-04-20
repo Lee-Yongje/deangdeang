@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.dao.UserRepository;
+import com.example.demo.dao.UsersDAO;
 import com.example.demo.dto.LoginFormDTO;
 import com.example.demo.entity.Users;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -95,7 +95,7 @@ public class PageController {
 //        return "index";
 //    }
     @Autowired
-    private UserRepository dao;
+    private UsersDAO dao;
     
     @GetMapping("/index")    
     public String processLogin(HttpSession session, Model model) {

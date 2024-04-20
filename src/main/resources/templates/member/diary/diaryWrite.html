@@ -75,7 +75,7 @@ $(function() {
 </head>
 <body class="goto-here">
 	<!-- Header/nav -->
-   	<div th:replace="header :: header-fragment"></div>
+   	<div th:replace="~{header :: header-fragment}"></div>
     <!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">\
@@ -162,7 +162,7 @@ $(function() {
     </section> <!-- .section -->
 
     <!--footer  -->
-	 <div th:replace="footer :: footer"></div>
+	 <div th:replace="~{footer :: footer}"></div>
     <!--footer end  -->
     
   

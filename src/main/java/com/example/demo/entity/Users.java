@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "users")
 public class Users {
 
     @Id

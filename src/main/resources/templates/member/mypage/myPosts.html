@@ -202,7 +202,7 @@
 								<caption>List of users</caption>
 								<thead>
 									<tr>
-										<th scope="col" width="10%">글번호</th>
+										<th scope="col" width="10%">게시판</th>
 										<th scope="col" width="">제목</th>
 										<th scope="col" width="10%">작성일</th>
 										<th scope="col" width="10%">조회수</th>
@@ -214,11 +214,11 @@
 										<td th:text="'작성일 ' + ${i}"></td>
 										<td th:text="'조회수 ' + ${i}"></td>
 									</tr>-->
-									<tr>
-										<td>1</td>
-										<td>제목1</td>
-										<td>24-04-02</td>
-										<td>100</td>
+									<tr th:each = "b,index : ${boards}">
+										<td th:text="${boardNames[index.index]}"></td> <!-- boardNames의 요소 중에서 현재 반복 중인 index에 해당하는 요소의 값을 가져오는 것 -->
+										<td th:text="${b.b_title}"></td>
+										<td th:text="${formattedDates[index.index]}"></td> <!-- #dates.format은 Thymeleaf의 내장 기능 중 하나로 날짜를 특정 형식으로 포맷하는 기능을 담당 -->
+										<td th:text="${b.b_hit}"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -230,13 +230,18 @@
 							<div class="col text-center">
 								<div class="block-27">
 									<ul>
-										<li><a href="#">&lt;</a></li>
-										<li class="active"><span>1</span></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">5</a></li>
-										<li><a href="#">&gt;</a></li>
+										<th:block th:if="${nowPage>5}">
+											<li><a th:href="@{/usedgood/usedgood(page=${startPage-1})}">&lt;</a></li>
+										</th:block>
+										<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+											<li th:class="${pageNum == boards.number + 1} ? 'active' : ''">
+												<a th:href="@{'/member/mypage/myPosts?page=' + ${pageNum}}"><span
+														th:text="${pageNum}"></span></a>
+											</li>
+										</th:block>
+										<th:block th:if="${endPage!=totalPage}">
+											<li><a th:href="@{/member/mypage/myPosts(page=${endPage+1})}">&gt;</a></li>
+										</th:block>
 									</ul>
 								</div>
 							</div>

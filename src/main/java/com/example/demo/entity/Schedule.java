@@ -19,7 +19,7 @@ public class Schedule {
     private String s_complete;
 
     @ManyToOne
-    @JoinColumn(name="uno")
+    @JoinColumn(name="id")
     private Users users;
 
     @ManyToOne

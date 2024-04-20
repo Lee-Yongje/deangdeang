@@ -28,7 +28,7 @@ public class Diary {
 	private String d_fname;
 	
 	@ManyToOne
-	@JoinColumn(name="uno")
+	@JoinColumn(name="id")
 	private Users users;
 	
 	 

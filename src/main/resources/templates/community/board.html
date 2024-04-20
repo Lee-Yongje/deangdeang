@@ -2,13 +2,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title th:text="'댕댕정보통 | ' + ${b_name}"></title>
-<link rel="icon" th:href="@{/images/icon.png}">
-<meta charset="utf-8">
-<meta name="viewport" 
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+	<title th:text="'댕댕정보통 | ' + ${b_name}"></title>
+	<link rel="icon" th:href="@{/images/icon.png}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
@@ -65,9 +64,9 @@
 					<h3 class="heading">커뮤니티</h3>
 					<ul class="categories">
 						<li><a href="/community/boast">전국댕댕자랑</a></li>
-						<li><a href="/community/board?b_code=2">자유게시판</a></li>
-						<li><a href="/community/board?b_code=3">질문게시판</a></li>
-						<li><a href="/community/board?b_code=4">산책해요</a></li>
+						<li><a href="/community/board/2">자유게시판</a></li>
+						<li><a href="/community/board/3">질문게시판</a></li>
+						<li><a href="/community/boardClub/4">산책해요</a></li>
 						<li><a href="/community/report">신고/제보</a></li>
 					</ul>
 				</div>
@@ -76,7 +75,7 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container-fluid">
 					<div class="d-flex justify-content-between align-items-center">
-						<h2><a th:href="@{/community/board(b_name=${b_name})}"><span th:text="${b_name}"></span></a></h2>
+						<h2><a th:href="@{/community/board(b_code=${b_code})}"><span th:text="${b_name}"></span></a></h2>
 						<a th:href="@{/member/community/boardInsert(b_name=${b_name})}" class="btn btn-primary">글쓰기</a>
 					</div>
 					<br />
@@ -96,7 +95,7 @@
 							<tbody>
 								<tr th:each="b: ${list}">
 									<td th:text="${b.bno}"></td>
-									<td><a th:href="@{'/member/community/boardDetail/'+${b.b_code}+'/'+ ${b.bno}}"
+									<td><a th:href="@{'/member/community/boardDetail/'+${b_code}+'/'+ ${b.bno}}"
 										th:text="${b.b_title}"></a></td>
 									<td th:text="${b.u_name}"></td>
 									<td th:text="${#dates.format(b.b_date, 'yyyy-MM-dd')}"></td>
@@ -112,13 +111,20 @@
 						<div class="col text-center">
 							<div class="block-27">
 								<ul>
-									<li><a href="#">&lt;</a></li>
-									<li class="active"><span>1</span></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#">&gt;</a></li>
+									<th:block th:if="${nowPage>5}">
+										<li><a
+											th:href="@{'/community/board/'+${b_code}+'?page='+${startPage-1}}">&lt;</a></li>
+									</th:block> 
+									<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+										<li th:class="${pageNum == list.number + 1} ? 'active' : ''">
+											<a th:href="@{'/community/board/'+${b_code}+'?page=' + ${pageNum}}">
+												<span th:text="${pageNum}"></span>
+											</a>
+										</li>
+									</th:block>
+									<th:block th:if="${endPage!=totalPage}">
+										<li><a th:href="@{'/community/board/'+${b_code}+'?page=' + ${endPage+1}}">&gt;</a></li>
+									</th:block>
 								</ul>
 							</div>
 						</div>
@@ -135,7 +141,7 @@
 							                </select>
 							            </div>
 							            <div class="form-group ml-md-3">
-							                <input type="text" class="form-control" placeholder="Search..." name="search">
+							                <input type="text" class="form-control" placeholder="검색어를 입력해 주세요" name="search">
 							            </div>
 							            <button type="submit" class="btn btn-primary ml-md-3">검색</button>
 							        </form>
@@ -144,10 +150,10 @@
 							<!--검색창 끝-->
 						    </div><!--container-->
                         </div>
-            <br /><br />
         </div>
+		<br /> <br />
 
-	<!-- footer -->
+		<!-- footer -->
 	<div th:replace="~{footer :: footer}"></div>
 	<!-- footer end -->
 

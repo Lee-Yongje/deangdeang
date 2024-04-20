@@ -46,19 +46,60 @@ public class CommunityController {
 	private ResourceLoader resourceLoader;
 	
 	//----------게시판형(자유,질문,모임)----------
-	// 게시판 조회
-	@GetMapping("/community/board")
-	public String boardPage(int b_code, HttpSession session, Model model) {
+	// 자유, 질문 게시판 조회
+	@GetMapping("/community/board/{b_code}")
+	public String boardPage(
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@PathVariable int b_code,
+			HttpSession session, Model model) {
 
 		String b_name = bs.findBNameByBCode(b_code);
-		model.addAttribute("b_name", b_name);
+		// 한페이지에 5개씩 (테스트)
+		int pageSize = 5; 
+		Pageable pageable = PageRequest.of(page-1, pageSize);
+		Page<List<Map<String ,Object>>> list = bs.findByBcode(b_code, pageable);
+
+		 //페이징
+	    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
+	    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
+	    int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
 		
-		if( b_code == 4 ) {
-			model.addAttribute("list", bs.findClubByBcode(b_code));
-			return "/community/boardClub";
-		}
-		model.addAttribute("list", bs.findByBcode(b_code));
+		model.addAttribute("b_name", b_name);
+		model.addAttribute("b_code", b_code);
+		model.addAttribute("list", list);
+		model.addAttribute("nowPage",page);
+	    model.addAttribute("startPage",startPage);
+	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",list.getTotalPages());
 		return "/community/board";
+	}
+	
+	// 모임 게시판 조회
+	@GetMapping("/community/boardClub/{b_code}")
+	public String boardClubPage(
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@PathVariable int b_code,
+			HttpSession session, Model model) {
+		
+		String b_name = bs.findBNameByBCode(b_code);
+		// 한페이지에 5개씩 (테스트)
+		int pageSize = 5; 
+		Pageable pageable = PageRequest.of(page-1, pageSize);
+		Page<List<Map<String ,Object>>> list = bs.findClubByBcode(b_code, pageable);
+		
+		 //페이징
+	    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
+	    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
+	    int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
+		
+		model.addAttribute("b_name", b_name);
+		model.addAttribute("b_code", b_code);
+		model.addAttribute("list", list);
+		model.addAttribute("nowPage",page);
+	    model.addAttribute("startPage",startPage);
+	    model.addAttribute("endPage",endPage);
+	    model.addAttribute("totalPage",list.getTotalPages());
+		return "/community/boardClub";
 	}
 	
 	// 게시물 상세보기
@@ -74,29 +115,7 @@ public class CommunityController {
     } 
 	
 	
-	
-	
-	//-----------사진형--------------
-	//전국댕댕자랑 조회
-	@GetMapping("/community/boast")
-    public void boastPage() {
-    }
-	
-	//신고제보 조회
-    @GetMapping("/community/report")
-    public void reportPage() {
-    }
-   
-    //전국댕댕자랑 상세
-    @GetMapping("/member/community/boastDetail")
-    public void boastDetailPage() {
-    }
-    
-    //신고제보 상세
-    @GetMapping("/member/community/reportDetail")
-    public void reportDetail() {
-    }
-    
+
     
     
     //---------게시판형, 사진형 공통(X)---------------
@@ -148,8 +167,7 @@ public class CommunityController {
     	b.setOngoing(1);
     	
     	// 로그인 세션유지시 us.findUnoByUName 으로 수정
-//    	long userId = bs.findByUName(u_name);
-    	long userId = (long)102;
+    	long userId = bs.findByUName(u_name);
     	if (b.getUser() == null) {
 			b.setUser(new Users());
 		}
@@ -183,7 +201,10 @@ public class CommunityController {
 		
 		bs.insertUsedgood(b);
 		
-		return "redirect:/community/board?b_code="+b_code;
+		if( b_code == 4 ) {
+			return "redirect:/community/boardClub/"+b_code;			
+		}
+		return "redirect:/community/board/"+b_code;
     }
     
 }

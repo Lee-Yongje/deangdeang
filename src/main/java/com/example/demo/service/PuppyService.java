@@ -23,8 +23,16 @@ public class PuppyService {
 		return dao.getNextPno();
 	}
 	
-	public Puppy insert(Puppy p) {
+	public Puppy save(Puppy p) {
 		return dao.save(p);
+	}
+	
+	public Puppy findByPno(int pno) {
+		return dao.findById(pno).orElse(null);
+	}
+	
+	public int deletePuppy(int pno) {
+		return dao.deletePuppy(pno);
 	}
 
 }
