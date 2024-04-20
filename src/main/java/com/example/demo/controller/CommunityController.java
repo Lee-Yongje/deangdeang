@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -110,15 +111,13 @@ public class CommunityController {
 		bs.updateHit(bno, b_code);
 		
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
+		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("b_name", b_name);
+		model.addAttribute("bno",bno);
+		model.addAttribute("b_code",b_code);
 		return "/member/community/boardDetail";
     } 
 	
-	
-
-    
-    
-    //---------게시판형, 사진형 공통(X)---------------
     // 글 작성 페이지 이동
     @GetMapping("/member/community/boardInsert")
     public String boardInsert(String b_name, HttpSession session, Model model) {
@@ -207,5 +206,99 @@ public class CommunityController {
 		return "redirect:/community/board/"+b_code;
     }
     
+    //모임완료시 ongoing 1 --> 0 변경
+  	@GetMapping("/member/community/boardFinish/{b_code}/{bno}")
+  	public String changeSold(@PathVariable int b_code, @PathVariable int bno) {
+  		bs.usedgoodSold(b_code, bno);
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	
+  //사진형 게시판 글 삭제 delete
+  	@GetMapping("/member/community/boardDelete/{b_code}/{bno}")
+  	public String delete(@PathVariable int b_code, @PathVariable int bno) {
+  		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
+  		int re = bs.deleteBoard(b_code, bno);
+  		String fname = b.getB_fname();
+  		
+  		String path = null;
+  		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
+  		try {
+  			path = resource.getFile().getAbsolutePath();
+  		} catch (IOException e) {
+  			System.out.println("경로 가져오는 중 예외 발생:" + e);
+  		}
+  		if(re!=0) {
+  			File file = new File(path+"/"+fname);
+  			file.delete();		
+  		}
+  		String url = "/community/board/"+b_code;
+  		if( b_code ==4 ) {
+  			url = "/community/boardClub/"+b_code;
+  		}
+  		return "redirect:"+url;
+  	}
+  	
+  	// 글 수정 이동
+  	@GetMapping("/member/community/boardUpdate/{b_code}/{bno}")
+  	public String updateForm(@PathVariable int b_code, @PathVariable int bno, Model model) {
+  		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
+		model.addAttribute("b",b);
+		if( b_code == 4) {
+			return"/member/community/boardClubUpdate";
+		}
+  		return "/member/community/boardUpdate";
+  	}
+  	
+  	// 글 수정 
+  	@PostMapping("/member/community/boardUpdate/{b_code}/{bno}")
+  	public String update(Board b, @PathVariable int b_code, @PathVariable int bno) {
+  		Board ob = bs.findBoardByBnoAndBCode(b_code, bno);
+  		String oldFname = ob.getB_fname();
+  		
+  		// 파일 관련
+  		MultipartFile uploadFile = b.getUploadFile();
+  		String newFname = b.getUploadFile().getOriginalFilename();
+  		String path = null;
+  		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
+  		try {
+  			path = resource.getFile().getAbsolutePath();
+  			System.out.println(path);
+  		} catch (IOException e) {
+  			System.out.println("경로 가져오는 중 예외 발생:" + e);
+  		}
+
+  		if (newFname != null && !newFname.equals("") &&!newFname.equals(oldFname)) {
+  			try {
+  				byte[] data = uploadFile.getBytes();
+  				FileOutputStream fos = new FileOutputStream(path + "/" + newFname);
+  				fos.write(data);
+  				fos.close();
+  				ob.setB_fname(newFname);
+  			} catch (IOException e) {
+  				System.out.println("파일등록예외발생:" + e.getMessage());
+  			}
+  		}else {
+  			ob.setB_fname(oldFname);
+  		}
+  		
+  		RegionCode regionCode = new RegionCode();
+    	if(b_code == 4) {
+    		regionCode.setRno(b.getRegionCode().getRno());
+    	}else {
+    		regionCode = null;
+    	}
+    	b.setRegionCode(regionCode);
+  		ob.setRegionCode(regionCode);
+  		ob.setB_content(b.getB_content());
+  		ob.setB_title(b.getB_title());
+  		ob.setB_price(b.getB_price());
+  		
+  		Board re = bs.update(ob);
+  		if(re!=null &&oldFname!=null &&newFname!=null&& newFname!="" &&!oldFname.equals(newFname)) {
+  			File file = new File(path+"/"+oldFname);
+  			file.delete();		
+  		}
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
 }
     

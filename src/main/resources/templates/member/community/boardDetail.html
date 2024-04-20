@@ -38,6 +38,28 @@
 			color: black;
 		}
 	</style>
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var bno = $("#bno").val();
+			var b_code = $("#b_code").val(); 
+			$("#btnDelete").click(function(){
+				var re = confirm("정말로 삭제하시겠습니까?")
+				if(re == true){
+					location.href="/member/community/boardDelete/"+b_code+"/"+bno;
+				}
+			})
+			$("#btnUpdate").click(function(){
+				location.href="/member/community/boardUpdate/"+b_code+"/"+bno;
+			})
+			$("#btnFinish").click(function(){
+				var re = confirm("모임을 완료하셨나요?")
+				if(re == true){
+					location.href="/member/community/boardFinish/"+b_code+"/"+bno;
+				}
+			})
+		})
+	</script>
 </head>
 
 <body class="goto-here">
@@ -74,12 +96,14 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
 					<div class="container mt-5 text">
-						<h2><a th:href="@{/community/board(b_code=${b_code})}"><span th:text="${b_name}"></span></a></h2>
+						<h2><a th:href="@{'/community/board/'+${b_code}}"><span th:text="${b_name}"></span></a></h2>
 						<hr>
 						
 						<!--  게시글 상세보기 시작 -->
 						<div class="row">
 							<div class="col-md-6">
+								<input type="hidden" id ="bno" th:value="${bno}"/>
+								<input type="hidden" id ="b_code" th:value="${b_code}"/>
 								<!-- 사진 -->
 								<img th:if="${b.b_fname == null}" src="/images/sampledog.jpg" class="img-fluid"
 									style="max-width: 100%; height: auto; max-height: 800px;">
@@ -96,6 +120,16 @@
 										class="rounded-circle">
 									<span th:text="${b.u_name}"></span><br />
 									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+								</div>
+								<div th:if="${session.userSession.id==writer}">
+									<th:block th:if="${b.ongoing==1}">
+										<!--만약 모임 완료되면 수정, 삭제 변경 불가-->
+										<button id="btnUpdate" class="btn btn-primary">수정</button> 
+										<button id="btnDelete" class="btn btn-primary">삭제</button>
+										<th:block th:if="${b_code==4}">
+											<button id="btnFinish" class="btn btn-primary">모임완료</button>
+										</th:block>
+									</th:block>								 
 								</div>
 							</div>
 						</div>

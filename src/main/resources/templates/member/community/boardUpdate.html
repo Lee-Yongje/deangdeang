@@ -28,28 +28,10 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    
-    <style>
-		#preview {
-			display: none;
-		}
-	</style>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script th:inline="javascript">
 	$(document).ready(function() {
-		$.ajax({
-			type: "GET",
-			url: "/region/regionCode",
-			success: function (regionCodes) {
-				regionCodes.forEach(function (regionCode) {
-					$('#region').append($('<option>', {
-						value: regionCode.rno,
-						text: regionCode.r_name
-					}));
-				});
-			}
-		});
-		
 		$('#fileInput').on('change', function () {
 			readURL(this);
 		});
@@ -107,21 +89,16 @@
 					<div class="container mt-5">
 						<div class="row">
 							<div class="col-md-8">
-								<h2>게시물 작성</h2>
+								<h2>게시물 수정</h2>
 								<h5><span th:text="${b_name}"></span></h5>
 							</div>
 						</div>
 						<div class="row mt-3">
-							<!-- 게시물 등록 Form 시작 -->
-							<form th:action="@{'/member/community/boardInsert/'+${b_code}+'/'+${session.userSession.name}}"
+							<!-- 게시물 수정 Form 시작 -->
+							<form th:action="@{'/member/community/boardUpdate/'+${b_code}+'/'+${b.id.bno}}"
 									class="col-md-12 text-start p-5" method="post" enctype="multipart/form-data">
 							    <div class="mb-3 d-flex">
-							    	<!-- 지역 선택 -->
-							        <select class="form-control me-2 col-4" id="region" name="regionCode.rno" style="width: 40%;">
-							            <option value="">지역을 선택해 주세요</option>
-							        </select>
-							        <div class="col-4"></div>
-							        <!-- 회원명 -->
+									<!-- 회원명 -->
 							        <div class="col-4">
 							        	<label for="u_name" class="form-label">작성자</label>
 							            <input class="form-control bg-transparent border-dark" type="text" id="u_name" name="u_name" th:value="${session.userSession.name}" disabled>
@@ -130,22 +107,27 @@
 							    <!-- 제목 -->
 							    <div class="mb-3">
 							        <label for="b_title" class="form-label">제목</label>
-							        <input class="form-control bg-transparent border-dark" type="text" id="b_title" name="b_title" placeholder="제목을 입력하세요" required>
+							        <input class="form-control bg-transparent border-dark" type="text" id="b_title" name="b_title" th:value="${b.b_title}" required>
 							    </div>
 							    <!-- 글 내용 -->
 							    <div class="mb-3">
-							        <textarea class="form-control bg-transparent border-dark" id="b_content" name="b_content" cols="30" rows="5" placeholder="내용을 입력하세요" required></textarea>
+							        <textarea class="form-control bg-transparent border-dark" id="b_content" name="b_content" 
+							        	cols="30" rows="5" th:text="${b.b_content}" required>
+							        </textarea>
 							    </div>
 							    <!-- 첨부파일 -->
 							    <div class="input-group mb-3">
 							    <!-- 파일 미리보기 -->
-									<img id="preview" width="200px" height="200px">
+									<img id="preview" th:if="${b.b_fname == null}" width="200px" height="200px" src="/images/sampledog.jpg">
+									<img id="preview" th:if="${b.b_fname != null}" width="200px" height="200px" th:src="@{'/images/' + ${b.b_fname}}">
+									<hr>
 							        <input type="file" class="form-control-file" name="uploadFile" onchange="readURL(this)">
 							    </div>
 							    <!-- 등록 -->
-							    <input type="submit" value="등록">
+							    <input type="submit" value="수정">
 							</form>
-							<!-- 게시물 등록 Form 끝 -->
+							
+							<!-- 게시물 수정 Form 끝 -->
 						</div>
 					</div>
 				</div><!--/container -->
