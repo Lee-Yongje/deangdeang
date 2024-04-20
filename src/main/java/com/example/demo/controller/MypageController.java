@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dao.RegionCodeDAO;
 import com.example.demo.entity.Board;
+import com.example.demo.entity.BoardId;
 import com.example.demo.entity.Puppy;
 import com.example.demo.entity.Users;
 import com.example.demo.service.BoardCodeService;
@@ -34,7 +35,7 @@ import com.example.demo.service.BoardService;
 import com.example.demo.service.PuppyService;
 import com.example.demo.service.UsersService;
 import jakarta.servlet.http.HttpSession;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 @Controller
 public class MypageController {
 	
@@ -55,7 +56,12 @@ public class MypageController {
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
+	
+	//비밀번호 재설정용
+	@Autowired
+    PasswordEncoder passwordEncoder; 
 
+	// 회원정보수정 GET
 	@GetMapping("/member/mypage/changeInfo")
 	public void changeInfoPage(Model model, HttpSession session) {
 		Users users = (Users)session.getAttribute("userSession");
@@ -64,6 +70,7 @@ public class MypageController {
 		model.addAttribute("region",rd.findAll());
     }
 	
+	// 회원정보수정 POST
 	@PostMapping("/member/mypage/changeInfo")
 	public String changeInfo(Users u, String rno, HttpSession session) {
 		Users user = (Users)session.getAttribute("userSession");
@@ -90,6 +97,10 @@ public class MypageController {
 	            } catch (Exception e) {
 	            	System.out.println("예외발생 : "+e.getMessage());
 	            }
+	        }else if(oldFname != null && !oldFname.equals("")) {
+	        	u.setFilename(oldFname);
+	        }else {
+	        	u.setFilename(null);
 	        }
 	    }
 	    int re = us.updateInfo(u.getName(), u.getEmail(), u.getPhone(), u.getNickname(), u.getFilename(), rno, u.getId());
@@ -105,6 +116,7 @@ public class MypageController {
 	}
 
 	
+	// 비밀번호수정 GET
     @GetMapping("/member/mypage/changePwd")
     public void changePwdPage(Model model, HttpSession session) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -112,24 +124,37 @@ public class MypageController {
     	String oldPwd = us.findById(uno).getPasswordHash();
     	model.addAttribute("oldPwd", oldPwd);
     }
+    
+    // 비밀번호 수정 POST
     @PostMapping("/member/mypage/changePwd")
     public String changePwd(String newPassword, HttpSession session) {
     	String viewPage = "redirect:/member/mypage/changePwd";
     	Users user = (Users)session.getAttribute("userSession");
     	Long uno = user.getId();
-    	us.updatePwd(newPassword, uno);
+    	us.updatePwd(passwordEncoder.encode(newPassword), uno);
     	return viewPage;
     }
     
-    @PostMapping("/check-password")
-    public boolean checkPassword(String passwordHash, HttpSession session) {
+    
+    
+    // 비밀번호 확인 POST
+    @PostMapping("/region/check-password")
+    @ResponseBody
+    public boolean checkPassword(String u_pwd, HttpSession session) {
+    	boolean result = false;
     	System.out.println("111111111111111111111111");
     	Users user = (Users)session.getAttribute("userSession");
     	Long uno = user.getId();
         String dbPwd = us.findById(uno).getPasswordHash();
-        return passwordHash.equals(dbPwd);
+        System.out.println("dbPwd"+dbPwd);
+        System.out.println("u_Pwd"+u_pwd);
+        if(passwordEncoder.matches(u_pwd, dbPwd)) {
+        	result = true;
+        }
+        return result;
     }
     
+    // 내 반려견 조회하기
     @GetMapping("/member/mypage/listPuppy")
     public void listPuppyForm(Model model, HttpSession session) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -138,6 +163,7 @@ public class MypageController {
     	model.addAttribute("puppy", puppy);
     }
       
+    // 반려견,등록,수정,삭제 GET
     @GetMapping({"/member/mypage/insertPuppy","/member/mypage/insertPuppy/{pno}"})
     public String insertPuppyPage(@PathVariable(required = false) Integer pno, Model model) { //pno가 null인지 아닌지 파악하기 위해 자료형을 Integer로 설정.
         int p = (pno != null) ? pno : 0; // pno가 null인 경우 기본값 0으로 설정
@@ -149,6 +175,7 @@ public class MypageController {
         return viewPage;
     }
 
+    // 반려견 수정 POST
     @PostMapping("/member/mypage/insertPuppy")
     public String insertPuppy(Puppy p,HttpSession session,Model model) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -188,6 +215,7 @@ public class MypageController {
     }
     
     
+    // 반려견 수정 POST
     @PostMapping("/member/mypage/updatePuppy")
     public String updatePuppy(Puppy p, HttpSession session) {
     	String viewPage = "redirect:/member/mypage/listPuppy";
@@ -236,6 +264,7 @@ public class MypageController {
     }
 
     
+    // 반려견 삭제 POST
     @PostMapping("/member/mypage/deletePuppy")
     public String deletePuppy(int pno) {
     	String viewPage = "redirect:/member/mypage/listPuppy";
@@ -261,6 +290,7 @@ public class MypageController {
 
     
 
+    // 내 글 조회하기 GET
     @GetMapping("/member/mypage/myPosts")
     public void myPostsPage(@RequestParam(value = "page",defaultValue = "1")int page, Model model, HttpSession session) {
     	Users user = (Users)session.getAttribute("userSession");
@@ -282,10 +312,10 @@ public class MypageController {
     	for(Board board : boards) {
     		String b_name = bcs.findById(board.getId().getB_code());
     		boardNames.add(b_name);
-    		
+    		System.out.println("코드 확인 : "+board.getId().getB_code());
     		 // 게시물의 작성 날짜를 가져와서 원하는 형식으로 변환
             LocalDateTime createDate = board.getB_date();
-            String formattedDate = createDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); // DateTimeFormatter 클래스의 ofPattern 메서드를 사용하여 원하는 날짜 및 시간 형식을 지정 
+            String formattedDate = createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // DateTimeFormatter 클래스의 ofPattern 메서드를 사용하여 원하는 날짜 및 시간 형식을 지정 
             formattedDates.add(formattedDate); // 변환된 날짜를 리스트에 추가
     	}
     	
@@ -298,6 +328,17 @@ public class MypageController {
 	    model.addAttribute("startPage",startPage);
 	    model.addAttribute("endPage",endPage);
 	    model.addAttribute("totalPage",boards.getTotalPages());
+    }
+    
+    @GetMapping("/member/mypage/detail/{b_code}/{bno}")
+    public String detailBoard(@PathVariable int b_code, @PathVariable int bno) {
+    	String viewPage = "/member/community/photoBoardDetail/"+b_code+"/"+bno;
+    	if(b_code==4 || b_code==2 || b_code==3){
+    		viewPage = "/member/community/boardDetail/"+b_code+"/"+bno;
+    	}else if(b_code == 6) {
+    		viewPage = "/member/usedgood/detail/"+b_code+"/"+bno;
+    	}    	
+    	return "redirect:"+viewPage;
     }
 
     

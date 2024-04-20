@@ -307,7 +307,7 @@ public class CommunityPhotoController {
 	}
 
 	// 사진게시판 상세 - 댕댕자/신고제보
-	@GetMapping("/member/community/photoDetail/{b_code}/{bno}")
+	@GetMapping("/member/community/photoBoardDetail/{b_code}/{bno}")
 	public String boastDetailPage(Model model, @PathVariable int b_code, @PathVariable int bno) {
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
 		model.addAttribute("writer", bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
@@ -315,7 +315,7 @@ public class CommunityPhotoController {
 		model.addAttribute("b_code", b_code);
 		model.addAttribute("b_name", bs.findBNameByBCode(b_code));
 		bs.updateHit(bno, b_code);
-		return "/member/community/photoDetail";
+		return "/member/community/photoBoardDetail";
 	}
 
 	// 사진게시판 글삭제 => UsedgoodController에 통일

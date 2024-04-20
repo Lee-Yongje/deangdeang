@@ -114,12 +114,12 @@
 							<!-- 사진 하나 시작 -->
 							<div class="ftco-animate">
 								<div class="product">
-									<a th:href="@{'/member/community/photoDetail/5/'+ ${b.id.bno}}" class="img-prod">
+									<a th:href="@{'/member/community/photoBoardDetail/5/'+ ${b.id.bno}}" class="img-prod">
 										<img class="img-fluid" th:src="@{'/images/' + ${b.b_fname}}">
 									</a>
 
 									<div class="text py-3 pb-4 px-3 text-center">
-										<h3><a th:href="@{'/member/community/photoDetail/5/'+ ${b.id.bno}}"
+										<h3><a th:href="@{'/member/community/photoBoardDetail/5/'+ ${b.id.bno}}"
 												th:text="${b.b_title}"></a></h3>
 										<div class="d-flex justify-content-center align-items-center">
 											<span th:text="${b.regionCode.r_name}"></span>
