@@ -37,6 +37,19 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script th:inline="javascript">
 	$(document).ready(function() {
+		$.ajax({
+			type: "GET",
+			url: "/region/regionCode",
+			success: function (regionCodes) {
+				regionCodes.forEach(function (regionCode) {
+					$('#region').append($('<option>', {
+						value: regionCode.rno,
+						text: regionCode.r_name
+					}));
+				});
+			}
+		});
+		
 		$('#fileInput').on('change', function () {
 			readURL(this);
 		});
@@ -103,8 +116,13 @@
 							<form th:action="@{'/member/community/boardInsert/'+${b_code}+'/'+${session.userSession.name}}"
 									class="col-md-12 text-start p-5" method="post" enctype="multipart/form-data">
 							    <div class="mb-3 d-flex">
+							    	<!-- 지역 선택 -->
+							        <select class="form-control me-2 col-4" id="region" name="regionCode.rno" style="width: 40%;">
+							            <option value="">지역을 선택해 주세요</option>
+							        </select>
+							        <div class="col-4"></div>
 							        <!-- 회원명 -->
-							        <div class="mb-3">
+							        <div class="col-4">
 							        	<label for="u_name" class="form-label">작성자</label>
 							            <input class="form-control bg-transparent border-dark" type="text" id="u_name" name="u_name" th:value="${session.userSession.name}" disabled>
 							        </div>
@@ -132,6 +150,8 @@
 					</div>
 				</div><!--/container -->
 			</div>
+
+
 		</div>
 	</div>
 

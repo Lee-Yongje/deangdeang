@@ -34,8 +34,12 @@ public class Board {
 	private String b_fname;
 	private LocalDateTime b_date;
 	
-	@Column(nullable = true) //중고장터 외에는 b_price는 null이 가능해서
-	private Integer b_price; //int면 null을 못 넣어서 Integer로 작성함
+	@Column(nullable = true) //중고장터 외에는 b_price는 null이 가능해서 Null이 가능하게 하기 위함
+	private Integer b_price; 
+	
+	@Column(nullable = true) 
+	private Integer ongoing; 
+	
 	private int b_hit;
 	
 	@ManyToOne

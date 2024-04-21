@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.BoardCodeDAO;
 import com.example.demo.dao.BoardDAO;
+import com.example.demo.dao.UsersDAO;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.News;
 import com.example.demo.entity.Users;
@@ -29,7 +30,15 @@ public class BoardService {
    @Autowired
    private BoardCodeDAO codedao;
    
+   @Autowired
+   private UsersDAO udao;
+   
 //   사진 없는 게시판 조회 시작
+   
+   // 회원명으로 회원번호 가져오기 
+   public Long findByUName(String u_name) {
+	   return udao.findByUName(u_name);
+   }
    
    // 게시판명으로 게시판 번호 가져오기
    public int findBCodeByBName(String b_name) {
@@ -41,9 +50,14 @@ public class BoardService {
 	   return codedao.findBNameByBCode(b_code);
    }
    
-   // 조회
+   // 자유, 질문 게시판 조회
    public List<Map<String ,Object>> findByBcode(int b_code) {
 	   return dao.findByBcode(b_code);
+   }
+   
+   // 모임 게시판 조회
+   public List<Map<String ,Object>> findClubByBcode(int b_code) {
+	   return dao.findClubByBcode(b_code);
    }
    
  //게시판용 getNextNo
@@ -110,4 +124,8 @@ public class BoardService {
 	   return dao.findBoardByBnoAndBCode(b_code, bno);
    }
    
+   //중고장터 판매완료시키기
+   public void usedgoodSold(int b_code, int bno){
+	   dao.usedgoodSold(b_code, bno);
+   }   
 }

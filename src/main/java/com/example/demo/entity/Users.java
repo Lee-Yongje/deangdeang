@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "uno")
     private Long id;
 
@@ -42,18 +41,14 @@ public class Users {
     @Column(name = "auth_type", length = 10, nullable = false)
     private AuthType authType; // Added this to map to the new column
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "rno", referencedColumnName = "rno") 
-//    private RegionCode regionCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rno", referencedColumnName = "rno") 
+    private RegionCode regionCode;
     
-    @ManyToOne
-	@JoinColumn(name="rno")
-	private RegionCode regionCode;
-
     @Transient
     private MultipartFile uploadFile;
 
-//	public Users orElseGet(Object object) {	
-//	    return null;
-//	}
+	public Users orElseGet(Object object) {	
+	    return null;
+	}
 }

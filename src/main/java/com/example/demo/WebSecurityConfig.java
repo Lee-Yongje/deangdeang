@@ -14,8 +14,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import com.example.demo.service.CustomOAuth2UserService;
 import com.example.demo.service.CustomUserDetailsService;
 import com.example.demo.service.UsersService;
+
+
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
 
     @Autowired
@@ -40,33 +42,52 @@ public class WebSecurityConfig {
     @SuppressWarnings("deprecation")
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers("/", "/index", "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
-                             "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**", "/register", "/register_kakao", "/oauth2/authorization/kakao", "/login/oauth2/code/kakao", "/news/**")
-                .permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .defaultSuccessUrl("/index", true)
-                .failureUrl("/login?error=true")
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout=true")
-                .permitAll()
-            )
-            .oauth2Login(oauth2Login -> oauth2Login
-                .loginPage("/login")
+        // Permitting specific paths
+        http.authorizeRequests(auth -> {
+            auth.requestMatchers(
+            		"/", "/registerMember", "/registerMember/**", "/login", "/index",
+                    "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
+                    "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**",
+                    "/register", "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
+                    "/login/oauth2/code/kakao", "/news/**")
+                .permitAll(); // Allow these paths without authentication
+        });
+
+        // Configuring form-based login
+        http.formLogin(login -> {
+            login.loginPage("/login")
+                .defaultSuccessUrl("/index", true) // Redirect to /index upon successful login
+                .failureUrl("/login?error=true") // Redirect back to login page with error flag
+                .permitAll(); // Allow all users to access the login page
+        });
+
+        // Configuring logout behavior
+        http.logout(logout -> {
+            logout.logoutUrl("/logout") // URL to trigger logout
+                .logoutSuccessUrl("/login?logout=true") // Redirect to login with a logout query parameter
+                .invalidateHttpSession(true) // Invalidate session upon logout
+                .deleteCookies("JSESSIONID") // Delete session cookies
+                .permitAll(); // Allow all users to perform logout
+        });
+
+        // Configuring OAuth2 login
+        http.oauth2Login(oauth -> {
+            oauth.loginPage("/login")
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService)
+                .userService(customOAuth2UserService) // Custom service for OAuth2 user details
                 .and()
-                .defaultSuccessUrl("/index", true)
-                .permitAll()
-            )
-            .exceptionHandling(exceptionHandling -> exceptionHandling
-                .accessDeniedPage("/403"));
-        return http.build();
+                .defaultSuccessUrl("/index", true) // Redirect to /index after OAuth2 login
+                .failureUrl("/login?error=true") // Redirect to login on failure
+                .permitAll(); // Allow all users to access OAuth2 login
+        });
+
+        // Configuring CSRF protection as per your existing requirements
+        http.csrf(csrf -> csrf
+            .ignoringRequestMatchers("/login", "/logout", "/registerMember")); // Exclude login and logout actions from CSRF protection
+
+        // Configuring exception handling for access denied
+        http.exceptionHandling(exceptions -> exceptions.accessDeniedPage("/403"));
+
+        return http.build(); // Build the security filter chain
     }
 }

@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>댕댕정보통 | 증고거래</title>
+	<title>댕댕정보통 | 증고장터</title>
 	<link rel="icon" th:href="@{/images/icon.png}">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,6 +46,12 @@
 			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;				
 				
 		    });
+		    $("#btnSold").click(function () {
+				var bno = $("#bno").val();
+				var b_code = $("#b_code").val();
+			    window.location.href = "/member/usedgood/sold/"+b_code+"/"+bno;				
+				
+		    });
 		});
 	</script>
 	
@@ -56,12 +62,19 @@
 		.text{
 			color: black;
 		}
+		.green-text {
+		    color: darkgreen
+		}
+		
+		.red-text {
+		    color: orangered
+		}
 	</style>
 </head>
 
 <body class="goto-here">
 	<!-- Header/nav -->
-	<div th:replace="header :: header-fragment"></div>
+	<div th:replace="~{header :: header-fragment}"></div>
 	<!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
@@ -69,13 +82,11 @@
 			<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate text-center">
 					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">어쩌구</a></span> <span>저쩌구</span></p>
-					<h1 class="mb-0 bread">Community</h1>
+					<h1 class="mb-0 bread">used goods</h1>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--테스트용-->
-
 	<div class="container text">
 		<div class="container mt-5">
 			<h2>중고장터</h2>
@@ -90,8 +101,10 @@
 				</div>
 				<div class="col-md-6">
 					<!-- 제목 -->
+					<h5 id="ongoing" th:text="${b.ongoing == 1} ? '판매중' : '판매완료'" th:class="${b.ongoing == 1} ? 'green-text' : 'red-text'"></h5>
 					<h2 class="post-title" th:text="${b.b_title}"></h2>
-					<h4 th:text="${b.b_price}+'원'"></h4>
+					<h4 th:if="${b.b_price>0}" th:text="${b.b_price}+'원'"></h4>
+					<h4 th:unless="${b.b_price > 0}" style="color: darkgreen">무료나눔</h4>
 					<h4 th:text="${b.r_name}"></h4>
 					<!-- 작성자, 작성일 -->
 					<div class="post-meta">
@@ -101,9 +114,12 @@
 						<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 					</div>
 					<br/>
-					<div> <!-추후 세션 받아서 조건 줘서 보이도록 수정해-->
-						<button id="btnUpdate" class="btn btn-primary">수정</button> 
-						<button id="btnDelete" class="btn btn-primary">삭제</button> 
+					<div th:if="${session.userSession.id==writer}"> 
+						<th:block th:if ="${b.ongoing==1}"> <!--만약 거래가 완료되면 수정, 삭제, 판매완료로 변경 불가-->
+							<button id="btnUpdate" class="btn btn-primary">수정</button> 
+							<button id="btnDelete" class="btn btn-primary">삭제</button>
+							<button id="btnSold" class="btn btn-primary">판매완료</button>
+						</th:block>  
 					</div>
 				</div>
 			</div>

@@ -10,6 +10,14 @@ import lombok.Data;
 @Table(name="regioncode")
 public class RegionCode {
 	
+	public RegionCode() {
+	}
+	
+	public RegionCode(String rno) {
+		super();
+		this.rno = rno;
+	}
+	
 	@Id
 	private String rno;
 	

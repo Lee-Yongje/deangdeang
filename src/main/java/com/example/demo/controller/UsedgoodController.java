@@ -128,6 +128,7 @@ public class UsedgoodController {
 	@GetMapping("/member/usedgood/detail/{b_code}/{bno}")
 	public String usedgoodDetailPage(@PathVariable int b_code, @PathVariable int bno, Model model) {
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
+		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
 		bs.updateHit(bno, b_code);
@@ -170,8 +171,6 @@ public class UsedgoodController {
 	public String update(Board b, @PathVariable int b_code, @PathVariable int bno) {
 		Board ob = bs.findBoardByBnoAndBCode(b_code, bno);
 		String oldFname = ob.getB_fname();
-		System.out.println("old b:"+ob);
-		System.out.println("새로 받은 b:"+b);
 		
 		// 파일 관련
 		MultipartFile uploadFile = b.getUploadFile();
@@ -214,6 +213,12 @@ public class UsedgoodController {
 		return "redirect:/usedgood/usedgood";
 	}
 	
+	//판매완료로 변경
+	@GetMapping("/member/usedgood/sold/{b_code}/{bno}")
+	public String changeSold(@PathVariable int b_code, @PathVariable int bno) {
+		bs.usedgoodSold(b_code, bno);
+		return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+	}
 	
 	// 중고거래 글 등록 페이지로 가기
 	@GetMapping("/member/usedgood/write")
@@ -251,6 +256,7 @@ public class UsedgoodController {
 		b.setId(boardId);
 
 		b.setB_date(now);
+		b.setOngoing(1);
 
 		// 로그인 세션유지 하게 되면 이거 세션에서 아이디 가져와서 하는 걸로 수정해야됨!! 일단 101로 넣어놓음
 		long userId = (long)101;
@@ -285,11 +291,6 @@ public class UsedgoodController {
 			}
 		}
 		
-		//테스트용
-		System.out.println("b" + b);
-		System.out.println("bno: " + b.getId().getBno());
-		System.out.println("b_code: " + b.getId().getB_code());
-
 		bs.insertUsedgood(b);
 		return "redirect:/usedgood/usedgood";
 	}
