@@ -24,20 +24,21 @@ public interface DiaryDAO extends JpaRepository<Diary, Integer> {
 	
 	 
 	//목록 출력
-	@Query(value="select * from diary where id=?1 order by d_date desc", nativeQuery=true)
-	List<Diary> findByUsersId(long id);
-	
-//	@Query(value = "select dno, d_title, case when char_lenght(d_content) > 160 then concat(left(d_content, 160), '…') else d_content end as d_content, d_date, d_fname from diary wher uno = ?1 order by d_date desc", nativeQuery = true)
-//	List<Diary> findByUsersUno(int uno);
+	@Query(value="select * from diary where uno=?1 order by d_date desc", nativeQuery=true)
+	public List<Diary> findByUsersId(Long id);
 	
 	
 	// 상세내용 출력
-	List<Diary> findByUsersIdAndDno(long id, int dno);
+	public List<Diary> findByUsersIdAndDno(Long id, int dno);
 
 	// 게시글 번호 추가
-	@Query(value="select ifnull(max(dno),0) + 1 from diary", nativeQuery = true)
+    @Query(value="select ifnull(max(dno),0) + 1 from diary", nativeQuery = true)
 	public int getNextDno();
-
-
-
+	
+	
+	// 특정 연도,월에 해당하는 일기 출력(uno=101 임시)
+    @Query(value = "select * from diary where uno = ?3 and year(d_date) = ?1 and month(d_date) = ?2 order by d_date desc", nativeQuery = true)
+	public List<Diary> findByYearAndMonthAndId(int year, int month, Long id);
+    
+    
 }

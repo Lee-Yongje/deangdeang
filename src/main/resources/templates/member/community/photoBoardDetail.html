@@ -62,7 +62,7 @@
 	<div th:replace="header :: header-fragment"></div>
 	<!-- Header/nav nav -->
 
-	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">
+	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/background.jpeg} + ');'">
 		<div class="container">
 			<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate text-center">
@@ -106,9 +106,12 @@
 								<h2 class="post-title" th:text="${b.b_title}"></h2>
 								<!-- 작성자, 작성일 -->
 								<div class="post-meta">
-									<span th:text="${b.u_name}">작성자 이름</span><br />
+									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
+							class="rounded-circle">&nbsp;
+									<span th:text="${b.u_nickname}">작성자 이름</span><br />
 									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
+								<br/>
 								<div th:if="${session.userSession.id==writer}"> 
 									<button id="btnUpdate" class="btn btn-primary">수정</button> 
 									<button id="btnDelete" class="btn btn-primary">삭제</button>

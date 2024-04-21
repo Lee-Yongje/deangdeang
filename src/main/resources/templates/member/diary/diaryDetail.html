@@ -6,6 +6,9 @@
 	
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    
     
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
@@ -28,6 +31,8 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    
     
 <style>
 	.tagcloud span {
@@ -54,17 +59,50 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script th:inline="javascript">
 
-// 일기 삭제 
-function deleteDiary(dno) {
-    if (confirm("정말 삭제하시겠습니까?")) {
-        var form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/member/diary/deleteDiary/' + dno;
+// 일기 삭제   (메인으로 옮기고 오류나서 수정중)
+    function deleteDiary(dno) {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            var token = /*[[${_csrf.token}]]*/ 'CSRF-TOKEN';  // 타임리프를 사용하여 토큰 값 삽입
+            var header = /*[[${_csrf.headerName}]]*/ 'X-CSRF-TOKEN';  // 헤더 이름 삽입
 
-        document.body.appendChild(form);
-        form.submit();
-    }
+            $.ajax({
+                url: '/member/diary/deleteDiary/' + dno,
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);  // CSRF 토큰 헤더에 추가
+                },
+                success: function(response) {
+                    alert('삭제되었습니다.');
+                    window.location.href = '/member/diary/diary';
+                },
+                error: function(xhr) {
+                    // 서버 응답을 사용하여 보다 구체적인 오류 메시지 표시
+                    var errorMessage = "삭제에 실패했습니다.";
+                    if(xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMessage += "\n오류: " + xhr.responseJSON.error;
+                    } else if(xhr.responseText) {
+                        errorMessage += "\n상세: " + xhr.responseText;
+                    }
+                    alert(errorMessage);
+                }
+            });
+        }
+    
 }
+/*     if (confirm("정말 삭제하시겠습니까?")) {
+        $.ajax({
+            url: '/member/diary/deleteDiary/' + dno,
+            type: 'POST',
+            success: function(response) {
+                alert('삭제되었습니다.');
+                window.location.href = '/member/diary/diary';
+            },
+            error: function() {
+                alert('삭제에 실패했습니다.');
+            }
+        });
+    } 
+}*/
 
 
 </script>
@@ -79,8 +117,8 @@ function deleteDiary(dno) {
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
-            <h1 class="mb-0 bread">Blog</h1>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Diary</span></p>
+            <h1 class="mb-0 bread">집사일지</h1>
           </div>
         </div>
       </div>
@@ -116,7 +154,12 @@ function deleteDiary(dno) {
             
             <div class="tag-widget post-tag-container mb-5 mt-5 feelings">
             	<a th:href="@{/member/diary/diaryUpdate/{dno}(dno=${diary.dno})}" class="btn btn-primary">수정하기</a>
-				<button id="delete-button" class="btn btn-primary" th:onclick="'deleteDiary(' + ${diary.dno} + ');'">삭제하기</button>
+<!-- 				<button id="delete-button" class="btn btn-primary" th:onclick="'deleteDiary(' + ${diary.dno} + ');'">삭제하기</button>
+ -->				<button id="delete-button" class="btn btn-primary" th:onclick="'deleteDiary(\'' + ${diary.dno} + '\');'">삭제하기</button>
+				
+<!-- 				<button id="delete-button" class="btn btn-primary"
+   				 th:onclick="'deleteDiary(' + ${diary.dno} + ');'">삭제하기</button> -->
+	
             </div>
 
             

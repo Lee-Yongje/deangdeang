@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>댕댕정보통 | 댕댕일지</title>
-	<link rel="icon" th:href="@{/images/icon.png}">
-	
+    <link rel="icon" th:href="@{/images/icon.png}">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
@@ -28,88 +29,130 @@
     <link rel="stylesheet" th:href="@{/css/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/icomoon.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        .row #year-select {
+            display: block;
+        }
+
+        .row #month-select {
+            display: block;
+        }
+
+        .select-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 20px;
+        }
+    </style>
     
-  </head> 
-  <body class="goto-here">
-	<!-- Header/nav -->
-   	<div th:replace="header :: header-fragment"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script th:inline="javascript">
+		$(function() {
+	        function updateDiaries() {
+	            var year = $('#year-select').val();
+	            var month = parseInt($('#month-select').val())+1; // 월에 +1하기 위해 parsInt처리
+	            window.location.href = `/member/diary/diary/${year}/${month}`;
+	        }
+	
+	        $('#year-select').change(updateDiaries);
+	        $('#month-select').change(updateDiaries);
+	    });
+	</script>
+    
+</head>
+<body class="goto-here">
+    <!-- Header/nav -->
+    <div th:replace="header :: header-fragment"></div>
     <!-- Header/nav nav -->
 
-	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">\
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
-            <h1 class="mb-0 bread">Blog</h1>
-          </div>
+    <div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">\
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Diary</span></p>
+                    <h1 class="mb-0 bread">집사일지</h1>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <section class="ftco-section ftco-degree-bg">
-      <div class="container">
-        <div class="row">
-			<div class="col-lg-3 sidebar ftco-animate">
-				<div class="sidebar-box ftco-animate">
-					<h3 class="heading">댕댕수첩</h3>
-					<ul class="categories">
-						<li><a href="/member/diary/scheduler">댕댕스케줄</a></li>
-						<li><a href="/member/diary/diary">집사일지</a></li>
-					</ul>
-				</div>
-			</div>          
-          
-          <!--콘텐츠영역 -->    
-          <div class="col-lg-8 ftco-animate">
-          	<div class="d-flex justify-content-between align-items-center">
-				<h2>집사일지</h2>
-				<a href="/member/diary/diaryWrite" class="btn btn-primary">일기쓰기</a>
-			</div>
-					<br />
-			<div class="row">
-    			<div th:each="diary : ${diaries}" class="col-md-12 d-flex ftco-animate">
-		            <div class="blog-entry align-self-stretch d-md-flex">
-		              <a th:href="@{/member/diary/diaryDetail/{dno}(dno=${diary.dno})}" class="block-20"
-               				th:style="'background-image: url(' + @{/images/{filename}(filename=${diary.d_fname} != null ? ${diary.d_fname} : 'image_null.png')} + ');'"></a>		              
-		              <div class="text d-block pl-md-4">
-		              	<div class="meta mb-3">
-							<span th:text="${diary.d_date != null ? #temporals.format(diary.d_date, 'yyyy-MM-dd E') : '날짜 없음'}"></span>
-		                </div>
-		                <h3 class="heading"><a th:href="@{/member/diary/diaryDetail/{id}(id=${diary.dno})}"  th:text="${diary.d_title}"></a></h3>
-		                <!-- <p th:text="${diary.d_content}"></p> -->
-		                <!-- 쿼리문에서 글자수 제한이 안되어 html에서 작업 -->
- 		                <p th:text="${diary.d_content.length() > 155 ? #strings.substring(diary.d_content, 0, 155) + '…' : diary.d_content}"></p>
-		                <p><a th:href="@{/member/diary/diaryDetail/{id}(id=${diary.dno})}" class="btn btn-primary py-2 px-3">더보기</a></p>
-<!-- 		              	<div class="meta mb-3">
-		                  <div>July 20, 2019</div>
-		                </div>
-		                <h3 class="heading"><a href="#">강아지 산책모임에 다녀왔음~!</a></h3>
-		                <p>댕댕정보통에서 집근처 강아지 산책 모임할 사람을 모집하길래 들어갔다. 모임참석을 하겠다고 답하고 나가봤더니 다 아는 얼굴들이었는데 처음 보는 달마시안도 나와서 사진을 정말 많이 찍어왔음.</p>
-		                <p><a th:href="@{/member/diary/diaryDetail}" class="btn btn-primary py-2 px-3">더보기</a></p> -->
-<!-- db추가시 사용		    <p><a th:href="@{/diaryDetail/{id}(id=${diaryId})}" class="btn btn-primary py-2 px-3">더보기</a></p>
- -->		                
-		              </div>
-		            </div>
-		          </div>
-			</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 sidebar ftco-animate">
+                    <div class="sidebar-box ftco-animate">
+                        <h3 class="heading">댕댕수첩</h3>
+                        <ul class="categories">
+                            <li><a href="/member/diary/scheduler">댕댕스케줄</a></li>
+                            <li><a href="/member/diary/diary">집사일지</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-          </div> <!-- .col-md-8 -->
+                <!--콘텐츠영역 -->
+                <div class="col-lg-8 ftco-animate">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2>집사일지</h2>
+                        <a href="/member/diary/diaryWrite" class="btn btn-primary">일기쓰기</a>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="select-container">
+                            <div class="year-select-container">
+                                <select id="year-select">
+                                    <th:block th:each="year : ${#numbers.sequence(2024, 2033)}">
+				                    	<option th:value="${year}" th:text="${year}" th:selected="${year == selectedYear}"></option>
+				                	</th:block>
+                                </select>
+                            </div>
 
+                            <div class="month-select-container">
+                                <select id="month-select">
+                                   <th:block th:each="month, stats : ${#numbers.sequence(1, 12)}">
+					                   <option th:value="${stats.index}" th:text="${month} + '월'" th:selected="${stats.index == selectedMonth}"></option>
+					               </th:block>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div th:each="diary : ${diaries}" class="col-md-12 d-flex ftco-animate">
+                            <div class="blog-entry align-self-stretch d-md-flex">
+                                <a th:href="@{/member/diary/diaryDetail/{dno}(dno=${diary.dno})}" class="block-20" th:style="'background-image: url(' + @{/images/{filename}(filename=${diary.d_fname} != null ? ${diary.d_fname} : 'image_null.png')} + ');'"></a>
+                                <div class="text d-block pl-md-4">
+                                    <div class="meta mb-3">
+                                        <span th:text="${diary.d_date != null ? #temporals.format(diary.d_date, 'yyyy-MM-dd E') : '날짜 없음'}"></span>
+                                    </div>
+                                    <h3 class="heading"><a th:href="@{/member/diary/diaryDetail/{id}(id=${diary.dno})}" th:text="${diary.d_title}"></a></h3>
+                                    <p th:text="${diary.d_content.length() > 155 ? #strings.substring(diary.d_content, 0, 155) + '…' : diary.d_content}"></p>
+                                    <p><a th:href="@{/member/diary/diaryDetail/{id}(id=${diary.dno})}" class="btn btn-primary py-2 px-3">더보기</a></p>
+                      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- .col-md-8 -->
+
+            </div>
         </div>
-      </div>
     </section> <!-- .section -->
 
     <!--footer  -->
-	 <div th:replace="footer :: footer"></div>
+    <div th:replace="footer :: footer"></div>
     <!--footer end  -->
-    
-  
-
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-  <script th:src="@{/js/jquery.min.js}"></script>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
+
+
+    <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
@@ -124,6 +167,7 @@
     <script th:src="@{/js/scrollax.min.js}"></script>
     <script th:src="@{/js/main.js}"></script>
 
-    
-  </body>
+
+</body>
+
 </html>

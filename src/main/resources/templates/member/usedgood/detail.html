@@ -41,7 +41,9 @@
 				}
 		    });
 		    $("#btnUpdate").click(function () {
-			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;
+				if(confirm("판매 완료 상태로 변경하시겠습니까?")){
+			    	window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;
+			    }
 		    });
 		    $("#btnSold").click(function () {
 			    window.location.href = "/member/usedgood/sold/"+b_code+"/"+bno;				
@@ -105,8 +107,8 @@
 					<!--작성자 (프로필사진, 작성자이름(추후 닉네임으로 변경예정), 작성시간)-->
 					<div class="post-meta">
 						<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
-							class="rounded-circle">
-						<span th:text="${b.u_name}"></span><br />
+							class="rounded-circle">&nbsp;
+						<span th:text="${b.u_nickname}"></span><br />
 						<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 					</div>
 					<br/>

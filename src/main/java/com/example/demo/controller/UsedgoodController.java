@@ -52,23 +52,39 @@ public class UsedgoodController {
 	public void usedgoodPage(String category, String search, String rno, 
 							@RequestParam(defaultValue = "0")String reset,
 	                         @RequestParam(defaultValue = "1") int page,
+	                         @RequestParam(required=false) String ongoing,
 	                         HttpSession session, Model model) {
 	    
+		//중고장터 메인 누르면 검색했던 것 초기화 상태로 돌려놓기 위해
+	    if(reset.equals("1")) {
+	    	session.removeAttribute("search");
+	    	session.removeAttribute("category");
+	    	session.removeAttribute("rno");
+	    	session.removeAttribute("ongoing");
+	    }
+	    
 	    //페이징 
-	    int pageSize = 8; //한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
+	    int pageSize = 4; //한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
 	    Pageable pageable = PageRequest.of(page-1, pageSize); //(데이터 0부터 시작, 불러올 데이터 개수)
 	    Page<Board> list = bs.listUsedgood(6, pageable); //페이저블을 매개변수로 포함해서 데이터 조회
+	    
+	    String v_ongoing = null;
+	    if(session.getAttribute("ongoing")!=null) {
+	    	v_ongoing = (String)session.getAttribute("ongoing");
+	    }
+	    if(ongoing!=null) {
+	    	v_ongoing = ongoing;
+	    	session.setAttribute("ongoing", v_ongoing);
+;	    }
+	    if( v_ongoing != null && v_ongoing.equals("1")) {
+	    	list = bs.listOngoing(6, pageable);
+	    }
 	    
 	    String v_category = null;
 	    String v_search = null;
 	    String v_rno = null;
 	    
-	    //중고장터 메인 누르면 검색했던 것 초기화 상태로 돌려놓기 위해
-	    if(reset.equals("1")) {
-	    	session.removeAttribute("search");
-	    	session.removeAttribute("category");
-	    	session.removeAttribute("rno");
-	    }
+	    
 	    //session에 검색값이 있으면 불러오기
 	    if(session.getAttribute("search")!=null) {
 	    	v_search=(String)session.getAttribute("search"); 
@@ -92,19 +108,19 @@ public class UsedgoodController {
 			session.setAttribute("rno", v_rno);
 	    }
 	    
-
-	    
 	    //검색
 	    if (v_category != null && v_category.equals("b_title") && v_search != null) {
-	        list = bs.searchUsedgoodByTitle(6, v_search, pageable);
+	        list = bs.searchUsedgoodByTitle(6, v_search, v_ongoing, pageable);
+	        System.out.println("검색에걸림");
 	    } else if(v_category != null && v_category.equals("region") && v_search != null){
-	    	list = bs.searchUsedgoodByTitleAndRegion(6, v_rno, v_search, pageable);
+	    	list = bs.searchUsedgoodByTitleAndRegion(6, v_rno, v_search, v_ongoing, pageable);
 	    }
 	    
 	    //페이징 
 	    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
 	    int startPage =  ((page-1)/pagingSize) * pagingSize +1;
 	    int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
+	    
 	    
 	    model.addAttribute("list",list);
 	    model.addAttribute("nowPage",page);
