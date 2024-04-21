@@ -38,10 +38,16 @@
 		            const cities = json.city;
 
             $('#region1').change(function() {
+				$("#region2").empty();
+				$('#region2').append($('<option>', {
+                        value: "none",
+                        text: "전체"
+                    }));
                 var selectedRegion = $(this).val();
                 var selectedCity = cities.find(function(city) {
 				    return city.name === selectedRegion;
 				});
+				
                 $.each(selectedCity.district, function(index, district) {
                     $('#region2').append($('<option>', {
                         value: district,
