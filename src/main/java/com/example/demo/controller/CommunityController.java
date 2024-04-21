@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -20,15 +21,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.LoginFormDTO;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.BoardCode;
 import com.example.demo.entity.BoardId;
+import com.example.demo.entity.Comment;
 import com.example.demo.entity.RegionCode;
 import com.example.demo.entity.Users;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +45,9 @@ public class CommunityController {
 	
 	@Autowired
 	private UsersService us;
+	
+	@Autowired
+	private CommentService cs;
 	
 	@Autowired // 파일 경로찾기용
 	private ResourceLoader resourceLoader;
@@ -108,17 +115,17 @@ public class CommunityController {
 		
 		String b_name = bs.findBNameByBCode(b_code);
 		bs.updateHit(bno, b_code);
-		
+		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
+  		model.addAttribute("list", listComment);
+  		model.addAttribute("listCount", listComment.size());
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
+		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("b_name", b_name);
+		model.addAttribute("bno",bno);
+		model.addAttribute("b_code",b_code);
 		return "/member/community/boardDetail";
     } 
 	
-	
-
-    
-    
-    //---------게시판형, 사진형 공통(X)---------------
     // 글 작성 페이지 이동
     @GetMapping("/member/community/boardInsert")
     public String boardInsert(String b_name, HttpSession session, Model model) {
@@ -207,5 +214,141 @@ public class CommunityController {
 		return "redirect:/community/board/"+b_code;
     }
     
+    //모임완료시 ongoing 1 --> 0 변경
+  	@GetMapping("/member/community/boardFinish/{b_code}/{bno}")
+  	public String changeSold(@PathVariable int b_code, @PathVariable int bno) {
+  		bs.usedgoodSold(b_code, bno);
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	
+  //사진형 게시판 글 삭제 delete
+  	@GetMapping("/member/community/boardDelete/{b_code}/{bno}")
+  	public String delete(@PathVariable int b_code, @PathVariable int bno) {
+  		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
+  		int re = bs.deleteBoard(b_code, bno);
+  		String fname = b.getB_fname();
+  		
+  		String path = null;
+  		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
+  		try {
+  			path = resource.getFile().getAbsolutePath();
+  		} catch (IOException e) {
+  			System.out.println("경로 가져오는 중 예외 발생:" + e);
+  		}
+  		if(re!=0) {
+  			File file = new File(path+"/"+fname);
+  			file.delete();		
+  		}
+  		String url = "/community/board/"+b_code;
+  		if( b_code ==4 ) {
+  			url = "/community/boardClub/"+b_code;
+  		}
+  		return "redirect:"+url;
+  	}
+  	
+  	// 글 수정 이동
+  	@GetMapping("/member/community/boardUpdate/{b_code}/{bno}")
+  	public String updateForm(@PathVariable int b_code, @PathVariable int bno, Model model) {
+  		Board b = bs.findBoardByBnoAndBCode(b_code, bno);
+		model.addAttribute("b",b);
+		if( b_code == 4) {
+			return"/member/community/boardClubUpdate";
+		}
+  		return "/member/community/boardUpdate";
+  	}
+  	
+  	// 글 수정 
+  	@PostMapping("/member/community/boardUpdate/{b_code}/{bno}")
+  	public String update(Board b, @PathVariable int b_code, @PathVariable int bno) {
+  		Board ob = bs.findBoardByBnoAndBCode(b_code, bno);
+  		String oldFname = ob.getB_fname();
+  		
+  		// 파일 관련
+  		MultipartFile uploadFile = b.getUploadFile();
+  		String newFname = b.getUploadFile().getOriginalFilename();
+  		String path = null;
+  		Resource resource = resourceLoader.getResource("classpath:/static/images"); // 절대경로 찾기
+  		try {
+  			path = resource.getFile().getAbsolutePath();
+  			System.out.println(path);
+  		} catch (IOException e) {
+  			System.out.println("경로 가져오는 중 예외 발생:" + e);
+  		}
+
+  		if (newFname != null && !newFname.equals("") &&!newFname.equals(oldFname)) {
+  			try {
+  				byte[] data = uploadFile.getBytes();
+  				FileOutputStream fos = new FileOutputStream(path + "/" + newFname);
+  				fos.write(data);
+  				fos.close();
+  				ob.setB_fname(newFname);
+  			} catch (IOException e) {
+  				System.out.println("파일등록예외발생:" + e.getMessage());
+  			}
+  		}else {
+  			ob.setB_fname(oldFname);
+  		}
+  		
+  		RegionCode regionCode = new RegionCode();
+    	if(b_code == 4) {
+    		regionCode.setRno(b.getRegionCode().getRno());
+    	}else {
+    		regionCode = null;
+    	}
+    	b.setRegionCode(regionCode);
+  		ob.setRegionCode(regionCode);
+  		ob.setB_content(b.getB_content());
+  		ob.setB_title(b.getB_title());
+  		ob.setB_price(b.getB_price());
+  		
+  		Board re = bs.update(ob);
+  		if(re!=null &&oldFname!=null &&newFname!=null&& newFname!="" &&!oldFname.equals(newFname)) {
+  			File file = new File(path+"/"+oldFname);
+  			file.delete();		
+  		}
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	
+  	// 댓글 등록
+  	@GetMapping("/member/community/boardComment")
+  	public String boardComment(Comment c, int bno, int b_code, HttpSession session) {
+  		
+  		int cno = cs.getNextCno();
+  		c.setCno(cno);
+  		// 현재시간
+  		LocalDateTime now = LocalDateTime.now();
+  		c.setC_date(now);
+  		
+  		// 작성자 번호
+  		Users user = (Users)session.getAttribute("userSession");
+  		Long userId = user.getId();
+  		if (c.getUser() == null) {
+			c.setUser(new Users());
+		}
+  		c.getUser().setId(userId);
+  		
+  		// 게시물번호, 게시판번호
+  		BoardId boardId = new BoardId();
+		boardId.setB_code(b_code);
+		boardId.setBno(bno);
+		c.setId(boardId);
+		
+		c.setC_level(1);
+		c.setC_ref(1);
+		
+		
+		cs.insert(c);
+		System.out.println("댓글 등록 완료");
+		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	
+  	// 댓글 List 가져오기(임시)
+  	@GetMapping("/member/community/ListComment")
+  	public List<Map<String ,Object>> ListComment(int bno, int b_code, Model model) {
+  		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
+  		model.addAttribute("list", listComment);
+  		model.addAttribute("listCount", listComment.size());
+  		return listComment;
+  	}
 }
     

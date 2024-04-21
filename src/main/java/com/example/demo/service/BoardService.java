@@ -126,7 +126,7 @@ public class BoardService {
 	   return dao.findBoardByBnoAndBCode(b_code, bno);
    }
    
-   //중고장터 판매완료시키기
+   //중고장터 판매완료, 모임게시판 모임완료시키기
    public void usedgoodSold(int b_code, int bno){
 	   dao.usedgoodSold(b_code, bno);
    }

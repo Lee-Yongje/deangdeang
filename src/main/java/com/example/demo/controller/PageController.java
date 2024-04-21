@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,15 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.example.demo.dao.UsersDAO;
-import com.example.demo.dto.LoginFormDTO;
 import com.example.demo.entity.Users;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,11 +17,6 @@ import jakarta.servlet.http.HttpSession;
 public class PageController {
 	
 
-	 
-//    @GetMapping("/{name}")
-//    public String page(@PathVariable String name) {
-//        return name; // 여기서 'name'은 src/main/resources/templates/ 내의 HTML 파일 이름입니다.
-//    }
     @GetMapping("/about")
     public String aboutPage() {
         return "about";
@@ -125,16 +112,6 @@ public class PageController {
     public String productSinglePage() {
         return "product-single";
     }
-
-//    @GetMapping("/register_success")
-//    public String registerSuccessPage() {
-//        return "register_success";
-//    }
-//
-//    @GetMapping("/register")
-//    public String registerPage() {
-//        return "register";
-//    }
 
     @GetMapping("/shop")
     public String shopPage() {

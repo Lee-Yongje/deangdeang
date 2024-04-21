@@ -1,20 +1,12 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,9 +31,6 @@ import org.slf4j.LoggerFactory;
 
 @Controller
 public class LoginController {
-
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
 	
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -52,8 +41,12 @@ public class LoginController {
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String redirectUri;
 
+//    @GetMapping("/login")
+//    public void showLoginForm(){}
+    
     @GetMapping("/login")
     public String showLoginForm(Model model) {
+    	System.out.println("로그인컨트롤러동ㅎ작함");
         model.addAttribute("loginForm", new LoginFormDTO());
         model.addAttribute("clientId", clientId);
         model.addAttribute("redirectUri", redirectUri);
