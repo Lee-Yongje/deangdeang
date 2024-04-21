@@ -21,15 +21,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.LoginFormDTO;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.BoardCode;
 import com.example.demo.entity.BoardId;
+import com.example.demo.entity.Comment;
 import com.example.demo.entity.RegionCode;
 import com.example.demo.entity.Users;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
@@ -42,6 +45,9 @@ public class CommunityController {
 	
 	@Autowired
 	private UsersService us;
+	
+	@Autowired
+	private CommentService cs;
 	
 	@Autowired // 파일 경로찾기용
 	private ResourceLoader resourceLoader;
@@ -109,7 +115,9 @@ public class CommunityController {
 		
 		String b_name = bs.findBNameByBCode(b_code);
 		bs.updateHit(bno, b_code);
-		
+		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
+  		model.addAttribute("list", listComment);
+  		model.addAttribute("listCount", listComment.size());
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
 		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("b_name", b_name);
@@ -299,6 +307,48 @@ public class CommunityController {
   			file.delete();		
   		}
   		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	
+  	// 댓글 등록
+  	@GetMapping("/member/community/boardComment")
+  	public String boardComment(Comment c, int bno, int b_code, HttpSession session) {
+  		
+  		int cno = cs.getNextCno();
+  		c.setCno(cno);
+  		// 현재시간
+  		LocalDateTime now = LocalDateTime.now();
+  		c.setC_date(now);
+  		
+  		// 작성자 번호
+  		Users user = (Users)session.getAttribute("userSession");
+  		Long userId = user.getId();
+  		if (c.getUser() == null) {
+			c.setUser(new Users());
+		}
+  		c.getUser().setId(userId);
+  		
+  		// 게시물번호, 게시판번호
+  		BoardId boardId = new BoardId();
+		boardId.setB_code(b_code);
+		boardId.setBno(bno);
+		c.setId(boardId);
+		
+		c.setC_level(1);
+		c.setC_ref(1);
+		
+		
+		cs.insert(c);
+		System.out.println("댓글 등록 완료");
+		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	
+  	// 댓글 List 가져오기(임시)
+  	@GetMapping("/member/community/ListComment")
+  	public List<Map<String ,Object>> ListComment(int bno, int b_code, Model model) {
+  		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
+  		model.addAttribute("list", listComment);
+  		model.addAttribute("listCount", listComment.size());
+  		return listComment;
   	}
 }
     
