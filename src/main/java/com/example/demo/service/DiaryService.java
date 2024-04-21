@@ -25,8 +25,8 @@ public class DiaryService {
 
 	
 	// 유저별 전체 다이어리 조회
-	public List<Diary> getDiariesById(long id) {
-	    return dao.findByUsersId(id);
+    public List<Diary> getDiariesById(Long id) {
+        return dao.findByUsersId(id);
 	}
 	
 //	// 일지 상세 정보
@@ -53,6 +53,11 @@ public class DiaryService {
     // 일지 삭제
     public void deleteDiary(int dno) {
         dao.deleteById(dno);
+    }
+
+    
+    public List<Diary> getDiariesByIdAndYearAndMonth(Long id, int year, int month) {
+        return dao.findByYearAndMonthAndId(year, month, id);
     }
 
 

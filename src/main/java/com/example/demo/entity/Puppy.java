@@ -21,6 +21,7 @@ public class Puppy {
     private String p_fname;
     private String p_sex;
     private String p_neuter;
+    private String p_color;
 
     @ManyToOne
     @JoinColumn(name="uno", referencedColumnName="uno")

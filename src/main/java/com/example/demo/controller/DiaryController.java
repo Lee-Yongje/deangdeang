@@ -1,4 +1,3 @@
-
 package com.example.demo.controller;
 
 import java.io.File;
@@ -33,21 +32,25 @@ public class DiaryController {
     
 	//----------다이어리----------
     
-    @GetMapping("/member/diary/diary")
-    public String diaryPage(Model model) {
-        long id = 101; // 현재 로그인한 사용자의 uno 임시값
-        List<Diary> diaries = ds.getDiariesById(id);
-        model.addAttribute("diaries", diaries);
-        return "member/diary/diary";
+	@GetMapping("/member/diary/diary")
+    public String redirectToCurrentMonth() {
+        LocalDate now = LocalDate.now();
+        int year = now.getYear();
+        int month = now.getMonthValue();
+        return "redirect:/member/diary/diary/" + year + "/" + month;
     }
+
+    // 특정 연도와 월을 지정하여 접속
+    @GetMapping("/member/diary/diary/{year}/{month}")
+    public String diaryPageByMonth(@PathVariable("year") int year, @PathVariable("month") int month, Model model) {
+        Long id = (long)101; // 현재 로그인한 사용자의 uno 임시값
+        List<Diary> diaries = ds.getDiariesByIdAndYearAndMonth(id, year, month);
+        model.addAttribute("diaries", diaries);
+        model.addAttribute("selectedYear", year);
+        model.addAttribute("selectedMonth", month-1); // 0부터 시작하는 월 인덱스에 맞추기
+        return "member/diary/diary";
+    } 
     
-    // 특정 다이어리 상세
-//    @GetMapping("/member/diary/diaryDetail/{id}")
-//    public String diaryDetail(@PathVariable("id") int dno, Model model) {
-//        Diary diary = ds.getDiaryById(dno);
-//        model.addAttribute("diary", diary);
-//        return "member/diary/diaryDetail";
-//    }
     
     @GetMapping("/member/diary/diaryDetail/{dno}")
     public String diaryDetail(@PathVariable("dno") int dno, Model model) {
@@ -56,7 +59,7 @@ public class DiaryController {
             model.addAttribute("diary", diary);
             return "member/diary/diaryDetail";
         } else {
-            return "redirect:/diaryPage"; // 적절한 에러 페이지 또는 리스트 페이지로 리다이렉트
+            return "redirect:/member/diary/diary";
         }
     }
 
@@ -122,7 +125,7 @@ public class DiaryController {
         // Diary 객체 저장
         ds.saveDiary(diary);
 
-        // 저장 후 diary.html 페이지로 리다이렉션
+        // 저장 후 diary.html 페이지
         return "redirect:/member/diary/diary";
     }
 
@@ -165,7 +168,7 @@ public class DiaryController {
             try (FileOutputStream fos = new FileOutputStream(savedFile)) {
                 fos.write(file.getBytes());
             } catch (IOException e) {
-                e.printStackTrace(); // 파일 저장 중 오류 발생 시 예외 처리
+                e.printStackTrace(); 
             }
             
             
@@ -177,7 +180,7 @@ public class DiaryController {
 
         // Users 객체 생성 및 설정
         Users user = new Users();
-        user.setId((long)101);  // 임시 사용자 ID(로그인 연동되면 uno 가져와야함)
+        user.setId((long) 101);  // 임시 사용자 ID(로그인 연동되면 uno 가져와야함)
         diary.setUsers(user); // Diary에 Users 설정
         
         diary.setDno(dno);
@@ -188,9 +191,17 @@ public class DiaryController {
     // 다이어리 삭제
     @PostMapping("/member/diary/deleteDiary/{dno}")
     public String deleteDiary(@PathVariable("dno") int dno) {
-        ds.deleteDiary(dno);
+        System.out.println("Attempting to delete diary with ID: " + dno);
+        try {
+            ds.deleteDiary(dno);
+            System.out.println("Deletion successful for diary with ID: " + dno);
+        } catch (Exception e) {
+            System.out.println("Error during deletion: " + e.getMessage());
+            e.printStackTrace();
+        }
         return "redirect:/member/diary/diary";
     }
+
 
     
 }

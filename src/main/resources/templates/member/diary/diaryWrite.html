@@ -75,14 +75,14 @@ $(function() {
 </head>
 <body class="goto-here">
 	<!-- Header/nav -->
-   	<div th:replace="~{header :: header-fragment}"></div>
+   	<div th:replace="header :: header-fragment"></div>
     <!-- Header/nav nav -->
 
 	<div class="hero-wrap hero-bread" th:style="'background-image: url(' + @{/images/bg_1.jpg} + ');'">\
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Diary</span></p>
             <h1 class="mb-0 bread">집사일지</h1>
           </div>
         </div>
@@ -162,7 +162,7 @@ $(function() {
     </section> <!-- .section -->
 
     <!--footer  -->
-	 <div th:replace="~{footer :: footer}"></div>
+	 <div th:replace="footer :: footer"></div>
     <!--footer end  -->
     
   
