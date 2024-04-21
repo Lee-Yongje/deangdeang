@@ -83,7 +83,7 @@ public class WebSecurityConfig {
 
         // Configuring CSRF protection as per your existing requirements
         http.csrf(csrf -> csrf
-            .ignoringRequestMatchers("/login", "/logout", "/registerMember")); // Exclude login and logout actions from CSRF protection
+            .ignoringRequestMatchers("/login", "/logout", "/registerMember", "/register_kakao")); // Exclude login and logout actions from CSRF protection
 
         // Configuring exception handling for access denied
         http.exceptionHandling(exceptions -> exceptions.accessDeniedPage("/403"));
