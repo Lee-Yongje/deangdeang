@@ -54,7 +54,6 @@ public class DiaryService {
     public void deleteDiary(int dno) {
         dao.deleteById(dno);
     }
-
     
     public List<Diary> getDiariesByIdAndYearAndMonth(Long id, int year, int month) {
         return dao.findByYearAndMonthAndId(year, month, id);

@@ -190,17 +190,11 @@ public class DiaryController {
     
     // 다이어리 삭제
     @PostMapping("/member/diary/deleteDiary/{dno}")
-    public String deleteDiary(@PathVariable("dno") int dno) {
-        System.out.println("Attempting to delete diary with ID: " + dno);
-        try {
-            ds.deleteDiary(dno);
-            System.out.println("Deletion successful for diary with ID: " + dno);
-        } catch (Exception e) {
-            System.out.println("Error during deletion: " + e.getMessage());
-            e.printStackTrace();
-        }
+    public String deleteDiary(@PathVariable int dno) {
+        ds.deleteDiary(dno);
         return "redirect:/member/diary/diary";
     }
+
 
 
     
