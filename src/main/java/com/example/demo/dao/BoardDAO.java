@@ -49,9 +49,9 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     //getNextBno(게시판 구분해서)
     @Query(value ="select ifnull(max(bno),0)+1 from board where b_code = ?", nativeQuery = true)
     public int getNextBno(int b_code);
-    
+     
     //게시판 상세 -(게시판번호, 게시글번호)
-    @Query(value ="SELECT b.*, u.u_name, u.u_fname, r.r_name FROM board b LEFT OUTER JOIN users u ON b.uno = u.uno LEFT OUTER JOIN regioncode r ON b.rno = r.rno WHERE b.bno = ?1 AND b.b_code = ?2", nativeQuery = true)
+    @Query(value ="SELECT b.*, u.u_nickname, u.u_fname, r.r_name FROM board b LEFT OUTER JOIN users u ON b.uno = u.uno LEFT OUTER JOIN regioncode r ON b.rno = r.rno WHERE b.bno = ?1 AND b.b_code = ?2", nativeQuery = true)
     public Map<String, Object> detailBoard(int bno, int b_code);
     
     //특정 게시판의 전체 레코드 수 count (페이징 처리용)
