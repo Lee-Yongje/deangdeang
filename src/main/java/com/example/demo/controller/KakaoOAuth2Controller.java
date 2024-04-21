@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.KakaoProfile;
 import com.example.demo.entity.OAuthToken;
@@ -54,7 +58,7 @@ public class KakaoOAuth2Controller {
     private UsersService userService;
 
     @GetMapping("/auth/kakao/callback")
-    public String kakaoCallback(String code, HttpSession session, Model model) throws JsonProcessingException {
+    public String kakaoCallback(String code, HttpSession session, RedirectAttributes redirectAttributes) throws JsonProcessingException {
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -93,18 +97,26 @@ public class KakaoOAuth2Controller {
 
         UUID garbagePassword = UUID.randomUUID();
         String email = kakaoProfile.getKakao_account().getEmail(); // 이메일을 사용자 이름으로 사용
+        String nicknameRaw = kakaoProfile.getProperties().getNickname();
+        String nickname = "";
+		try {
+			nickname = URLEncoder.encode(nicknameRaw, StandardCharsets.UTF_8.toString());
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+        
         String password = garbagePassword.toString(); // 랜덤 비밀번호를 생성
 
         // 사용자가 이미 등록되어 있는지 확인
         Users existingUser = userService.findByEmail(email);
         if (existingUser == null) {
-        	model.addAttribute("email", email);
-        	return "redirect:/register_kakao?username=" + email;
+        	 redirectAttributes.addAttribute("email", email);
+             redirectAttributes.addAttribute("nickname", nickname);
+        	return "redirect:/register_kakao";
         }
 
         // 등록된 사용자인 경우 로그인 처리
         authenticateUser(email);
-
         return "redirect:/index"; // 로그인 성공 후 리디렉션
     }
     

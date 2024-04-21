@@ -63,7 +63,7 @@
 				<!--뉴스-->
 	          <li class="nav-item active"><a href="/news/news" class="nav-link">뉴스</a></li>
 			  <!--장소-->
-        	  <li class="nav-item active"><a href="/region/hospital" class="nav-link">장소</a></li>
+        	  <li class="nav-item active"><a href="/region/hospital" class="nav-link">동물병원</a></li>
 			  <!--중고장터-->
     	  	  <li class="nav-item active"><a href="/usedgood/usedgood" class="nav-link">중고장터</a></li>
 			  <!--커뮤니티 목록-->
@@ -77,35 +77,29 @@
 	                <a class="dropdown-item" href="/community/report">강아지 신고</a>
 	              </div>
       		  </li>
-    	  	 <li class="nav-item dropdown active" th:if="${#authorization.expression('isAuthenticated()')}">
-			    <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">마이페이지</a>
-			    <div class="dropdown-menu" aria-labelledby="dropdown02">
-			        <a class="dropdown-item" href="/member/mypage/changeInfo">마이페이지</a>
-			        <a class="dropdown-item" href="/member/mypage/changePwd">비밀번호 수정</a>
-			        <a class="dropdown-item" href="/member/mypage/listPuppy">반려견 조회</a>
-			        <a class="dropdown-item" href="/member/mypage/insertPuppy">반려견 등록</a>
-			        <a class="dropdown-item" href="/member/mypage/myPosts">내가 쓴글</a>
-			    </div>
-			</li> 
 			
 			<li class="nav-item dropdown active" th:if="${#authorization.expression('isAuthenticated()')}">
-			    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">강아지관리</a>
+			    <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">댕댕수첩</a>
 			    <div class="dropdown-menu" aria-labelledby="dropdown03">
-			        <a class="dropdown-item" href="/member/diary/scheduler">강아지관리</a>
 			        <a class="dropdown-item" href="/member/diary/scheduler">댕댕스케줄</a>
 			        <a class="dropdown-item" href="/member/diary/diary">집사일지</a>
 			    </div>
 			</li>
 			
 			<li class="nav-item dropdown active" th:if="${#authorization.expression('isAuthenticated()')}">
-			    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.userSession.nickname}"></a>
-			    <div class="dropdown-menu" aria-labelledby="dropdown03">
+       	  	    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.userSession.nickname}"></a>
+			    <div class="dropdown-menu" aria-labelledby="dropdown02">
+			        <a class="dropdown-item" href="/member/mypage/changeInfo">회원정보 수정</a>
+			        <a class="dropdown-item" href="/member/mypage/changePwd">비밀번호 수정</a>
+			        <a class="dropdown-item" href="/member/mypage/listPuppy">반려견 조회</a>
+			        <a class="dropdown-item" href="/member/mypage/insertPuppy">반려견 등록</a>
+			        <a class="dropdown-item" href="/member/mypage/myPosts">내가 쓴글</a>
 			        <form action="/logout" method="post" th:action="@{/logout}">
 					    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 					    <button type="submit" class="dropdown-item">로그아웃</button>
 					</form>
 			    </div>
-			</li>
+			</li> 
 			
 			<li class="nav-item active" th:if="${#authorization.expression('!isAuthenticated()')}">
 			    <a href="/login" class="nav-link">로그인</a>

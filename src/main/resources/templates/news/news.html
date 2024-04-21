@@ -31,15 +31,6 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
 	$(function(){
-		setInterval(function(){
-			$.ajax({
-			url:"/seats",
-			success:function(data){
-				$("#seats").html(data);
-			}			
-			});
-		},3000);
-		
 		var arr;
 		var pageSIZE=10; //한 화면에 보여줄 레코드의 수
 		var pageGROUP=10;//한 화면에 보여줄 페이지의 수

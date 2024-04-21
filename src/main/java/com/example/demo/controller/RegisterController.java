@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -52,19 +55,30 @@ public class RegisterController {
     }
 
     @GetMapping("/register_kakao")
-    public String registerFormKakao(@RequestParam("username") String email, Model model) {
-        model.addAttribute("email", email);
-        List<RegionCode> regionCodes = regionCodeService.findAll();
-        model.addAttribute("regionCodes", regionCodes);
+    public String registerFormKakao(@RequestParam("email") String email, @RequestParam("nickname") String nickname,Model model) {
+    	String decodedNickname ="";
+    	try {
+			decodedNickname = URLDecoder.decode(nickname, StandardCharsets.UTF_8.toString());
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("카카오 닉네임 콘트롤러 전송:"+decodedNickname);
+		System.out.println("카카오 이메일 콘트롤러 전송:"+email);
+
+    	model.addAttribute("email", email);
+    	model.addAttribute("nickname", decodedNickname);
+    	model.addAttribute("regionCodes", rd.findAll()); // Assuming regions are needed for the form
+
         return "register_kakao"; // Return the name of your Thymeleaf template
     }
     
-    @PostMapping("/register_kakao")
-    public ModelAndView registerUserKakao(@RequestParam("email") String email, // Add other necessary parameters
-                                          @RequestParam("regionCode") Long regionCodeId) {
-        // Kakao registration logic should be implemented here
-        return new ModelAndView("redirect:/register_success");
-    }
+//    @PostMapping("/register_kakao")
+//    public ModelAndView registerUserKakao(@RequestParam("email") String email, // Add other necessary parameters
+//                                          @RequestParam("regionCode") Long regionCodeId) {
+//        // Kakao registration logic should be implemented here
+//        return new ModelAndView("redirect:/register_success");
+//    }
     
     @GetMapping("/register")
     public String registerForm(Model model) {
@@ -147,6 +161,81 @@ public class RegisterController {
         return "redirect:/login"; // Redirecting to login upon success
     }
     
+    @PostMapping("/registerKakaoSubmit")
+    public String registerKakaoSubmit(@ModelAttribute("user") Users user,
+                                 @RequestParam("uploadFile") MultipartFile uploadFile,
+//                                 @RequestParam("regionCode") String regionCode, // To handle region code from form
+                                 HttpServletRequest request,
+                                 RedirectAttributes redirectAttributes) {
+        System.out.println("포스트매핑작동");
+        
+        String nickname = (String) request.getAttribute("nickname");
+        String email = (String) request.getAttribute("email");
+        String phone = (String) request.getAttribute("phone");
+        String name = (String) request.getAttribute("name");
+        String regionCode = (String) request.getAttribute("regionCode");
+        
+        // Set AuthType to STANDARD always
+        user.setAuthType(AuthType.STANDARD);
+        user.setNickname(nickname);
+        user.setEmail(email);
+        user.setName(name);
+        user.setPhone(phone);
+        
+        System.out.println(user.getNickname());
+        System.out.println(user.getName());
+        System.out.println(user.getEmail());
+        System.out.println(user.getPhone());
+        System.out.println(user.getPasswordHash());
+        System.out.println(user.getRegionCode());
+        System.out.println(user.getFilename());
+        System.out.println(user.getAuthType());
+        System.out.println(user.getId());
+        System.out.println("1차 데이터 수집 종료");
+        
+        
+        String rawPassword = (String) request.getAttribute("password");
+        if (rawPassword == null || rawPassword.isEmpty()) {
+    	  String encodedPassword = passwordEncoder.encode(rawPassword);
+          user.setPasswordHash(encodedPassword);
+            return "redirect:/register_kakao";
+        }
+        
+        // Encode password and set it to user
+        System.out.println(user.getPasswordHash());
+        System.out.println("2차 데이터 수집 종료");
+        
+        // Handling file upload
+        try {
+        	System.out.println("파일 기록 시작");
+            if (uploadFile != null && !uploadFile.isEmpty()) {
+                String filename = uploadFile.getOriginalFilename();
+                String uploadDir = Paths.get("src/main/resources/static/images").toAbsolutePath().toString();
+                File targetFile = new File(uploadDir, filename);
+                if (!targetFile.exists()) {
+                    targetFile.getParentFile().mkdirs();
+                    uploadFile.transferTo(targetFile);
+                    user.setFilename(filename);
+                }
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
+            System.out.println("파일업로드 실패");
+            return "redirect:/register_kakao"; // Keeping the original redirect
+        }
+
+        // Add user with specified regionCode
+        try {
+            userService.addUser(user, regionCode);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            System.out.println("입력실패");
+            return "redirect:/register_kakao"; // Keeping the original redirect
+        }
+
+        System.out.println("입력완료");
+        return "redirect:/login"; // Redirecting to login upon success
+    }
 }   
 //    @PostMapping("/registerSubmit")
 //    public String registerSubmit(@ModelAttribute Users user, 
