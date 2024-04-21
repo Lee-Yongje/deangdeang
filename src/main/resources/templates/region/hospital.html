@@ -36,15 +36,12 @@
 		        .then((response) => response.json())
 		        .then((json) => {
 		            const cities = json.city;
-		            cities.forEach((city) => {
-		                console.log(city.name);
-		                console.log(city.district);
-		            });
 
-            $('#region').change(function() {
-                const selectedRegion = $(this).val();
-                const selectedCity = json.city.find(city => city.name === selectedRegion);
-                $('#region2').html('<option value="none">전체</option>');
+            $('#region1').change(function() {
+                var selectedRegion = $(this).val();
+                var selectedCity = cities.find(function(city) {
+				    return city.name === selectedRegion;
+				});
                 $.each(selectedCity.district, function(index, district) {
                     $('#region2').append($('<option>', {
                         value: district,
@@ -60,7 +57,7 @@
 				url: "/region/regionCode",
 				success: function (regionCodes) {
 					regionCodes.forEach(function (regionCode) {
-						$('#region').append($('<option>', {
+						$('#region1').append($('<option>', {
 							value: regionCode.r_name,
 							text: regionCode.r_name
 						}));
@@ -130,7 +127,7 @@
 							<div class="container search-area">
 								<div class="row justify-content-center">
 									<form action="/region/hospital" method="get" id="form" class="search-form form-inline">
-										<select class="form-control" id="region" name="region1">
+										<select class="form-control" id="region1" name="region1">
 											<option value="none">전체</option>
 										</select>&nbsp;
 										시군구:&nbsp; <select class="form-control" id="region2" name="region2">
@@ -178,9 +175,10 @@
 												    <span th:if="${!hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 10}" 
 												          th:text="'0' + ${hospital.tel_NO.substring(0, 2)} + '-' + ${hospital.tel_NO.substring(2, 6)} + '-' + ${hospital.tel_NO.substring(6)}">
 												    </span>
-												    <span th:if="${!hospital.tel_NO.startsWith('2') and hospital.tel_NO.length() == 11}" 
+												    <span th:if="${hospital.tel_NO.length() == 11}" 
 												          th:text="'0' + ${hospital.tel_NO.substring(0, 3)} + '-' + ${hospital.tel_NO.substring(3, 7)} + '-' + ${hospital.tel_NO.substring(7)}">
 												    </span>
+												    
 												 </span>
 											</td>
 

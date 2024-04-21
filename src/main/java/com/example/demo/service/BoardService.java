@@ -51,13 +51,13 @@ public class BoardService {
    }
    
    // 자유, 질문 게시판 조회
-   public List<Map<String ,Object>> findByBcode(int b_code) {
-	   return dao.findByBcode(b_code);
+   public Page<List<Map<String, Object>>> findByBcode(int b_code, Pageable pageable) {
+	   return dao.findByBcode(b_code, pageable);
    }
    
    // 모임 게시판 조회
-   public List<Map<String ,Object>> findClubByBcode(int b_code) {
-	   return dao.findClubByBcode(b_code);
+   public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable) {
+	   return dao.findClubByBcode(b_code, pageable);
    }
    
  //게시판용 getNextNo
@@ -83,10 +83,12 @@ public class BoardService {
 	   return dao.searchBoardByBTitleAndRegion(b_code, rno, search,pageable);
    }
    
-   //일단 중고장터용 getNextNo
-   public int getNextUsedgoodBno() {
-	   return dao.getNextBno(6);
+   //지역으로만 검색
+   public Page<Board> searchBoardByRegion(int b_code, String rno, Pageable pageable){
+	   return dao.searchBoardByRegion(b_code, rno, pageable);
    }
+   
+   
    
    //중고장터 게시글 insert
    public void insertUsedgood(Board b) {
@@ -124,8 +126,13 @@ public class BoardService {
 	   return dao.findBoardByBnoAndBCode(b_code, bno);
    }
    
-   //중고장터 판매완료시키기
+   //중고장터 판매완료, 모임게시판 모임완료시키기
    public void usedgoodSold(int b_code, int bno){
 	   dao.usedgoodSold(b_code, bno);
-   }   
+   }
+   
+   //내 글 보기(마이페이지)
+   public Page<Board> findByUno(Long uno, Pageable pageable){
+	   return dao.findByUno(uno,pageable);
+   }
 }

@@ -32,49 +32,42 @@
 
 	<style>
 		#preview {
-			border: none;
+			display: none;
 		}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		$(document).ready(function () {
-			var bno = $("#bno").val();
 			var b_code = $("#b_code").val();
-			var written_region = $('#written_region').val();
 			$.ajax({
-			    type: "GET",
-			    url: "/region/regionCode",
-			    success: function (regionCodes) {
-			        regionCodes.forEach(function (regionCode) {
-			            var option = $('<option>', {
-			                value: regionCode.rno,
-			                text: regionCode.r_name
-			            });
-			            //원래 지역을 선택해두기 위한 selected 속성
-			            $('#region').append(option);
-			            if (regionCode.rno == written_region) {
-			                option.prop('selected', true);
-			            }
-			        });
-			    }
+				type: "GET",
+				url: "/region/regionCode",
+				success: function (regionCodes) {
+					regionCodes.forEach(function (regionCode) {
+						$('#region').append($('<option>', {
+							value: regionCode.rno,
+							text: regionCode.r_name
+						}));
+					});
+				}
 			});
 			$("#submitBtn").click(function () {
 				var regionSelected = $("#region").val() !== ""; // 지역 선택 확인
 				var titleFilled = $("#b_title").val() !== ""; // 제목 입력 확인
 				var contentFilled = $("#b_content").val() !== ""; // 내용 입력 확인
-				var priceFilled = $("#b_price").val() !== ""; // 가격 입력 확인
+				var fileAttached = $("#uploadFile").val() !== ""; // 파일 첨부 확인
 
 				// 모든 조건을 충족하면 폼 제출
-				if (regionSelected && titleFilled && contentFilled && priceFilled) {
+				if (regionSelected && titleFilled && contentFilled && fileAttached) {
 					var selectedRno = $("#region").val(); // 선택된 옵션의 값 가져오기
-					//$("<input>").attr("type", "hidden").attr("name", "rno").attr("value", selectedRno).appendTo("#boardForm");
-					$("#boardForm").attr("action", "/member/usedgood/update/"+b_code+"/"+bno);
-           			$("#boardForm").submit(); // 폼 제출
+					$("<input>").attr("type", "hidden").attr("name", "rno").attr("value", selectedRno).appendTo("#boardForm");
+					$("#boardForm").attr("action", "/member/community/photoBoardInsert/"+b_code);
+					$("#boardForm").submit();
 				} else {
-					alert("모든 항목을 작성해 주세요!");
+					alert("모든 항목을 작성하고 사진을 첨부해주세요!");
 				}
 			});
-			
+
 			//사진 미리보기
 			$('#fileInput').on('change', function () {
 				readURL(this);
@@ -94,8 +87,6 @@
 			}
 			$('#preview').show() //안 보여졌다가 파일 있으면 보여주게 하려고 
 		}
-		
-		
 	</script>
 </head>
 
@@ -108,7 +99,7 @@
 		<div class="container">
 			<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate text-center">
-					<h1 class="mb-0 bread">used goods</h1>
+					<h1 class="mb-0 bread">community</h1>
 				</div>
 			</div>
 		</div>
@@ -119,46 +110,42 @@
 			<div class="container mt-5">
 				<div class="row">
 					<div class="col-md-8">
-						<h2>게시물 수정</h2>
-						<h5>중고장터</h5>
+						<h2>게시물 작성</h2>
+						<h5 th:text="${b_name}"></h5>
 					</div>
 					<div class="col-md-4 text-right">
-						<button class="btn btn-primary" id="submitBtn">글 수정</button>
+						<button class="btn btn-primary" id="submitBtn">글 등록</button>
 					</div>
 				</div>
 				<div class="row mt-3">
 					<div class="col-md-12">
-						<form  method="post" id="boardForm" enctype="multipart/form-data">
+						<form method="post" id="boardForm"
+							enctype="multipart/form-data">
 							<input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
-							<input type="hidden" id="bno" name="bno" th:value="${b.id.bno}"/>
-							<input type="hidden" id="b_code" name="b_code" th:value="${b.id.b_code}"/>
+							<input type="hidden" id="b_code" th:value="${b_code}"/>
 							<!--콤보박스-->
-							<div class="form-group">
+							<div class="form-group" th:if="${b_code==5}">
 								<select class="form-control" id="region" name="regionCode.rno" style="width: 40%;">
+									<option value="">지역을 선택해 주세요</option>
 								</select>
 							</div>
-							<input type="hidden" id="written_region" th:value="${b.regionCode.rno}" />
 							<!--end콤보박스-->
 
 							<div class="form-group">
 								<input type="text" class="form-control" id="b_title" name="b_title"
-									th:value="${b.b_title}" onfocus="clearDefault(this)" onblur="restoreDefault(this)">
+									placeholder="내용을 입력하세요" onfocus="clearDefault(this)" onblur="restoreDefault(this)">
 							</div>
 							<div class="form-group">
 								<textarea class="form-control" id="b_content" name="b_content" rows="5"
 									onfocus="clearDefault(this)" onblur="restoreDefault(this)"
-									th:field="${b.b_content}"></textarea>
+									placeholder="내용을 입력하세요"></textarea>
 							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" id="b_price" name="b_price"
-									th:value="${b.b_price}" onfocus="clearDefault(this)" onblur="restoreDefault(this)"
-									style="width: 30%;">
-							</div>
-							<img id="preview" width="200px" height="200px" th:src="@{'/images/' + ${b.b_fname}}">
-							<div class="form-group">
-								<input type="file" class="form-control-file" name="uploadFile" onchange="readURL(this)">
+								<label for="uploadFile">업로드할 사진을 반드시 첨부해 주세요!</label>
+								<input type="file" class="form-control-file" id="uploadFile" name="uploadFile" onchange="readURL(this)">
 							</div>
 						</form>
+						<img id="preview" width="200px" height="200px">
 					</div>
 				</div>
 			</div>
