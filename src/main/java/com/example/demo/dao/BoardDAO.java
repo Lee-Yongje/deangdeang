@@ -44,7 +44,13 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     @Query(value = "SELECT * FROM board WHERE b_code = ?1 ORDER BY b_date DESC", 
     		countQuery = "select count(*) from board where b_code=?1",
     		nativeQuery = true)
-    public Page<Board> findBoardByBCode(int b_code, Pageable pageable); //start는 임시
+    public Page<Board> findBoardByBCode(int b_code, Pageable pageable);
+    
+  //중고거래(사진형게시판) 16개씩 조회(페이징용) - 현재진행중인 만 뽑기
+    @Query(value = "SELECT * FROM board WHERE b_code = ?1 AND ongoing=1 ORDER BY b_date DESC", 
+    		countQuery = "select count(*) from board where b_code=?1 and ongoing=1",
+    		nativeQuery = true)
+    public Page<Board> findBoardByBCodeOngoing(int b_code, Pageable pageable);
     
     //getNextBno(게시판 구분해서)
     @Query(value ="select ifnull(max(bno),0)+1 from board where b_code = ?", nativeQuery = true)
@@ -71,12 +77,26 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     		nativeQuery = true)
     public Page<Board> searchBoardByBTitle(int b_code, String search ,Pageable pageable);
     
+    //제목으로 검색 & 진행중
+    @Query(value="SELECT * FROM board WHERE b_code = ?1 AND b_title LIKE CONCAT('%', ?2, '%') AND ongoing=1 "
+    		+ "ORDER BY b_date DESC", 
+    		countQuery = "select count(*) from board where b_code=?1 AND b_title AND ongoing=1 LIKE CONCAT('%', ?2, '%')",
+    		nativeQuery = true)
+    public Page<Board> searchBoardByBTitleOngoing(int b_code, String search ,Pageable pageable);
+    
     //지역과 제목으로 검색
     @Query(value="SELECT * FROM board WHERE b_code = ?1 AND rno = ?2 AND b_title LIKE CONCAT('%', ?3, '%') \r\n"
     		+ "ORDER BY b_date DESC", 
     		countQuery = "select count(*) from board where b_code=?1 AND rno = ?2 AND b_title LIKE CONCAT('%', ?3, '%')",
     		nativeQuery = true)
     public Page<Board> searchBoardByBTitleAndRegion(int b_code ,String rno, String search, Pageable pageable);
+    
+    //지역과 제목으로 검색 & 진행중
+    @Query(value="SELECT * FROM board WHERE b_code = ?1 AND rno = ?2 AND b_title LIKE CONCAT('%', ?3, '%') AND ongoing=1 "
+    		+ "ORDER BY b_date DESC", 
+    		countQuery = "select count(*) from board where b_code=?1 AND rno = ?2 AND b_title AND ongoing=1 LIKE CONCAT('%', ?3, '%')",
+    		nativeQuery = true)
+    public Page<Board> searchBoardByBTitleAndRegionOngoing(int b_code ,String rno, String search, Pageable pageable);
     
     //지역으로만 검색
     @Query(value="SELECT * FROM board WHERE b_code = ?1 AND rno = ?2 ORDER BY b_date DESC", 

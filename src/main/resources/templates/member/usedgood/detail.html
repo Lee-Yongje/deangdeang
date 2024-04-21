@@ -41,7 +41,9 @@
 				}
 		    });
 		    $("#btnUpdate").click(function () {
-			    window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;
+				if(confirm("판매 완료 상태로 변경하시겠습니까?")){
+			    	window.location.href = "/member/usedgood/update/"+b_code+"/"+bno;
+			    }
 		    });
 		    $("#btnSold").click(function () {
 			    window.location.href = "/member/usedgood/sold/"+b_code+"/"+bno;				

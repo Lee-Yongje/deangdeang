@@ -220,7 +220,7 @@ public class CommunityPhotoController {
 		}
 		//검색
 		if (vsearch != null) {
-			list = bs.searchUsedgoodByTitle(1, vsearch, pageable);
+			list = bs.searchUsedgoodByTitle(1, vsearch,"", pageable);
 		}
 
 		//페이징
@@ -280,10 +280,9 @@ public class CommunityPhotoController {
 		}
 		// 검색
 		if (vsearch != null) {
-			System.out.println("vsearch null아님");
-			list = bs.searchUsedgoodByTitle(5, vsearch, pageable);
+			list = bs.searchUsedgoodByTitle(5, vsearch, "",pageable);
 			if (vregion != null) {
-				list = bs.searchUsedgoodByTitleAndRegion(5, vregion, vsearch, pageable);
+				list = bs.searchUsedgoodByTitleAndRegion(5, vregion, vsearch, "",pageable);
 			}
 		} else if (vregion != null) {
 			list = bs.searchBoardByRegion(5, vregion, pageable);

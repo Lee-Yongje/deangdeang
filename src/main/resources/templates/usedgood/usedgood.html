@@ -95,7 +95,11 @@
 	<div class="container">
 		<div class="container">
 			<div class="d-flex justify-content-between align-items-center">
+			<div>
 				<h2><a th:href="@{/usedgood/usedgood?reset=1}" th:text="중고장터"></a></h2>
+				 <a href="/usedgood/usedgood?ongoing=0" th:class="${session.ongoing =='1'} ? 'btn' : 'btn btn-primary'">모두 보기</a>  
+				 <a href="/usedgood/usedgood?ongoing=1" th:class="${session.ongoing =='1'} ? 'btn btn-primary' : 'btn'">판매중만 보기</a>  
+				</div>
 				<a href="/member/usedgood/write" class="btn btn-primary">글쓰기</a>
 			</div>
 			<br />
