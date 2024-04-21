@@ -145,7 +145,8 @@ $(function(){
         var birthValue = $("#p_birth").val();
         var sexValue = $("input[name='p_sex']:checked").val();
         var neuterValue = $("input[name='p_neuter']:checked").val();
-
+		var colorCode = $("#colorCode").val();
+        
         // 필수 입력 항목이 누락된 경우
         if (nameValue === "") {
             // 폼 제출 막기
@@ -177,6 +178,13 @@ $(function(){
         } else {
             $("#neuter-error").text("");
         }
+        
+        if (colorCode === "") {
+            event.preventDefault();
+            $("#color-error").text("컬러를 선택해주세요.");
+        } else {
+            $("#color-error").text("");
+        }
     });
 
     
@@ -191,11 +199,21 @@ $(function(){
             $("#birth-error").text("");
         }
     });
+	$("#colorPicker").change(function(){
+	    $("#colorCode").val(this.value);
+	    // 사용자가 색상을 선택할 때마다 안내 문구 초기화
+	    $("#color-error").text("");
+	});
 
     // 라디오 버튼 체크 시 안내 문구 초기화
     $("input[type='radio']").change(function() {
         // 라디오 버튼이 체크되면 해당 필드의 다음에 있는 안내 문구 삭제
         $(this).closest("fieldset").find(".text-danger").text("");
+    });
+    
+ // 선택한 색상 값을 가져와서 텍스트필드에 출력
+    $("#colorPicker").change(function(){
+        $("#colorCode").val(this.value);
     });
 	
 	
@@ -314,6 +332,14 @@ $(function(){
                                                 <input type="radio" id="p_neuter_X" name="p_neuter" value="2" th:checked="${p != null && p.p_neuter eq '2'}">
                                                 <label for="p_neuter_X">안했어요</label>
                                                 <span id="neuter-error" class="text-danger"></span>
+                                            </fieldset>
+                                            <div class="divider"></div>
+                                            <fieldset>
+                                                <legend>컬러 선택</legend>
+                                                <p> 스케줄러에 표시할 각 반려견의 컬러를 선택하세요</p>
+											        <input type="color" id="colorPicker" name="p_color" value="">
+											        <input type="text" id="colorCode" readonly value="">
+											        <span id="color-error" class="text-danger"></span>
                                             </fieldset>
                                             
                                             <!-- 등록,수정,삭제 버튼 -->

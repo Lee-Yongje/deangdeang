@@ -55,6 +55,9 @@ public class MypageController {
 	private BoardCodeService bcs;
 	
 	@Autowired
+	private RegionCodeDAO rs;
+	
+	@Autowired
 	private ResourceLoader resourceLoader;
 	
 	//비밀번호 재설정용
@@ -72,10 +75,13 @@ public class MypageController {
 	
 	// 회원정보수정 POST
 	@PostMapping("/member/mypage/changeInfo")
-	public String changeInfo(Users u, String rno, HttpSession session) {
+	public String changeInfo(Users u, String rno, HttpSession session) {		
 		Users user = (Users)session.getAttribute("userSession");
 		Long uno = user.getId();
 		u.setId(uno);
+		u.setAuthType(user.getAuthType()); // 수정한 부분
+
+		
 		String viewPage = "redirect:/member/mypage/changeInfo";
 	    String oldFname = u.getFilename();
 	    Resource resource = resourceLoader.getResource("classpath:/static/images"); //절대경로 찾기
@@ -103,7 +109,10 @@ public class MypageController {
 	        	u.setFilename(null);
 	        }
 	    }
+	    System.out.println("수정작업 확인 : "+u);
 	    int re = us.updateInfo(u.getName(), u.getEmail(), u.getPhone(), u.getNickname(), u.getFilename(), rno, u.getId());
+	    System.out.println("업데이터 확인"+re);
+	    
 	    if(re == 1) {
 	    	if(fname != null && !fname.equals("") && oldFname != null && !oldFname.equals("")) {
 				File file = new File(path + "/"+oldFname);
@@ -112,6 +121,7 @@ public class MypageController {
 	    }else {
 	    	System.out.println("게시물 수정에 실패했습니다.");
 	    }
+	    
 	    return viewPage;
 	}
 
@@ -142,7 +152,6 @@ public class MypageController {
     @ResponseBody
     public boolean checkPassword(String u_pwd, HttpSession session) {
     	boolean result = false;
-    	System.out.println("111111111111111111111111");
     	Users user = (Users)session.getAttribute("userSession");
     	Long uno = user.getId();
         String dbPwd = us.findById(uno).getPasswordHash();
