@@ -22,15 +22,35 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 //	사진 없는 게시판 메소드 시작
 	
 	// 자유, 질문 게시판 조회
-	@Query(value = "SELECT b.*, u_name FROM board b "
+	@Query(value = "SELECT b.*, u_nickname FROM board b "
 			+ "INNER JOIN users u ON b.uno = u.uno "
 			+ "WHERE b_code = ?1 order by b_date desc",
 			countQuery = "select count(*) from board where b_code=?1",
 			nativeQuery = true)
 	public Page<List<Map<String, Object>>> findByBcode(int b_code, Pageable pageable);
 	
+	// 자유, 질문 게시판 제목으로 조회
+	@Query(value = "SELECT b.*, u_nickname FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno "
+			+ "WHERE b_code = ?1 "
+			+ "and b_title LIKE CONCAT('%', ?2, '%') "
+			+ "order by b_date desc",
+			countQuery = "select count(*) from board where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByBTitle(int b_code, String keyword, Pageable pageable);
+	
+	// 자유, 질문 게시판 닉네임으로 조회
+		@Query(value = "SELECT b.*, u_nickname FROM board b "
+				+ "INNER JOIN users u ON b.uno = u.uno "
+				+ "WHERE b_code = ?1 "
+				+ "and u_nickname = ?2 "
+				+ "order by b_date desc",
+				countQuery = "select count(*) from board b INNER JOIN users u ON b.uno = u.uno where b_code=?1 AND u_nickname = ?2",
+				nativeQuery = true)
+		public Page<List<Map<String, Object>>> searchByUNickname(int b_code, String keyword, Pageable pageable);
+	
 	// 모임 게시판 조회
-	@Query(value = "SELECT b.*, u_name, r_name FROM board b "
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
 			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
 			+ "WHERE b_code = ? order by b_date desc;",
 			countQuery = "select count(*) from board where b_code=?1",

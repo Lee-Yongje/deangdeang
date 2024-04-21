@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +37,8 @@ public class BoardService {
 //   사진 없는 게시판 조회 시작
    
    // 회원명으로 회원번호 가져오기 
-   public Long findByUName(String u_name) {
-	   return udao.findByUName(u_name);
+   public Long findByUNickName(String u_name) {
+	   return udao.findByUNickName(u_name);
    }
    
    // 게시판명으로 게시판 번호 가져오기
@@ -51,8 +52,19 @@ public class BoardService {
    }
    
    // 자유, 질문 게시판 조회
-   public Page<List<Map<String, Object>>> findByBcode(int b_code, Pageable pageable) {
-	   return dao.findByBcode(b_code, pageable);
+   public Page<List<Map<String, Object>>> findByBcode( HashMap<String, String> map ,int b_code, Pageable pageable) {
+	   String cname = map.get("cname");
+	   String keyword = map.get("keyword");
+	   Page<List<Map<String, Object>>> list = null;
+	   if( keyword != null && !keyword.equals("")) {
+		   switch(cname) {
+		   case "b_title": list = dao.searchByBTitle(b_code, keyword, pageable);break;
+		   case "u_nickname": list = dao.searchByUNickname(b_code, keyword, pageable);break;
+		   }
+	   }else {
+		   list = dao.findByBcode(b_code, pageable);		   
+	   }
+	   return list;
    }
    
    // 모임 게시판 조회

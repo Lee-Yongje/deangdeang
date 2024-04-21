@@ -98,8 +98,8 @@
 			</li>
 			
 			<li class="nav-item dropdown active" th:if="${#authorization.expression('isAuthenticated()')}">
-			    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.userSession.nickname}"></a>
-			    <div class="dropdown-menu" aria-labelledby="dropdown03">
+			    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.userSession.nickname}"></a>
+			    <div class="dropdown-menu" aria-labelledby="dropdown04">
 			        <form action="/logout" method="post" th:action="@{/logout}">
 					    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 					    <button type="submit" class="dropdown-item">로그아웃</button>

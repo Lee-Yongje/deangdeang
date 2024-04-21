@@ -17,7 +17,7 @@ public interface CommentDAO extends JpaRepository<Comment, Integer> {
 	public int getNextCno();
 	
 	// 해당 게시물을 댓글 리스트
-	@Query(value = "select c.*, u.u_name, u.u_fname from comment c "
+	@Query(value = "select c.*, u_nickname, u_fname from comment c "
 			+ "inner join users u on c.uno = u.uno "
 			+ "where b_code = ?1 and bno = ?2"  ,
 			countQuery = "select count(*) from comment where b_code = ?1 and bno = ?2",

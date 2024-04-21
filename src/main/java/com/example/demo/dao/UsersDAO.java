@@ -29,8 +29,8 @@ public interface UsersDAO extends JpaRepository<Users, Long> {
 	public void updatePwd(String newPwd, Long uno);
 	
 	// 세션에 유지한 Name 으로 Uno 가져오기
-	@Query(value="select uno from users where u_name=?1", nativeQuery = true)
-	public Long findByUName(String u_name);
+	@Query(value="select uno from users where u_nickname=?1", nativeQuery = true)
+	public Long findByUNickName(String u_nickname);
 	
 	@Query("SELECT COALESCE(MAX(u.id), 100) FROM Users u")
 	public Long findMaxId();

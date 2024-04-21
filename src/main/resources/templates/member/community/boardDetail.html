@@ -119,10 +119,10 @@
 								<div class="post-meta">
 									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
 										class="rounded-circle">
-									<span th:text="${b.u_name}"></span><br />
+									<span th:text="${b.u_nickname}"></span><br />
 									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
-								<div th:if="${session.userSession.id==writer}">
+								<div th:if="${session.userSession.nickname==writer}">
 									<th:block th:if="${b.ongoing==1}">
 										<!--만약 모임 완료되면 수정, 삭제 변경 불가-->
 										<button id="btnUpdate" class="btn btn-primary">수정</button> 
@@ -158,7 +158,7 @@
 											alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
 										<div class="ml-3">
 											<div class="comment-meta">
-												<em class="font-weight-bold h5" th:text="${c.u_name}"></em>
+												<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
 												<span th:text="${c.c_date}"></span>											
 											</div>
 											<div class="comment-content" th:text="${c.c_content}"></div>
@@ -174,7 +174,7 @@
 										<!-- 게시판 코드 -->
 										<input type="hidden" name="b_code"  id ="b_code" th:value="${b_code}"/>
 										<!-- 댓글 작성자(세션값) -->
-										<em class="h5" name="u_name" th:text="${session.userSession.name}"></em>
+										<em class="h5" name="u_nickname" th:text="${session.userSession.nickname}"></em>
 										<!-- 댓글 내용 -->
 										<textarea class="form-control" name="c_content" id="c_content"
 											 rows="2" placeholder="댓글을 작성해주세요" required></textarea>

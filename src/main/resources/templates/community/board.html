@@ -75,14 +75,19 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container-fluid">
 					<div class="d-flex justify-content-between align-items-center">
-						<h2><a th:href="@{'/community/board/'+${b_code}}"><span th:text="${b_name}"></span></a></h2>
-						<a th:href="@{/member/community/boardInsert(b_name=${b_name})}" class="btn btn-primary">글쓰기</a>
+						<h2>
+							<a th:href="@{'/community/board/'+${b_code}}"><span
+								th:text="${b_name}"></span></a>
+						</h2>
+						<a th:href="@{/member/community/boardInsert(b_name=${b_name})}"
+							class="btn btn-primary">글쓰기</a>
 					</div>
 					<br />
 
 					<!-- 테이블 시작 -->
 					<div class="table-responsive">
-						<table class="container-fluid table-bordered"style="text-align: center;">
+						<table class="container-fluid table-bordered"
+							style="text-align: center;">
 							<thead>
 								<tr>
 									<th scope="col" width="10%">글 번호</th>
@@ -95,9 +100,10 @@
 							<tbody>
 								<tr th:each="b: ${list}">
 									<td th:text="${b.bno}"></td>
-									<td><a th:href="@{'/member/community/boardDetail/'+${b_code}+'/'+ ${b.bno}}"
+									<td><a
+										th:href="@{'/member/community/boardDetail/'+${b_code}+'/'+ ${b.bno}}"
 										th:text="${b.b_title}"></a></td>
-									<td th:text="${b.u_name}"></td>
+									<td th:text="${b.u_nickname}"></td>
 									<td th:text="${#dates.format(b.b_date, 'yyyy-MM-dd')}"></td>
 									<td th:text="${b.b_hit}"></td>
 								</tr>
@@ -114,16 +120,19 @@
 									<th:block th:if="${nowPage>5}">
 										<li><a
 											th:href="@{'/community/board/'+${b_code}+'?page='+${startPage-1}}">&lt;</a></li>
-									</th:block> 
-									<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+									</th:block>
+									<th:block
+										th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
 										<li th:class="${pageNum == list.number + 1} ? 'active' : ''">
-											<a th:href="@{'/community/board/'+${b_code}+'?page=' + ${pageNum}}">
+											<a
+											th:href="@{'/community/board/'+${b_code}+'?page=' + ${pageNum}}">
 												<span th:text="${pageNum}"></span>
-											</a>
+										</a>
 										</li>
 									</th:block>
 									<th:block th:if="${endPage!=totalPage}">
-										<li><a th:href="@{'/community/board/'+${b_code}+'?page=' + ${endPage+1}}">&gt;</a></li>
+										<li><a
+											th:href="@{'/community/board/'+${b_code}+'?page=' + ${endPage+1}}">&gt;</a></li>
 									</th:block>
 								</ul>
 							</div>
@@ -132,28 +141,27 @@
 					<br />
 					<!--검색창 시작-->
 					<div class="container">
-							    <div class="row justify-content-center">
-							        <form action="" method="get" class="search-form form-inline">
-							            <div class="form-group">
-							                <select class="form-control rounded" id="category" name="category">
-							                    <option value="b_title">제목</option>
-							                    <option value="u_name">작성자</option>
-							                </select>
-							            </div>
-							            <div class="form-group ml-md-3">
-							                <input type="text" class="form-control" placeholder="검색어를 입력해 주세요" name="search">
-							            </div>
-							            <button type="submit" class="btn btn-primary ml-md-3">검색</button>
-							        </form>
-							    </div>
-							</div>
-							<!--검색창 끝-->
-						    </div><!--container-->
-                        </div>
-        </div>
-		<br /> <br />
+						<div class="row justify-content-center">
+							<form th:action="@{'/community/board/'+${b_code}}" method="get" class="search-form form-inline">
+								<div class="form-group-inline">
+									</select> <select class="form-control rounded" id="cname" name="cname">
+										<option value="b_title">제목</option>
+										<option value="u_nickname">작성자</option>
+									</select> <input type="search" class="form-control rounded" placeholder="검색어를 입력하세요" name="keyword">
+									<button type="submit" class="btn btn-primary">검색</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!--검색창 끝-->
+					</div>
+					<!--container-->
+				</div>
+			</div>
+		</div>
+	<br /><br />
 
-		<!-- footer -->
+	<!-- footer -->
 	<div th:replace="~{footer :: footer}"></div>
 	<!-- footer end -->
 

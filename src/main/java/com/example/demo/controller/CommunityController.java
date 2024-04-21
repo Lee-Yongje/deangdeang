@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,13 +59,19 @@ public class CommunityController {
 	public String boardPage(
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@PathVariable int b_code,
+			String cname, String keyword,
 			HttpSession session, Model model) {
-
+		// 조회용 Hashmap
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("cname", cname);
+		map.put("keyword", keyword);
+		
+		// 게시판명 불러오기
 		String b_name = bs.findBNameByBCode(b_code);
 		// 한페이지에 5개씩 (테스트)
 		int pageSize = 5; 
 		Pageable pageable = PageRequest.of(page-1, pageSize);
-		Page<List<Map<String ,Object>>> list = bs.findByBcode(b_code, pageable);
+		Page<List<Map<String ,Object>>> list = bs.findByBcode(map ,b_code, pageable);
 
 		 //페이징
 	    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
@@ -119,7 +126,7 @@ public class CommunityController {
   		model.addAttribute("list", listComment);
   		model.addAttribute("listCount", listComment.size());
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
-		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
+		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getNickname());
 		model.addAttribute("b_name", b_name);
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
@@ -140,8 +147,8 @@ public class CommunityController {
     }
     
     // 글 작성 등록
-    @PostMapping("/member/community/boardInsert/{b_code}/{u_name}")
-    public String boardInsert(Board b, @PathVariable int b_code, @PathVariable String u_name ) {
+    @PostMapping("/member/community/boardInsert/{b_code}/{u_nickname}")
+    public String boardInsert(Board b, @PathVariable int b_code, @PathVariable String u_nickname ) {
     	
     	// 현재시간
     	LocalDateTime now = LocalDateTime.now();
@@ -174,7 +181,7 @@ public class CommunityController {
     	b.setOngoing(1);
     	
     	// 로그인 세션유지시 us.findUnoByUName 으로 수정
-    	long userId = bs.findByUName(u_name);
+    	long userId = bs.findByUNickName(u_nickname);
     	if (b.getUser() == null) {
 			b.setUser(new Users());
 		}
