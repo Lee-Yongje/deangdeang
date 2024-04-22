@@ -50,6 +50,11 @@
     
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script th:inline="javascript">
+    /*<![CDATA[*/
+    var csrfToken = /*[[${_csrf.token}]]*/ 'defaultToken';
+    var csrfHeader = /*[[${_csrf.headerName}]]*/ 'defaultHeaderName';
+    var userId = /*[[${session.userSession.id}]]*/ 0;
+    
 		$(function() {
 	        function updateDiaries() {
 	            var year = $('#year-select').val();
@@ -60,6 +65,8 @@
 	        $('#year-select').change(updateDiaries);
 	        $('#month-select').change(updateDiaries);
 	    });
+		
+		/*]]>*/
 	</script>
     
 </head>

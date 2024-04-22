@@ -42,13 +42,17 @@ public class WebSecurityConfig {
     @SuppressWarnings("deprecation")
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Permitting specific paths
+    	// Session management to ensure the session ID is not changed
+        http.sessionManagement()
+            .sessionFixation().none();  // Do not change the session ID after authentication
+    	
+    	// Permitting specific paths
     	http.authorizeRequests(auth -> {
             auth.requestMatchers(
-            		"/", "/registerMember", "/registerMember/**", "/login", "/index",
+            		"/", "/register", "/registerSubmit", "/login", "/index",
                     "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
                     "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**",
-                    "/register", "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
+                    "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
                     "/login/oauth2/code/kakao", "/news/**")
                 .permitAll()
                 .anyRequest()
@@ -85,11 +89,12 @@ public class WebSecurityConfig {
 
         // Configuring CSRF protection as per your existing requirements
         http.csrf(csrf -> csrf
-            .ignoringRequestMatchers("/login", "/logout", "/registerMember", "/register_kakao")); // Exclude login and logout actions from CSRF protection
+            .ignoringRequestMatchers("/login", "/logout", "/register", "/register_kakao")); // Exclude login and logout actions from CSRF protection
 
         // Configuring exception handling for access denied
         http.exceptionHandling(exceptions -> exceptions.accessDeniedPage("/403"));
 
         return http.build(); // Build the security filter chain
     }
+    
 }

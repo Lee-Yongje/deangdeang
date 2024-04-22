@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.OptionalInt;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import com.example.demo.entity.BoardId;
 import com.example.demo.entity.RegionCode;
 import com.example.demo.entity.Users;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +45,9 @@ public class UsedgoodController {
 	
 	@Autowired
 	private UsersService us;
+	
+	@Autowired
+	private CommentService cs;
 
 	@Autowired //경로찾기용
 	private ResourceLoader resourceLoader;
@@ -91,7 +97,7 @@ public class UsedgoodController {
 			v_category=(String)session.getAttribute("category");	
 			if (session.getAttribute("category")!= null && session.getAttribute("category").equals("region")) {
 				v_rno=(String)session.getAttribute("rno");	
-			}else if(session.getAttribute("category").equals("b_title")) {
+			}else if(session.getAttribute("category")!= null && session.getAttribute("category").equals("b_title")) {
 				session.removeAttribute("rno");
 			}
 	    }
@@ -132,6 +138,10 @@ public class UsedgoodController {
 	// 중고거래 상세
 	@GetMapping("/member/usedgood/detail/{b_code}/{bno}")
 	public String usedgoodDetailPage(@PathVariable int b_code, @PathVariable int bno, Model model) {
+		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
+  		model.addAttribute("list", listComment);
+  		model.addAttribute("listCount", listComment.size());
+		
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
 		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("bno",bno);

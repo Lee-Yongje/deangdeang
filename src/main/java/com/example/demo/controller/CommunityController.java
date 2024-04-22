@@ -138,7 +138,8 @@ public class CommunityController {
 		model.addAttribute("b_name", b_name);
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
-		return "/member/community/boardDetail";
+		return "/member/community/boardDetail"
+				;
     } 
 	
     // 글 작성 페이지 이동
@@ -354,16 +355,38 @@ public class CommunityController {
 		
 		cs.insert(c);
 		System.out.println("댓글 등록 완료");
+		if(b_code==6) {
+  			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
+  		}
 		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
-  	
-  	// 댓글 List 가져오기(임시)
-  	@GetMapping("/member/community/ListComment")
-  	public List<Map<String ,Object>> ListComment(int bno, int b_code, Model model) {
-  		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
-  		model.addAttribute("list", listComment);
-  		model.addAttribute("listCount", listComment.size());
-  		return listComment;
+  
+  	//댓글 수정
+  	@GetMapping("/member/community/updateComment")
+  	public String updateComment(Comment c ,int cno, int bno, int b_code) {
+  		Comment oc = cs.getOldComment(cno);
+  		oc.setC_content(c.getC_content());
+  		cs.update(oc);
+  		if(b_code==6) {
+  			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
+  		}
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	//댓글 삭제
+	@GetMapping("/member/community/deleteComment")
+  	public String deleteComment(int cno,  int bno, int b_code) {
+  		Comment oc = cs.getOldComment(cno);
+  		cs.delete(oc);
+  		if(b_code==6) {
+  			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
+  		}
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
 }
     
