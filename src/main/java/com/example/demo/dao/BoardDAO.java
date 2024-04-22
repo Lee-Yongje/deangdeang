@@ -35,7 +35,8 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "WHERE b_code = ?1 "
 			+ "and b_title LIKE CONCAT('%', ?2, '%') "
 			+ "order by b_date desc",
-			countQuery = "select count(*) from board where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
+			countQuery = "select count(*) from board "
+					+ "where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
 			nativeQuery = true)
 	public Page<List<Map<String, Object>>> searchByBTitle(int b_code, String keyword, Pageable pageable);
 	
@@ -45,7 +46,9 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 				+ "WHERE b_code = ?1 "
 				+ "and u_nickname = ?2 "
 				+ "order by b_date desc",
-				countQuery = "select count(*) from board b INNER JOIN users u ON b.uno = u.uno where b_code=?1 AND u_nickname = ?2",
+				countQuery = "select count(*) from board b "
+						+ "INNER JOIN users u ON b.uno = u.uno "
+						+ "where b_code=?1 AND u_nickname = ?2",
 				nativeQuery = true)
 		public Page<List<Map<String, Object>>> searchByUNickname(int b_code, String keyword, Pageable pageable);
 	
@@ -57,6 +60,53 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			nativeQuery = true)
 	public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable);
 	
+	// 모임 게시판 지역으로 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b.rno = ?2 order by b_date desc",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+					+ "where b_code=?1 and b.rno = ?2",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByRno(int b_code, String rno, Pageable pageable);
+	
+	// 모임 게시판 지역 + 제목으로 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b.rno = ?2 and b_title LIKE CONCAT('%', ?3, '%') order by b_date desc",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+					+ "where b_code=?1 and b.rno = ?2 and b_title LIKE CONCAT('%', ?3, '%')",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByRnoAndBTitle(int b_code, String rno, String keyword, Pageable pageable);
+
+	// 모임 게시판 지역 + 작성자로 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b.rno = ?2 and u_nickname = ?3 order by b_date desc",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+					+ "where b_code=?1 and b.rno = ?2 and u_nickname = ?3",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByRnoAndUNickname(int b_code, String rno, String keyword, Pageable pageable);
+	
+	// 모임 게시판 제목 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b_title LIKE CONCAT('%', ?2, '%') order by b_date desc;",
+			countQuery = "select count(*) from board where b_code=?1 and b_title LIKE CONCAT('%', ?2, '%')",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchClubByBTitle(int b_code, String keyword, Pageable pageable);
+	
+	// 모임 게시판 닉네임 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and u_nickname = ?2 order by b_date desc;",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno "
+					+ "where b_code=?1 and u_nickname = ?2",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchClubByUNickname(int b_code, String keyword, Pageable pageable);
 //	사진 없는 게시판 메소드 끝
 	
 	
