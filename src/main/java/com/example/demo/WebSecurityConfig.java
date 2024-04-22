@@ -43,16 +43,16 @@ public class WebSecurityConfig {
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Permitting specific paths
-        http.authorizeRequests(auth -> {
+    	http.authorizeRequests(auth -> {
             auth.requestMatchers(
             		"/", "/registerMember", "/registerMember/**", "/login", "/index",
                     "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
                     "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**",
                     "/register", "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
                     "/login/oauth2/code/kakao", "/news/**")
-                .permitAll() // Allow these paths without authentication
-            .requestMatchers("/member/usedgood/write")
-            .authenticated(); // Require all requests to /member/usedgood/write to be authenticated
+                .permitAll()
+                .anyRequest()
+                .authenticated();
         });
 
         // Configuring form-based login

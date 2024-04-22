@@ -64,7 +64,7 @@ public class UsedgoodController {
 	    }
 	    
 	    //페이징 
-	    int pageSize = 4; //한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
+	    int pageSize = 16; //한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
 	    Pageable pageable = PageRequest.of(page-1, pageSize); //(데이터 0부터 시작, 불러올 데이터 개수)
 	    Page<Board> list = bs.listUsedgood(6, pageable); //페이저블을 매개변수로 포함해서 데이터 조회
 	    
@@ -89,7 +89,7 @@ public class UsedgoodController {
 	    if(session.getAttribute("search")!=null) {
 	    	v_search=(String)session.getAttribute("search"); 
 			v_category=(String)session.getAttribute("category");	
-			if (session.getAttribute("category").equals("region")) {
+			if (session.getAttribute("category")!= null && session.getAttribute("category").equals("region")) {
 				v_rno=(String)session.getAttribute("rno");	
 			}else if(session.getAttribute("category").equals("b_title")) {
 				session.removeAttribute("rno");

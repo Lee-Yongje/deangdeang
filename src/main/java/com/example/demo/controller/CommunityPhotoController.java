@@ -197,7 +197,7 @@ public class CommunityPhotoController {
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "reset", defaultValue = "0") String reset, HttpSession session, Model model) {
 
-		int pageSize = 8; // 한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
+		int pageSize = 16;
 		String vsearch = null;
 
 		// 메인 누르면 검색했던 것 초기화 상태로 돌려놓기 위해
@@ -244,7 +244,7 @@ public class CommunityPhotoController {
 			@RequestParam(defaultValue = "0") String reset,
 			HttpSession session, Model model) {
 
-		int pageSize = 8; // 한 페이지에 들어갈 아이템 수 실제로는 16개지만 일단 테스트용
+		int pageSize = 16; 
 		String vsearch = null;
 		String vregion = null;
 
