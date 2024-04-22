@@ -60,6 +60,8 @@
 				            <button class="btn btn-primary update" data-cno="${cno}">수정</button>
 				        </div>
 				    `);
+				    entry.find('.edit').hide();
+            		entry.find('.delete').hide();
 				}
 
 				entry.find('.comment-content').hide(); // 댓글 내용 숨기기
@@ -74,7 +76,7 @@
 				var updatedContent = entry.find('textarea').val().trim();
 				$.ajax({
 					type: "GET",
-					url: "/member/community/updateComment",
+					url: "/member/community/boardComment",
 					data: {
 						bno: bno,
 						b_code: b_code,
@@ -83,9 +85,6 @@
 					},
 					success: function (response) {
 						location.reload();
-					},
-					error: function (xhr, status, error) {
-						console.error(xhr.responseText);
 					}
 				});
 			});
@@ -160,13 +159,14 @@
 									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
 										class="rounded-circle">&nbsp;
 									<span th:text="${b.u_nickname}">작성자 이름</span><br />
-									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+									<span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
 								<br />
 								<div th:if="${session.userSession.id==writer}">
 									<button id="btnUpdate" class="btn btn-primary">수정</button> 
 									<button id="btnDelete" class="btn btn-primary">삭제</button>
 								</div>
+								
 							</div>
 						</div>
 						<div class="row mt-3">
