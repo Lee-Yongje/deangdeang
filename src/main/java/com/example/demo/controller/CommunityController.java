@@ -93,8 +93,19 @@ public class CommunityController {
 	public String boardClubPage(
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@PathVariable int b_code,
+			String rno, String cname, String keyword,
 			HttpSession session, Model model) {
 		
+		System.out.println("지역 : "+ rno );
+		System.out.println("주제 : "+ cname );
+		System.out.println("검색어 : "+ keyword );
+		// 조회용 Hashmap
+//		HashMap<String, String> map = new HashMap<String, String>();		
+//		map.put("rno", rno);
+//		map.put("cname", cname);
+//		map.put("keyword", keyword);
+		
+		// 게시판명 불러오기
 		String b_name = bs.findBNameByBCode(b_code);
 		// 한페이지에 5개씩 (테스트)
 		int pageSize = 5; 
@@ -130,7 +141,8 @@ public class CommunityController {
 		model.addAttribute("b_name", b_name);
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
-		return "/member/community/boardDetail";
+		return "/member/community/boardDetail"
+				;
     } 
 	
     // 글 작성 페이지 이동
@@ -348,14 +360,6 @@ public class CommunityController {
 		System.out.println("댓글 등록 완료");
 		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
-  	
-  	// 댓글 List 가져오기(임시)
-  	@GetMapping("/member/community/ListComment")
-  	public List<Map<String ,Object>> ListComment(int bno, int b_code, Model model) {
-  		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
-  		model.addAttribute("list", listComment);
-  		model.addAttribute("listCount", listComment.size());
-  		return listComment;
-  	}
+  
 }
     

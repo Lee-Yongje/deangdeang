@@ -43,7 +43,7 @@ public class WebSecurityConfig {
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Permitting specific paths
-        http.authorizeRequests(auth -> {
+    	http.authorizeRequests(auth -> {
             auth.requestMatchers(
             		"/", "/register", "/registerSubmit", "/login", "/index",
                     "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",

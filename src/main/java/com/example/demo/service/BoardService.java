@@ -92,7 +92,7 @@ public class BoardService {
    
    //제목으로 검색
    public Page<Board> searchUsedgoodByTitle(int b_code, String search, String ongoing, Pageable pageable){
-	   if(ongoing.equals("1")) {
+	   if(ongoing!=null && ongoing.equals("1")) {
 		   return dao.searchBoardByBTitleOngoing(b_code, search, pageable);
 	   }
 	   return dao.searchBoardByBTitle(b_code, search, pageable);
@@ -100,7 +100,7 @@ public class BoardService {
    
    //제목과 지역으로 검색
    public Page<Board> searchUsedgoodByTitleAndRegion(int b_code, String rno, String search, String ongoing, Pageable pageable){
-	   if(ongoing.equals("1")) {
+	   if(ongoing!=null && ongoing.equals("1")) {
 		   return dao.searchBoardByBTitleAndRegionOngoing(b_code, rno, search, pageable);
 	   }
 	   return dao.searchBoardByBTitleAndRegion(b_code, rno, search,pageable);
