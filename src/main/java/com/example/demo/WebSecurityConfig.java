@@ -50,7 +50,9 @@ public class WebSecurityConfig {
                     "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**",
                     "/register", "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
                     "/login/oauth2/code/kakao", "/news/**")
-                .permitAll(); // Allow these paths without authentication
+                .permitAll() // Allow these paths without authentication
+            .requestMatchers("/member/usedgood/write")
+            .authenticated(); // Require all requests to /member/usedgood/write to be authenticated
         });
 
         // Configuring form-based login

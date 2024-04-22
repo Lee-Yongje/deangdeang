@@ -109,6 +109,8 @@ public class KakaoOAuth2Controller {
 
         // 사용자가 이미 등록되어 있는지 확인
         Users existingUser = userService.findByEmail(email);
+        System.out.println("존재하는 사용자:" + existingUser);
+        
         if (existingUser == null) {
         	 redirectAttributes.addAttribute("email", email);
              redirectAttributes.addAttribute("nickname", nickname);

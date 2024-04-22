@@ -163,20 +163,32 @@ public class RegisterController {
     
     @PostMapping("/registerKakaoSubmit")
     public String registerKakaoSubmit(@ModelAttribute("user") Users user,
-                                 @RequestParam("uploadFile") MultipartFile uploadFile,
-//                                 @RequestParam("regionCode") String regionCode, // To handle region code from form
-                                 HttpServletRequest request,
-                                 RedirectAttributes redirectAttributes) {
+						    		@RequestParam("uploadFile") MultipartFile uploadFile,
+						            @RequestParam("nickname") String nickname,
+						            @RequestParam("email") String email,
+						            @RequestParam("phone") String phone,
+						            @RequestParam("name") String name,
+						            @RequestParam("regionCode") String regionCode,
+						            @RequestParam("password") String rawPassword,
+	                                 HttpServletRequest request,
+	                                 RedirectAttributes redirectAttributes) {
         System.out.println("포스트매핑작동");
         
-        String nickname = (String) request.getAttribute("nickname");
-        String email = (String) request.getAttribute("email");
-        String phone = (String) request.getAttribute("phone");
-        String name = (String) request.getAttribute("name");
-        String regionCode = (String) request.getAttribute("regionCode");
+//        String nickname = (String) request.getAttribute("nickname");
+//        String email = (String) request.getAttribute("email");
+//        String phone = (String) request.getAttribute("phone");
+//        String name = (String) request.getAttribute("name");
+//        String regionCode = (String) request.getAttribute("regionCode");
         
-        // Set AuthType to STANDARD always
-        user.setAuthType(AuthType.STANDARD);
+     // Debug prints
+        System.out.println("Received nickname: " + nickname);
+        System.out.println("Received email: " + email);
+        System.out.println("Received phone: " + phone);
+        System.out.println("Received name: " + name);
+        System.out.println("Received password: " + rawPassword);
+
+        // Set AuthType to Kakao always
+        user.setAuthType(AuthType.KAKAO);
         user.setNickname(nickname);
         user.setEmail(email);
         user.setName(name);
@@ -186,7 +198,6 @@ public class RegisterController {
         System.out.println(user.getName());
         System.out.println(user.getEmail());
         System.out.println(user.getPhone());
-        System.out.println(user.getPasswordHash());
         System.out.println(user.getRegionCode());
         System.out.println(user.getFilename());
         System.out.println(user.getAuthType());
@@ -194,13 +205,14 @@ public class RegisterController {
         System.out.println("1차 데이터 수집 종료");
         
         
-        String rawPassword = (String) request.getAttribute("password");
-        if (rawPassword == null || rawPassword.isEmpty()) {
-    	  String encodedPassword = passwordEncoder.encode(rawPassword);
-          user.setPasswordHash(encodedPassword);
+//      String rawPassword = (String) request.getAttribute("password");
+        if (rawPassword != null && !rawPassword.isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            user.setPasswordHash(encodedPassword);
+        } else {
             return "redirect:/register_kakao";
         }
-        
+
         // Encode password and set it to user
         System.out.println(user.getPasswordHash());
         System.out.println("2차 데이터 수집 종료");
