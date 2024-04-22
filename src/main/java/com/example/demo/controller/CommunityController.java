@@ -360,6 +360,8 @@ public class CommunityController {
 		System.out.println("댓글 등록 완료");
 		if(b_code==6) {
   			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
   		}
 		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
@@ -372,6 +374,8 @@ public class CommunityController {
   		cs.update(oc);
   		if(b_code==6) {
   			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
   		}
   		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
@@ -382,6 +386,8 @@ public class CommunityController {
   		cs.delete(oc);
   		if(b_code==6) {
   			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
   		}
   		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
