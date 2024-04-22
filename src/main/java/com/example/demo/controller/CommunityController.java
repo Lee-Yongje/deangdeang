@@ -141,7 +141,8 @@ public class CommunityController {
 		model.addAttribute("b_name", b_name);
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
-		return "/member/community/boardDetail";
+		return "/member/community/boardDetail"
+				;
     } 
 	
     // 글 작성 페이지 이동
@@ -359,14 +360,6 @@ public class CommunityController {
 		System.out.println("댓글 등록 완료");
 		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
-  	
-  	// 댓글 List 가져오기(임시)
-  	@GetMapping("/member/community/ListComment")
-  	public List<Map<String ,Object>> ListComment(int bno, int b_code, Model model) {
-  		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
-  		model.addAttribute("list", listComment);
-  		model.addAttribute("listCount", listComment.size());
-  		return listComment;
-  	}
+  
 }
     

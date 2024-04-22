@@ -91,7 +91,7 @@ public class UsedgoodController {
 			v_category=(String)session.getAttribute("category");	
 			if (session.getAttribute("category")!= null && session.getAttribute("category").equals("region")) {
 				v_rno=(String)session.getAttribute("rno");	
-			}else if(session.getAttribute("category").equals("b_title")) {
+			}else if(session.getAttribute("category")!= null && session.getAttribute("category").equals("b_title")) {
 				session.removeAttribute("rno");
 			}
 	    }
