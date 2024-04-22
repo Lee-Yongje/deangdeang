@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -56,6 +57,9 @@ public class KakaoOAuth2Controller {
 
     @Autowired
     private UsersService userService;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(String code, HttpSession session, RedirectAttributes redirectAttributes) throws JsonProcessingException {
@@ -94,9 +98,10 @@ public class KakaoOAuth2Controller {
         );
 
         KakaoProfile kakaoProfile = objectMapper.readValue(response2.getBody(), KakaoProfile.class);
-
-        UUID garbagePassword = UUID.randomUUID();
         String email = kakaoProfile.getKakao_account().getEmail(); // 이메일을 사용자 이름으로 사용
+        Users existingUser = userService.findByEmail(email);
+
+
         String nicknameRaw = kakaoProfile.getProperties().getNickname();
         String nickname = "";
 		try {
@@ -104,22 +109,35 @@ public class KakaoOAuth2Controller {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-        
-        String password = garbagePassword.toString(); // 랜덤 비밀번호를 생성
+
+//		UUID garbagePassword = UUID.randomUUID();
+//        String password = garbagePassword.toString(); // 랜덤 비밀번호를 생성
 
         // 사용자가 이미 등록되어 있는지 확인
-        Users existingUser = userService.findByEmail(email);
-        System.out.println("존재하는 사용자:" + existingUser);
-        
+        System.out.println("존재하는 사용자:" + existingUser);        
         if (existingUser == null) {
         	 redirectAttributes.addAttribute("email", email);
              redirectAttributes.addAttribute("nickname", nickname);
         	return "redirect:/register_kakao";
         }
-
+        
+       
+        
         // 등록된 사용자인 경우 로그인 처리
         authenticateUser(email);
-        return "redirect:/index"; // 로그인 성공 후 리디렉션
+        String passwordHash = existingUser.getPasswordHash();
+        
+
+        // 등록된 사용자인 경우 로그인 처리
+        session.setAttribute("userSession", existingUser);
+        
+        // Set authentication in security context
+        Authentication authToken = new UsernamePasswordAuthenticationToken(email, null, null);
+        authToken.setAuthenticated(true);  // Since the user is authenticated by Kakao
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        return "redirect:/index"; // Proceed to 
+        
     }
     
     private void authenticateUser(String email) {

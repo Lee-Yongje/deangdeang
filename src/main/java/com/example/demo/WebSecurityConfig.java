@@ -45,14 +45,14 @@ public class WebSecurityConfig {
         // Permitting specific paths
         http.authorizeRequests(auth -> {
             auth.requestMatchers(
-            		"/", "/registerMember", "/registerMember/**", "/login", "/index",
+            		"/", "/register", "/registerSubmit", "/login", "/index",
                     "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
                     "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**",
-                    "/register", "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
+                    "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
                     "/login/oauth2/code/kakao", "/news/**")
-                .permitAll() // Allow these paths without authentication
-            .requestMatchers("/member/usedgood/write")
-            .authenticated(); // Require all requests to /member/usedgood/write to be authenticated
+                .permitAll()
+                .anyRequest()
+                .authenticated();
         });
 
         // Configuring form-based login
@@ -85,11 +85,12 @@ public class WebSecurityConfig {
 
         // Configuring CSRF protection as per your existing requirements
         http.csrf(csrf -> csrf
-            .ignoringRequestMatchers("/login", "/logout", "/registerMember", "/register_kakao")); // Exclude login and logout actions from CSRF protection
+            .ignoringRequestMatchers("/login", "/logout", "/register", "/register_kakao")); // Exclude login and logout actions from CSRF protection
 
         // Configuring exception handling for access denied
         http.exceptionHandling(exceptions -> exceptions.accessDeniedPage("/403"));
 
         return http.build(); // Build the security filter chain
     }
+    
 }
