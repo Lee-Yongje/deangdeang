@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.demo.dao.UsersDAO;
 import com.example.demo.entity.Users;
+import com.example.demo.service.BoardService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -84,6 +87,9 @@ public class PageController {
     @Autowired
     private UsersDAO dao;
     
+    @Autowired
+	private BoardService bs;
+    
     @GetMapping("/index")    
     public String processLogin(HttpSession session, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -103,6 +109,15 @@ public class PageController {
             System.out.println("principal 객체가 예상한 타입이 아닙니다.");
         }
         return "index";
+    }
+    
+
+    
+    @GetMapping("/index")
+    public String showIndexPage(Model model) {
+        List<String> imageNames = bs.getTopImages();
+        model.addAttribute("imageNames", imageNames);
+        return "index"; // 이 경로는 실제 index 페이지의 템플릿 경로와 일치해야 합니다.
     }
 
     

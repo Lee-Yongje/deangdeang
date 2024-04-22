@@ -144,5 +144,9 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     @Query(value = "select b.* from board b inner join users u on b.uno=u.uno where b.uno=?",countQuery = "select count(*) from board where uno=?", nativeQuery = true)
     public Page<Board> findByUno(Long uno, Pageable pageable);
     
+    
+    //메인페이지 전국댕댕자랑 1위~5위 정렬
+    @Query(value = "select b_fname from board where b_code = 1 ORDER BY b_hit DESC LIMIT 5", nativeQuery = true)
+    public List<String> findTop5ByBHit();
 }
 

@@ -158,4 +158,10 @@ public class BoardService {
    public Page<Board> findByUno(Long uno, Pageable pageable){
 	   return dao.findByUno(uno,pageable);
    }
+   
+   
+   //메인페이지 전국댕댕자랑 1위~5위 정렬
+   public List<String> getTop5ImageFilenames() {
+	    return dao.findTop5ByBHit();
+	}
 }
