@@ -42,7 +42,11 @@ public class WebSecurityConfig {
     @SuppressWarnings("deprecation")
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Permitting specific paths
+    	// Session management to ensure the session ID is not changed
+        http.sessionManagement()
+            .sessionFixation().none();  // Do not change the session ID after authentication
+    	
+    	// Permitting specific paths
     	http.authorizeRequests(auth -> {
             auth.requestMatchers(
             		"/", "/register", "/registerSubmit", "/login", "/index",
