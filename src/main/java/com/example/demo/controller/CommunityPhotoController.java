@@ -30,6 +30,7 @@ import com.example.demo.entity.BoardId;
 import com.example.demo.entity.RegionCode;
 import com.example.demo.entity.Users;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
@@ -43,6 +44,9 @@ public class CommunityPhotoController {
 	@Autowired
 	private UsersService us;
 
+	@Autowired
+	private CommentService cs;
+	
 	@Autowired // 파일 경로찾기용
 	private ResourceLoader resourceLoader;
 
@@ -308,6 +312,10 @@ public class CommunityPhotoController {
 	// 사진게시판 상세 - 댕댕자/신고제보
 	@GetMapping("/member/community/photoBoardDetail/{b_code}/{bno}")
 	public String boastDetailPage(Model model, @PathVariable int b_code, @PathVariable int bno) {
+		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
+  		model.addAttribute("list", listComment);
+  		model.addAttribute("listCount", listComment.size());
+		
 		model.addAttribute("b", bs.detailBoard(bno, b_code));
 		model.addAttribute("writer", bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("bno", bno);

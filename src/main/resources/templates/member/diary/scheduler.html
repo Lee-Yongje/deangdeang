@@ -73,31 +73,6 @@
 
         }
 
-        /*   .month-button {
-  	width:50px;
-    margin: 5px 8px;
-    padding: 5px; 
-    cursor: pointer; 
-    flex-basis: calc(16.66% - 10px);
-    display:inline-block;
-  } */
-        /*   .month-button:hover, .month-button.active {
-    color: white;
-    background-color: #00AAFF;
-  } */
-        /*   #month-buttons1, #month-buttons2 {
-  	text-align: center;
-		margin-bottom: 10px;
-		display:inline-block;
-
-  } */
-        /*         #month-buttons,
-        #calendar {
-            text-align: center;
-            /* 중앙 정렬 */
-        /*    } */
-
-
         #calendar td {
             cursor: pointer;
             color: #8c8c8c;
@@ -296,50 +271,6 @@
             margin-right: 0;
         }
 
-
-        /* 강아지 선택하면 추가되는 테두리 */
-        /*         .pet-selected.red-border .pet-image.active {
-            border: 6px solid red;
-        }
-
-        .pet-selected.orange-border .pet-image.active {
-            border: 6px solid orange;
-        }
-
-        .pet-selected.green-border .pet-image.active {
-            border: 6px solid green;
-        }
-
-        .pet-selected.blue-border .pet-image.active {
-            border: 6px solid blue;
-        }
-
-        .pet-selected.purple-border .pet-image.active {
-            border: 6px solid purple;
-        }
-
-        .pet-selected.yellow-border .pet-image.active {
-            border: 6px solid yellow;
-        }
-
-        .pet-selected.pink-border .pet-image.active {
-            border: 6px solid pink;
-        }
-
-        .pet-selected.skyblue-border .pet-image.active {
-            border: 6px solid skyblue;
-        }
-
-        .pet-selected.brown-border .pet-image.active {
-            border: 6px solid brown;
-        }
-
-        .pet-selected.gold-border .pet-image.active {
-            border: 6px solid gold;
-        }
- */
-
-
         .pet-image {
             cursor: pointer;
         }
@@ -440,6 +371,7 @@
         /*<![CDATA[*/
         var csrfToken = /*[[${_csrf.token}]]*/ 'defaultToken';
         var csrfHeader = /*[[${_csrf.headerName}]]*/ 'defaultHeaderName';
+        var userId = /*[[${session.userSession.id}]]*/ 0;
 
         $(function() {
         	
@@ -529,16 +461,6 @@
                 //스케줄 데이터 가져와서 달력에 점 추가
                 addDots(year, month + 1);
 
-
-                /*                 $.ajax({
-                                    url: '/getSchedule',
-                                    type: 'GET',
-                                    data: { 'uno': 101, 'year': year, 'month': month },
-                                    success: function(schedules) {
-                                        addDots(schedules);
-                                    }
-                                }); */
-
             }
 
 
@@ -548,12 +470,12 @@
                     url: '/getSchedule',
                     type: 'GET',
                     data: {
-                        'id': 101,
+                        'id': userId,
                         'year': year,
                         'month': month - 1
                     },
                     success: function(data) {
-                        var dotColorsPerDay = {}; // 날짜별로 색상 저장해서 중복이 있는지 확인
+                        var dotColorsPerDay = {}; // 날짜별로 색상 저장해서 중복이 있는지 확인!
 
                         data.forEach(function(item) {
                             var day = new Date(item.s_date).getDate();
@@ -565,7 +487,8 @@
                                 dotColorsPerDay[dayKey] = [];
                             }
 
-                            // 이미 있는 색상이면 추가하지 않음(중복X)
+                            // 이미 있는 색상이면 추가하지 않기
+                            // 동일견의 일지를 여러개 등록하더라도 달력에는 한번만 표시
                             if (!dotColorsPerDay[dayKey].includes(color)) {
                                 dotColorsPerDay[dayKey].push(color);
                                 var dotHtml = `<span class="dot" style="background-color: ${color};"></span>`;
@@ -607,7 +530,7 @@
                     url: '/getSchedule',
                     type: 'GET',
                     data: {
-                        'id': 101,
+                        'id': userId,
                         'year': year,
                         'month': month,
                         'day': day

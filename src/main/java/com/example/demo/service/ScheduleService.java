@@ -27,19 +27,19 @@ public class ScheduleService {
     private PuppyDAO pDAO;
     
     //----------스케줄러----------
-    public List<Puppy> getPuppyByUsersId(Long id) {
-        return dao.findPuppyById(id);
+    public List<Puppy> getPuppyByUsersId(Long uno) {
+        return dao.findPuppyById(uno);
     }
 	
 	// 특정 날짜 스케줄 가져오기
-	public List<Schedule> getSchedulesByDate(Long id, Date date) {
-		  return dao.findSchedulesByDate(id, date);
+	public List<Schedule> getSchedulesByDate(Long uno, Date date) {
+		  return dao.findSchedulesByDate(uno, date);
 	}
 	
-    public List<Schedule> getMonthlySchedules(Long id, int year, int month) {
+    public List<Schedule> getMonthlySchedules(Long uno, int year, int month) {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.with(TemporalAdjusters.lastDayOfMonth());
-        return dao.findSchedulesByMonth(id, Date.valueOf(startOfMonth), Date.valueOf(endOfMonth));
+        return dao.findSchedulesByMonth(uno, Date.valueOf(startOfMonth), Date.valueOf(endOfMonth));
     }
 
     // schedule 번호인 sno 적용
@@ -48,8 +48,8 @@ public class ScheduleService {
     }
 
     // 스케줄러 컬럼 추가(강아지 선택하여 입력)
-    public void saveSchedule(Schedule schedule, Long id, int pno) {
-        Users user = uDAO.findById(id).orElse(null);
+    public void saveSchedule(Schedule schedule, Long uno, int pno) {
+        Users user = uDAO.findById(uno).orElse(null);
         Puppy puppy = pDAO.findById(pno).orElse(null);
 
         if (user != null && puppy != null) {
