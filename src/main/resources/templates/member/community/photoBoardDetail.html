@@ -159,7 +159,7 @@
 									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
 										class="rounded-circle">&nbsp;
 									<span th:text="${b.u_nickname}">작성자 이름</span><br />
-									<span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
 								<br />
 								<div th:if="${session.userSession.id==writer}">
@@ -182,7 +182,7 @@
 							<div class="col-md-12">
 								<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 								<!-- 기존 댓글 표시 -->
-								<div class="allComments" wid>
+								<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}" >
 									<div th:each="c: ${list}">
 										<div class="comment">
 											<input type="hidden" class="cno" th:value="${c.cno}" />
@@ -197,7 +197,7 @@
 														style="width: 50px; height: 50px;">
 													<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
 													<span
-														th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+														th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 													<th:block th:if="${session.userSession.id==c.uno}">
 														<button class="edit" th:data-cno="${c.cno}">수정</button>
 														<button class="delete" th:data-cno="${c.cno}">삭제</button>

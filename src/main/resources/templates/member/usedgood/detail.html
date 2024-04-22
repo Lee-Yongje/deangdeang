@@ -228,8 +228,8 @@
 				<div class="col-md-12">
 					<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 					<!-- 기존 댓글 표시 -->
-					<div class="allComments" wid>
-						<div th:each="c: ${list}">
+					<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}" >
+						<div  th:each="c: ${list}">
 							<div class="comment">
 								<input type="hidden" class="cno" th:value="${c.cno}" />
 								
