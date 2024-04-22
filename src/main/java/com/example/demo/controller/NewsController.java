@@ -29,6 +29,9 @@ public class NewsController {
         
         // 가져온 뉴스 데이터를 뷰 모델에 추가합니다.
         model.addAttribute("newsList", newsList);
+        for(News news : newsList) {
+        	
+        }
         
         // 뉴스를 보여줄 뷰의 이름을 반환합니다. (예: "News.html"의 Thymeleaf 템플릿)
         return "/news/news"; // Thymeleaf 템플릿 파일 이름 (확장자 제외)

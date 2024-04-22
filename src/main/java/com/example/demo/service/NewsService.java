@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,14 +18,13 @@ public class NewsService {
     public List<News> crawlDataFromWebPage() {
         String url = "https://www.pet-news.or.kr/news/articleList.html?page=1&total=185&box_idxno=&sc_section_code=S1N45&view_type=sm";
         List<News> newsList = new ArrayList<>();
-
         try {
             Document document = Jsoup.connect(url).get();
             Elements newsItems = document.select("li:has(.view-cont)");
 
             for (Element item : newsItems) {
-                String title = item.select(".titles a").text();
-                String link = item.select(".titles a").attr("href");
+                String title = item.select(".titles a").text();	// 기사 제목의 a태그에 text값을 가져와 저장.[문관]
+                String link = "https://www.pet-news.or.kr" + item.select(".titles a").attr("href"); // 기사 제목의 a태그에 href값을 가져와 저장.[문관]
                 String summary = item.select(".lead").text();
                 String author = item.select(".byline em").get(1).text(); // 저자 정보
                 String date = item.select(".byline em").get(2).text(); // 날짜 정보
