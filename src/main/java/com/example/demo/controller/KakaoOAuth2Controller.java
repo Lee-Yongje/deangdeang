@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -62,8 +66,10 @@ public class KakaoOAuth2Controller {
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/auth/kakao/callback")
-    public String kakaoCallback(String code, HttpSession session, RedirectAttributes redirectAttributes) throws JsonProcessingException {
-        RestTemplate rt = new RestTemplate();
+    public String kakaoCallback(String code, HttpSession session, RedirectAttributes redirectAttributes, Model model) throws JsonProcessingException {
+        System.out.println("Callback Session ID: " + session.getId());
+    	
+    	RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -100,7 +106,7 @@ public class KakaoOAuth2Controller {
         KakaoProfile kakaoProfile = objectMapper.readValue(response2.getBody(), KakaoProfile.class);
         String email = kakaoProfile.getKakao_account().getEmail(); // 이메일을 사용자 이름으로 사용
         Users existingUser = userService.findByEmail(email);
-
+        System.out.println("이메일체크"+ email);
 
         String nicknameRaw = kakaoProfile.getProperties().getNickname();
         String nickname = "";
@@ -121,23 +127,42 @@ public class KakaoOAuth2Controller {
         	return "redirect:/register_kakao";
         }
         
-       
+        String passwordHash = existingUser.getPasswordHash();
         
         // 등록된 사용자인 경우 로그인 처리
         authenticateUser(email);
-        String passwordHash = existingUser.getPasswordHash();
+        System.out.println("카카오 Authenticated");	
         
 
         // 등록된 사용자인 경우 로그인 처리
-        session.setAttribute("userSession", existingUser);
-        
-        // Set authentication in security context
-        Authentication authToken = new UsernamePasswordAuthenticationToken(email, null, null);
-        authToken.setAuthenticated(true);  // Since the user is authenticated by Kakao
+        List<GrantedAuthority> authorities = new ArrayList<>(); // Assume no specific roles necessary
+        PreAuthenticatedAuthenticationToken authToken = new PreAuthenticatedAuthenticationToken(existingUser, null, authorities);
+        authToken.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(authToken);
+        session.setAttribute("userSession", existingUser);
 
-        return "redirect:/index"; // Proceed to 
-        
+        // After setting authentication, immediately use it for further checks or setups
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Users userSession = null;
+
+            if (authentication.getPrincipal() instanceof Users) {
+                userSession = (Users) authentication.getPrincipal();
+            } else if (authentication.getPrincipal() instanceof UserDetails) {
+                String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+                userSession = userService.findByEmail(username);
+            }
+
+            if (userSession != null) {
+                session.setAttribute("userSession", userSession);
+                model.addAttribute("userSession", userSession);
+            } else {
+                System.out.println("Database does not contain the user.");
+            }	
+        } else {
+            System.out.println("No authentication information available or user is not authenticated.");
+        }
+        return ":/index";
     }
     
     private void authenticateUser(String email) {
