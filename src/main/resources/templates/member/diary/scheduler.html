@@ -8,6 +8,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <meta name="_csrf" content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
+
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
@@ -214,9 +217,9 @@
             flex-grow: 1;
         }
 
-        .entry-content span.text-completed {
+        /*         .entry-content span.text-completed {
             text-decoration: line-through;
-        }
+        } */
 
 
         .entry-buttons {
@@ -428,13 +431,39 @@
         } */
 
         .text-completed {
-            text-decoration: line-through;
+            color: gray;
         }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var csrfToken = /*[[${_csrf.token}]]*/ 'defaultToken';
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ 'defaultHeaderName';
+
         $(function() {
+        	
+
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+            var currentMonth = currentDate.getMonth();
+            var currentDay = currentDate.getDate(); 
+            
+            // 현재 월을 반영
+            $('#month-select').val(currentMonth);
+            
+            // 캘린더 초기 생성
+            generateCalendar(currentYear, currentMonth);
+            
+            // 현재 날짜에 일정이 있으면 페이지 실행시 출력
+            updateEntries(currentYear, currentMonth, currentDay);
+            
+
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            });
 
             // 월 선택박스를 오늘 날짜로
             $('#month-select').val(currentMonth);
@@ -524,7 +553,7 @@
                         'month': month - 1
                     },
                     success: function(data) {
-                        var dotColorsPerDay = {};  // 날짜별로 색상 저장해서 중복이 있는지 확인
+                        var dotColorsPerDay = {}; // 날짜별로 색상 저장해서 중복이 있는지 확인
 
                         data.forEach(function(item) {
                             var day = new Date(item.s_date).getDate();
@@ -651,10 +680,11 @@
 
             // 클릭하여 스케줄 완료처리
             $('#entries').on('click', '.entry', function() {
-            	event.stopPropagation();
                 var $this = $(this);
                 var sno = $this.data('sno');
-                var newStatus = $this.hasClass('selected-entry') ? 'N' : 'Y';
+                var currentStatus = $this.hasClass('selected-entry'); // 현재 선택된 상태 확인
+                var newStatus = currentStatus ? 'N' : 'Y'; // 상태 토글
+
 
                 $.ajax({
                     url: '/checkSchedule',
@@ -664,29 +694,26 @@
                         s_complete: newStatus
                     },
                     success: function(response) {
-                        if (newStatus === 'Y') {
-                            $this.addClass('selected-entry');
-                            $this.css('background-color', 'yellow');
-                            $this.find('.entry-content span').addClass('text-completed');
-                        } else {
-                            $this.removeClass('selected-entry');
-                            $this.css('background-color', '');
-                            $this.find('.entry-content span').removeClass('text-completed');
+                        if (response.status === 'success') {
+                            $this.toggleClass('selected-entry');
+                            if (newStatus === 'Y') {
+                                $this.css('background-color', 'yellow');
+                                $this.find('.entry-content span').addClass('text-completed');
+                            } else {
+                                $this.css('background-color', ''); // 배경색 제거
+                                $this.find('.entry-content span').removeClass('text-completed'); // 가운데 선 제거
+                            }
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('상태 업데이트 실패: ' + error);
+                        alert('오류 발생: ' + error);
                     }
                 });
             });
-            var currentDate = new Date();
-            var currentYear = currentDate.getFullYear();
-            var currentMonth = currentDate.getMonth();
-            $('#month-select').val(currentMonth);
 
-            // 캘린더 초기 생성
-            generateCalendar(currentYear, currentMonth);
+
         });
+        /*]]>*/
     </script>
 </head>
 

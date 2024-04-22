@@ -139,15 +139,14 @@ public class ScheduleController {
     //스케줄 완료 체크
     @PostMapping("/checkSchedule")
     @ResponseBody
-    public Map<String, String> updateScheduleStatus(@RequestBody Map<String, Object> requestData) {
-        int sno = (Integer) requestData.get("sno");
-        String sComplete = (String) requestData.get("s_complete");
+    public Map<String, String> updateScheduleStatus(@RequestParam("sno") int sno, @RequestParam("s_complete") String sComplete) {
         ss.updateScheduleStatus(sno, sComplete);
         Map<String, String> response = new HashMap<>();
         response.put("status", "success");
-        response.put("message", "스케줄 상태가 업데이트되었습니다.");
+        response.put("message", "스케줄 상태 업데이트 성공");
         return response;
     }
+
 
 
 }
