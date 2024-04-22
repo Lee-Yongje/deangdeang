@@ -39,9 +39,8 @@
 			<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate text-center">
 					<p class="breadcrumbs">
-						<span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span>
 					</p>
-					<h1 class="mb-0 bread">Blog</h1>
+					<h1 class="mb-0 bread">마이페이지</h1>
 				</div>
 			</div>
 		</div>
@@ -102,7 +101,7 @@
 								<div class="block-27">
 									<ul>
 										<th:block th:if="${nowPage>5}">
-											<li><a th:href="@{/usedgood/usedgood(page=${startPage-1})}">&lt;</a></li>
+											<li><a th:href="@{/member/mypage/myPosts(page=${startPage-1})}">&lt;</a></li>
 										</th:block>
 										<th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
 											<li th:class="${pageNum == boards.number + 1} ? 'active' : ''">

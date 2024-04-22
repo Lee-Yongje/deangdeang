@@ -79,8 +79,6 @@ public class MypageController {
 		Users user = (Users)session.getAttribute("userSession");
 		Long uno = user.getId();
 		u.setId(uno);
-		u.setAuthType(user.getAuthType()); // 수정한 부분
-
 		
 		String viewPage = "redirect:/member/mypage/changeInfo";
 	    String oldFname = u.getFilename();
@@ -89,14 +87,14 @@ public class MypageController {
 	    String path = null;
 	    MultipartFile uploadFile = u.getUploadFile();
 
+	    
 	    // uploadFile이 null인지 확인
 	    if (uploadFile != null) {
 	        fname = uploadFile.getOriginalFilename();
 	        if (fname != null && !fname.equals("")) {
 	            try {
-	            	path = resource.getFile().getAbsolutePath();
-	                System.out.println("이미지 경로 : "+path);
-	                FileOutputStream fos = new FileOutputStream(path + "/" + fname);
+	            	path = resource.getFile().getAbsolutePath();	                
+	                FileOutputStream fos = new FileOutputStream(path + "/" + fname);	                
 	                FileCopyUtils.copy(uploadFile.getBytes(), fos);
 	                fos.close();
 	                u.setFilename(fname);
@@ -109,9 +107,7 @@ public class MypageController {
 	        	u.setFilename(null);
 	        }
 	    }
-	    System.out.println("수정작업 확인 : "+u);
 	    int re = us.updateInfo(u.getName(), u.getEmail(), u.getPhone(), u.getNickname(), u.getFilename(), rno, u.getId());
-	    System.out.println("업데이터 확인"+re);
 	    
 	    if(re == 1) {
 	    	if(fname != null && !fname.equals("") && oldFname != null && !oldFname.equals("")) {
@@ -184,7 +180,7 @@ public class MypageController {
         return viewPage;
     }
 
-    // 반려견 수정 POST
+    // 반려견 등록 POST
     @PostMapping("/member/mypage/insertPuppy")
     public String insertPuppy(Puppy p,HttpSession session,Model model) {
     	Users user = (Users)session.getAttribute("userSession");
