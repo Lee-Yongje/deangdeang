@@ -35,11 +35,6 @@ public interface ScheduleDAO extends JpaRepository<Schedule, Integer> {
 	@Query("update Schedule s set s.s_content = ?2 where s.sno = ?1")
 	public void updateContentById(int sno, String content);
 
-
-	@Modifying
-	@Query("update Schedule s set s.s_complete = ?2 where s.sno = ?1")
-	public void updateScheduleStatus(int sno, String s_complete);
-
 	
 	@Query(value = "select * from Schedule where uno = ?1 and month(s_date) = ?2 and year(s_date) = ?3", nativeQuery = true)
 	public List<Schedule> findByYearAndMonth(Long uno, int month, int year);
