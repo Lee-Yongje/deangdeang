@@ -103,7 +103,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
 			+ "WHERE b_code = ?1 and u_nickname = ?2 order by b_date desc;",
 			countQuery = "select count(*) from board b "
-					+ "INNER JOIN users u ON b.uno = u.uno "
+					+ "INNER JOIN users u ON b.uno = u.uno " 
 					+ "where b_code=?1 and u_nickname = ?2",
 			nativeQuery = true)
 	public Page<List<Map<String, Object>>> searchClubByUNickname(int b_code, String keyword, Pageable pageable);
