@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.entity.Puppy;
 import com.example.demo.entity.Schedule;
+import com.example.demo.entity.Users;
 import com.example.demo.service.ScheduleService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller 
 public class ScheduleController {
@@ -35,30 +38,35 @@ public class ScheduleController {
 	private ScheduleService ss;
 	
 	
+	// 강아지 목록 조회
     @GetMapping("/member/diary/scheduler")
-    public String scheduler(Model model, @RequestParam(defaultValue = "101") Long id) {
-        List<Puppy> puppies = ss.getPuppyByUsersId(id);
+    public String scheduler(Model model, HttpSession session) {
+    	Users user = (Users)session.getAttribute("userSession");
+		Long userId = user.getId();
+        List<Puppy> puppies = ss.getPuppyByUsersId(userId);
         model.addAttribute("puppies", puppies);
         return "member/diary/scheduler";      
     }
     
     
-
+    // 특정 사용자 스케줄러 출력
     @GetMapping("/getSchedule")
     @ResponseBody
-    public List<Map<String, Object>> getSchedules(@RequestParam Long id, 
+    public List<Map<String, Object>> getSchedules(HttpSession session,
 										    		@RequestParam int year, 
 										    		@RequestParam int month, 
 										    		@RequestParam(required = false) Integer day) {
-
+    	Users user = (Users) session.getAttribute("userSession");
+        Long userId = user.getId(); 
+        
     	List<Schedule> schedules;
         if (day != null) {
             // 일별 스케줄을 요청(전달받은 월 그대로 사용)
             LocalDate date = LocalDate.of(year, month + 1, day);  // 클라이언트에서는 0-11 범위로 월을 보내므로 +1
-            schedules = ss.getSchedulesByDate(id, Date.valueOf(date));
+            schedules = ss.getSchedulesByDate(userId, Date.valueOf(date));
         } else {
             // 월별 스케줄을 요청(달력에 점으로 표시)(클라이언트에서 -1된 값을 보냈으므로 +1)
-            schedules = ss.getMonthlySchedules(id, year, month + 1);
+            schedules = ss.getMonthlySchedules(userId, year, month + 1);
         }
         
         List<Map<String, Object>> enrichedSchedules = new ArrayList<>();
@@ -87,8 +95,10 @@ public class ScheduleController {
     
     // 스케줄러 등록
     @GetMapping("/member/diary/schedulerWrite")
-    public String schedulerWrite(Model model, @RequestParam(defaultValue = "101") Long id) {
-        List<Puppy> puppies = ss.getPuppyByUsersId(id);
+    public String schedulerWrite(Model model, HttpSession session) {
+    	Users user = (Users) session.getAttribute("userSession");
+        Long userId = user.getId();
+        List<Puppy> puppies = ss.getPuppyByUsersId(userId);
         model.addAttribute("puppies", puppies);
         return "member/diary/schedulerWrite";
     }
@@ -98,20 +108,21 @@ public class ScheduleController {
     @PostMapping("/schedule/save")
     public String saveSchedule(@ModelAttribute Schedule schedule,
                                @RequestParam("pno") int pno,
-                               @RequestParam("id") Long id,
+                               HttpSession session,
                                @RequestParam("s_date") String sDate, //달력에서 날짜 선택한것 문자로 받음
                                Model model) {
-    	
+    	Users user = (Users) session.getAttribute("userSession");
+        Long userId = user.getId();
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date utilDate = sdf.parse(sDate); // java.util.Date로 파싱
+            java.util.Date utilDate = sdf.parse(sDate); // java.util.Date 파싱하고
             schedule.setS_date(new java.sql.Date(utilDate.getTime())); // java.sql.Date로 변환
         } catch (ParseException e) {
             e.printStackTrace();
         }
         int nextSno = ss.getNextSno();
         schedule.setSno(nextSno);
-        ss.saveSchedule(schedule, id, pno);
+        ss.saveSchedule(schedule, userId, pno);
         return "redirect:/member/diary/scheduler";
     
     }
