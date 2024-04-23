@@ -1,0 +1,93 @@
+카카오 인증을 고려하지 않고
+우리 프로젝트에서 세션은 언제 저장합니까
+=> 일반 로그인은 포스트로 진행되어
+controller method가 없지만
+시큐리티에서 인덱스로 보내줍니다.
+이때 인덱스(/index)에 세션을 저장합니다.
+
+public class GeneralController
+@GetMapping("/index")    
+    public String processLogin
+    
+로그인을 위한 html문서 이름은
+login.html
+
+username(email)
+password
+----------------------------------
+로그인 절차는 
+login.html에서 
+username과 password를 입력을 하면
+스프링시큐리티가 판별하여 올바른 회원이라면
+index로 보내어 그회원의 대한 정보를 가져와서
+session에 상태 유지합니다. 
+-----------------------------------
+우리는 여기에다가 
+카카오 회원이면 
+로그인 처리를 시키고 그사람에 대한 정보를 
+세션에 상태 유지 하고 싶어요
+-----------------------------------
+우리 회원의 
+사용자명 : madang@example.com
+비밀번호 : 1234
+-----------------------------------
+이사람이 우리서비스의 회원이 안맞나 처리는 
+시큐리티가 합니다. 
+시큐리가 처리를 하고 인덱스로 보내줍니다.
+---
+우리는 어디까지 해야되느냐 
+카카오 인증을 거치면 눈에는 안보이지만 
+login.html에서 
+username과 password를 입력하여 
+자동으로 submit을 누르는 것처럼 해야합니다. 
+
+-----------------------------------
+나는 카카오 인증을 자바 코드로 작성했습니다. 
+서비스명
+public class KakaoOAuth2Controller
+
+@GetMapping("/auth/kakao/callback")
+public String kakaoCallback
+login.html(버튼)
+https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=7ab5a12cf42a18f16231788979ae77e2&redirect_uri=http://localhost:8080/auth/kakao/callback"><img src="/images/kakao_login.png" a
+
+
+카카오로부터 올바른 회원이면 받오는 정보는
+닉네임 tiger
+이메일 tiger@google.com
+
+이정보로부터 우리서비스에 로그인을 시키려면
+username과 
+password는 각각 어떤값으로 합니까?
+
+kakao로그인 회원을 위하여
+만능유저를 만들었습니다.
+username : kakao@kakao.com
+password : 1234
+
+카카오 로그인 인증을 거친후에 
+위의 정보를 
+상태 유지한 후 
+login.html로 이동하여
+자동으로 submit이 눌러지도록 해야합니다. 
+-----------------------------------
+카카오 회원가입이 구현되어 있습니다.
+username과
+password에 각각 무엇이 들어갑니까
+tiger
+password 회원가입시 입력되서 암호화되서저장됩니다.
+-----------------------------------
+
+
+
+
+-----------------------------------
+
+
+
+
+
+
+
+
+
