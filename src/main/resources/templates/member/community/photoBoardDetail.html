@@ -233,7 +233,8 @@
 			<div class="col-lg-9 ftco-animate">
 				<div class="container">
 					<div class="container mt-5 text">
-						<h2 th:text="${b_name}"></h2>
+						<h2 th:if="${b_name=='전국댕댕자랑'}"><a href="/community/boast">전국댕댕자랑</a></h2>
+						<h2 th:unless="${b_name=='전국댕댕자랑'}"><a href="/community/report">신고/제보게시판</a></h2>
 						<input type="hidden" id="bno" th:value="${bno}" />
 						<input type="hidden" id="b_code" th:value="${b_code}" />
 						<br />
