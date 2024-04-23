@@ -132,7 +132,7 @@
                     <p>
                         <img th:src="@{/images/{filename}(filename=${diary.d_fname} != null ? ${diary.d_fname} : 'image_null.png')}" alt="" class="img-fluid">
                     </p>
-                    <p th:text="${diary.d_content}">
+                    <p th:text="${diary.d_content}" style="white-space: pre-line;">
 
                     </p>
 
