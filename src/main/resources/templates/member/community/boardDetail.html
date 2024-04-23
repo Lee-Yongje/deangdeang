@@ -40,26 +40,122 @@
 	</style>
 	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript">
-		$(function(){
-			var bno = $("#bno").val();
-			var b_code = $("#b_code").val(); 
-			
-			$("#btnDelete").click(function(){
-				var re = confirm("정말로 삭제하시겠습니까?")
-				if(re == true){
-					location.href="/member/community/boardDelete/"+b_code+"/"+bno;
-				}
-			})
-			$("#btnUpdate").click(function(){
-				location.href="/member/community/boardUpdate/"+b_code+"/"+bno;
-			})
-			$("#btnFinish").click(function(){
-				var re = confirm("모임을 완료하셨나요?")
-				if(re == true){
-					location.href="/member/community/boardFinish/"+b_code+"/"+bno;
-				}
-			})
+	$(function(){
+		var bno = $("#bno").val();
+		var b_code = $("#b_code").val(); 
+		
+		$("#btnDelete").click(function(){
+			var re = confirm("정말로 삭제하시겠습니까?")
+			if(re == true){
+				location.href="/member/community/boardDelete/"+b_code+"/"+bno;
+			}
 		})
+		$("#btnUpdate").click(function(){
+			location.href="/member/community/boardUpdate/"+b_code+"/"+bno;
+		})
+		$("#btnFinish").click(function(){
+			var re = confirm("모임을 완료하셨나요?")
+			if(re == true){
+				location.href="/member/community/boardFinish/"+b_code+"/"+bno;
+			}
+		})
+		
+		//댓글 수정, 삭제 설정
+		// 댓글 수정 폼 띄우기
+		$(document).on('click', '.edit', function () {
+			var cno = $(this).data('cno');
+			var entry = $(this).closest('.comment');
+			var currentContent = entry.find('.comment-content').text().trim(); // 현재 댓글 내용 가져오기
+			var entryContent = entry.find('.entry-content'); // entry-content 요소 가져오기
+			var textarea = entryContent.find('textarea'); // textarea 요소 가져오기
+
+			// textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦
+			if (textarea.length === 0) {
+				entryContent.html(`
+			        <div style="display: flex; width: 100%;">
+			            <textarea rows="2" class="form-control" width="80%" >${currentContent}</textarea>
+			            <button class="btn btn-primary update" data-cno="${cno}">수정</button>
+			        </div>
+			    `);
+			      entry.find('.edit').hide();
+        		  entry.find('.delete').hide();
+        		  entry.find('.reply').hide(); // 대댓글 버튼 숨기기
+			}
+
+			entry.find('.comment-content').hide(); // 댓글 내용 숨기기
+			entryContent.show(); // 수정 입력 필드 보이기
+
+
+		});
+		
+		//댓글 수정
+		$(document).on('click', '.update', function () {
+
+			var cno = $(this).data('cno');
+			var entry = $(this).closest('.comment');
+			var updatedContent = entry.find('textarea').val().trim();
+			$.ajax({
+				type: "GET",
+				url: "/member/community/updateComment",
+				data: {
+					bno: bno,
+					b_code: b_code,
+					cno: cno,
+					c_content: updatedContent
+				},
+				success: function (response) {
+					location.reload();
+				}
+			});
+		});
+		
+		//댓글 삭제
+		$(document).on('click', '.delete', function () {
+			if (confirm("정말로 삭제하시겠습니까?")) {
+				var cno = $(this).data('cno');
+				window.location.href = "/member/community/deleteComment?cno=" + cno + "&bno=" + bno + "&b_code=" + b_code;
+			};
+		});
+		
+		//대댓글 작성 폼 띄우기
+		$(document).on('click', '.reply', function () {
+		    var entry = $(this).closest('.comment');
+		    var textarea = entry.find('.entry-content textarea');
+			var cno = entry.find('.cno').val();
+		    // textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦
+		    if (textarea.length === 0) {
+		        entry.find('.entry-content').html(`
+		            <div style="display: flex; width: 100%;">
+		                <textarea rows="2" class="form-control"></textarea>
+		                <button class="btn btn-light  submit-reply" data-cno="${cno}">등록</button>
+		            </div>
+		        `);
+		        entry.find('.edit').hide(); // 수정 버튼 숨기기
+		        entry.find('.delete').hide(); // 삭제 버튼 숨기기
+		        entry.find('.reply').hide(); // 대댓글 버튼 숨기기
+		    }
+		});
+		
+		$(document).on('click', '.submit-reply', function () {
+			var pno = $(this).data('cno');
+			var entry = $(this).closest('.comment');
+			var updatedContent = entry.find('textarea').val().trim();
+			$.ajax({
+				type: "GET",
+				url: "/member/community/boardComment",
+				data: {
+					pno:pno,
+					bno: bno,
+					b_code: b_code,
+					c_content: updatedContent
+				},
+				success: function (response) {
+					location.reload();
+				}
+			});
+		});
+		
+	});
 	</script>
 </head>
 
@@ -148,20 +244,38 @@
 						<div class="row mt-3">
 							<div class="col-md-12">
 								<!-- 댓글 개수 -->
-								<h5  th:text="'댓글( '+${listCount}+' )'"></h5>
+								<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 								<!-- 기존 댓글 표시 -->
-								<div class="comment">
-									<div  th:each="c: ${list}" class="d-flex align-items-center">
-										<img th:if="${c.u_fname == null}" src="/images/sampledog.jpg" 
-											alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
-										<img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}" 
-											alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
-										<div class="ml-3">
-											<div class="comment-meta">
-												<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
-												<span th:text="${c.c_date}"></span>											
+								<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}" >
+									<div  th:each="c: ${list}">
+										<div class="comment">
+											<input type="hidden" class="cno" th:value="${c.cno}" />
+											
+											<div class="comment-meta" style="width: 100%;">
+											    <span th:each="i : ${#numbers.sequence(1, c.c_level)}">
+											        &nbsp;&nbsp;
+											    </span>
+											    <span>
+												    <img th:if="${c.u_fname == null}" src="/images/icon.png" alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">   
+												    <img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}" alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
+												    <em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
+												    <span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+												    <th:block th:if="${session.userSession.id==c.uno}">
+												        <button class="btn btn-light edit" th:data-cno="${c.cno}">수정</button>
+									       				<button class="btn btn-light delete" th:data-cno="${c.cno}">삭제</button>
+												    </th:block>
+												    <!-- <button class="reply">대댓글 달기</button> -->
+												    <div>
+													     <span th:each="i : ${#numbers.sequence(1, c.c_level)}">
+												            &nbsp;&nbsp;
+												        </span>
+													    <span class="comment-content" th:text="${c.c_content}">
+													        <input type="hidden" class="entry" th:value="${c.c_content}" />
+													    </span>
+												    </div>
+												    <div class="entry-content"></div>
+											    </span>
 											</div>
-											<div class="comment-content" th:text="${c.c_content}"></div>
 										</div>
 									</div>
 								</div>

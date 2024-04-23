@@ -50,7 +50,7 @@
 				}
 			});
 			//댓글 수정, 삭제 설정
-			// 댓글 수정
+			// 댓글 수정 폼 띄우기
 			$(document).on('click', '.edit', function () {
 				var cno = $(this).data('cno');
 				var entry = $(this).closest('.comment');
@@ -61,11 +61,18 @@
 				// textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦
 				if (textarea.length === 0) {
 					entryContent.html(`
-				        <div style="display: flex; width: 100%;">
-				            <textarea rows="2" class="form-control" width="80%" >${currentContent}</textarea>
-				            <button class="btn btn-primary update" data-cno="${cno}">수정</button>
-				        </div>
+				        <div class="row">
+						    <div class="col-md-10">
+						        <textarea rows="2" class="form-control">${currentContent}</textarea>
+						    </div>
+						    <div class="col-md-2">
+						        <button class="btn btn-primary update" data-cno="${cno}">수정</button>
+						    </div>
+						</div>
 				    `);
+				      entry.find('.edit').hide();
+            		  entry.find('.delete').hide();
+            		  entry.find('.reply').hide(); // 대댓글 버튼 숨기기
 				}
 
 				entry.find('.comment-content').hide(); // 댓글 내용 숨기기
@@ -73,6 +80,7 @@
 
 
 			});
+			//댓글 수정
 			$(document).on('click', '.update', function () {
 
 				var cno = $(this).data('cno');
@@ -89,19 +97,53 @@
 					},
 					success: function (response) {
 						location.reload();
-					},
-					error: function (xhr, status, error) {
-						console.error(xhr.responseText);
 					}
 				});
 			});
+			//댓글 삭제
 			$(document).on('click', '.delete', function () {
 				if (confirm("정말로 삭제하시겠습니까?")) {
 					var cno = $(this).data('cno');
 					window.location.href = "/member/community/deleteComment?cno=" + cno + "&bno=" + bno + "&b_code=" + b_code;
 				};
 			});
-
+			//대댓글 작성 폼 띄우기
+			$(document).on('click', '.reply', function () {
+			    var entry = $(this).closest('.comment');
+			    var textarea = entry.find('.entry-content textarea');
+				var cno = entry.find('.cno').val();
+			    // textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦
+			    if (textarea.length === 0) {
+			        entry.find('.entry-content').html(`
+			            <div style="display: flex; width: 100%;">
+			                <textarea rows="2" class="form-control"></textarea>
+			                <button class="btn btn-primary submit-reply" data-cno="${cno}">등록</button>
+			            </div>
+			        `);
+			        entry.find('.edit').hide(); // 수정 버튼 숨기기
+			        entry.find('.delete').hide(); // 삭제 버튼 숨기기
+			        entry.find('.reply').hide(); // 대댓글 버튼 숨기기
+			    }
+			});
+			//대댓글 등록
+			$(document).on('click', '.submit-reply', function () {
+				var pno = $(this).data('cno');
+				var entry = $(this).closest('.comment');
+				var updatedContent = entry.find('textarea').val().trim();
+				$.ajax({
+					type: "GET",
+					url: "/member/community/boardComment",
+					data: {
+						pno:pno,
+						bno: bno,
+						b_code: b_code,
+						c_content: updatedContent
+					},
+					success: function (response) {
+						location.reload();
+					}
+				});
+			});
 		});
 	</script>
 
@@ -162,8 +204,7 @@
 					<h4 th:text="${b.r_name}"></h4>
 					<!--작성자 (프로필사진, 작성자이름(추후 닉네임으로 변경예정), 작성시간)-->
 					<div class="post-meta">
-						<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
-							class="rounded-circle">&nbsp;
+						<img th:if="${b.u_fname == null}" src="/images/icon.png" th:else="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;" class="rounded-circle">&nbsp;
 						<span th:text="${b.u_nickname}"></span><br />
 						<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 					</div>
@@ -190,28 +231,35 @@
 				<div class="col-md-12">
 					<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 					<!-- 기존 댓글 표시 -->
-					<div class="allComments" wid>
-						<div th:each="c: ${list}">
+					<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}" >
+						<div  th:each="c: ${list}">
 							<div class="comment">
 								<input type="hidden" class="cno" th:value="${c.cno}" />
-								<div>
-									<div class="comment-meta" style="width: 100%;">
-										<img th:if="${c.u_fname == null}" src="/images/sampledog.jpg" alt="작성자 사진"
-											class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
-										<img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}"
-											alt="작성자 사진" class="rounded-circle img-fluid"
-											style="width: 50px; height: 50px;">
-										<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
-										<span  th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
-										<th:block th:if="${session.userSession.id==c.uno}">
-											<button class="edit" th:data-cno="${c.cno}">수정</button>
-											<button class="delete" th:data-cno="${c.cno}">삭제</button>
-										</th:block>
-									</div>
-									<div class="comment-content" th:text="${c.c_content}">
-										<input type="hidden" class="entry" th:value="${c.c_content}" />
-									</div>
-									<div class="entry-content"></div>
+								
+								<div class="comment-meta" style="width: 100%;">
+								    <span th:each="i : ${#numbers.sequence(1, c.c_level)}">
+								        &nbsp;&nbsp;
+								    </span>
+								    <span>
+									    <img th:if="${c.u_fname == null}" src="/images/icon.png" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
+									    <img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
+									    <em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
+									    <span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+									    <th:block th:if="${session.userSession.id==c.uno}">
+									        <button class="btn btn-light edit" th:data-cno="${c.cno}">수정</button>
+									        <button class="btn btn-light delete" th:data-cno="${c.cno}">삭제</button>
+									    </th:block>
+									    <!--<button class="reply btn btn-light">대댓글 달기</button>-->
+									    <div>
+										     <span th:each="i : ${#numbers.sequence(1, c.c_level)}">
+									            &nbsp;&nbsp;
+									        </span>
+										    <span class="comment-content" th:text="${c.c_content}">
+										        <input type="hidden" class="entry" th:value="${c.c_content}" />
+										    </span>
+									    </div>
+									    <div class="entry-content"></div>
+								    </span>
 								</div>
 							</div>
 						</div>

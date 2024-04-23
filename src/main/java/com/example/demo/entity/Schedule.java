@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import java.sql.Date;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;

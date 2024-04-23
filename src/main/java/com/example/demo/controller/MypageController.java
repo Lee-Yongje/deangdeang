@@ -33,6 +33,7 @@ import com.example.demo.entity.Users;
 import com.example.demo.service.BoardCodeService;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.PuppyService;
+import com.example.demo.service.ScheduleService;
 import com.example.demo.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,6 +57,9 @@ public class MypageController {
 	
 	@Autowired
 	private RegionCodeDAO rs;
+	
+	@Autowired
+	private ScheduleService ss;
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -278,6 +282,8 @@ public class MypageController {
     	String path = null;
     	Resource resource = resourceLoader.getResource("classpath:/static/images");
     	
+    	//  반려견 삭제시 해당 반려견의 스케줄러 내용도 삭제하기 위함.
+    	ss.deleteScheduleByPno(pno);
     	
     	int re = ps.deletePuppy(pno);
     	if(re==1 && fname!=null) {

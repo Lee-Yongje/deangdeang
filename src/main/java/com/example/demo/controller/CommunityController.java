@@ -327,7 +327,7 @@ public class CommunityController {
   	
   	// 댓글 등록
   	@GetMapping("/member/community/boardComment")
-  	public String boardComment(Comment c, int bno, int b_code, HttpSession session) {
+  	public String boardComment(Comment c, @RequestParam(defaultValue = "0") int pno, int bno, int b_code, HttpSession session) {
   		
   		int cno = cs.getNextCno();
   		c.setCno(cno);
@@ -349,8 +349,18 @@ public class CommunityController {
 		boardId.setBno(bno);
 		c.setId(boardId);
 		
-		c.setC_level(1);
-		c.setC_ref(1);
+		//원댓글 없을 시 기본 설정
+		int c_ref = cno; //기본 ref는 cno랑 동일하게 설정
+		int c_level = 1; //기본 레벨 1로 설정
+		
+		//원댓글이 있다면 (대댓글이라면 )
+		if(pno!=0) {
+			Comment pc = cs.getOldComment(pno); //원댓글 불러오기
+			c_ref = pc.getC_ref(); //원댓글이랑 ref 동일하게 설정
+			c_level = pc.getC_level()+1; //깊이는 원댓 +1
+		}
+		c.setC_ref(c_ref);
+		c.setC_level(c_level);
 		
 		
 		cs.insert(c);
