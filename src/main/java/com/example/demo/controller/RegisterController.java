@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import com.example.demo.service.UsersService;
 import org.springframework.core.io.Resource;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RegisterController {
@@ -43,7 +45,9 @@ public class RegisterController {
 	@Autowired
 	private RegionCodeDAO rd;
 	
-
+	@Value("${kakao.login.pass}")
+    private String kakaoGeneralPassword;
+	
 	//비밀번호 재설정용
 	@Autowired
     PasswordEncoder passwordEncoder; 
@@ -55,7 +59,7 @@ public class RegisterController {
     }
 
     @GetMapping("/register_kakao")
-    public String registerFormKakao(@RequestParam("email") String email, @RequestParam("nickname") String nickname,Model model) {
+    public String registerFormKakao(@RequestParam("email") String email, @RequestParam("nickname") String nickname, Model model, HttpSession session) {
     	String decodedNickname ="";
     	try {
 			decodedNickname = URLDecoder.decode(nickname, StandardCharsets.UTF_8.toString());
@@ -70,6 +74,10 @@ public class RegisterController {
     	model.addAttribute("nickname", decodedNickname);
     	model.addAttribute("regionCodes", rd.findAll()); // Assuming regions are needed for the form
 
+        model.addAttribute("kakaopassword", kakaoGeneralPassword);
+        session.setAttribute("kakaopassword", kakaoGeneralPassword);
+        System.out.println("레지스터 카카오 : " + kakaoGeneralPassword);
+    	
         return "register_kakao"; // Return the name of your Thymeleaf template
     }
     
@@ -82,6 +90,7 @@ public class RegisterController {
     
     @GetMapping("/register")
     public String registerForm(Model model) {
+    	
         model.addAttribute("user", new Users());  // Add this line if missing
         model.addAttribute("regionCodes", rd.findAll()); // Assuming regions are needed for the form
         return "register"; // This should be the path to your registration form view
@@ -179,6 +188,7 @@ public class RegisterController {
 //        String phone = (String) request.getAttribute("phone");
 //        String name = (String) request.getAttribute("name");
 //        String regionCode = (String) request.getAttribute("regionCode");
+        
         
      // Debug prints
         System.out.println("Received nickname: " + nickname);
@@ -303,6 +313,7 @@ public class RegisterController {
 //    	System.out.println("입력완료");
 //        return "redirect:/login";
 //    }
+
 //    @PostMapping("/registerSubmit")
 //    public String registerSubmit(@ModelAttribute Users user, 
 //                                 @RequestParam("uploadFile") MultipartFile uploadFile, 

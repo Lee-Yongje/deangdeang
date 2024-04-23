@@ -14,38 +14,54 @@ import java.util.List;
 @Service
 public class NewsService {
 
-    public List<News> crawlDataFromWebPage() {
+    public List<News> crawlDataFromWebPage(int page, int size) {
         String url = "https://www.pet-news.or.kr/news/articleList.html?page=1&total=185&box_idxno=&sc_section_code=S1N45&view_type=sm";
-        List<News> newsList = new ArrayList<>();
-
+        List<News> allNews = new ArrayList<>();
         try {
             Document document = Jsoup.connect(url).get();
             Elements newsItems = document.select("li:has(.view-cont)");
 
             for (Element item : newsItems) {
                 String title = item.select(".titles a").text();
-                String link = item.select(".titles a").attr("href");
+                String link = "https://www.pet-news.or.kr" + item.select(".titles a").attr("href");
                 String summary = item.select(".lead").text();
-                String author = item.select(".byline em").get(1).text(); // 저자 정보
-                String date = item.select(".byline em").get(2).text(); // 날짜 정보
-                String imageUrl = item.select(".thumb img").attr("src"); // 이미지 URL 추출
+                String author = item.select(".byline em").get(1).text();
+                String date = item.select(".byline em").get(2).text();
+                String imageUrl = item.select(".thumb img").attr("src");
 
-                
-                
-                // News 객체 생성 및 리스트에 추가
-                News news = new News();
-                news.setTitle(title);
-                news.setLink(link);
-                news.setSummary(summary);
-                news.setAuthor(author);
-                news.setDate(date);
-                news.setImageUrl(imageUrl);
-                newsList.add(news);
+                News news = new News(title, link, summary, author, date, imageUrl);
+                allNews.add(news);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return newsList;
+        // Calculating indices for pagination
+        int start = Math.max((page - 1) * size, 0);
+        int end = Math.min(start + size, allNews.size());
+        return allNews.subList(start, end);
+    }
+
+    public class NewsData {
+        private List<News> newsList;
+        private int totalCount;
+
+        public NewsData(List<News> newsList, int totalCount) {
+            this.newsList = newsList;
+            this.totalCount = totalCount;
+        }
+
+        public List<News> getNewsList() {
+            return newsList;
+        }
+
+        public int getTotalCount() {
+            return totalCount;
+        }
+    }
+    public int getTotalCount() {
+        // As we do not store the data, we assume a static number or fetch dynamically every time
+        return 20;  // Assuming a static total count as shown in the URL query parameter for simplicity
     }
 }
+
