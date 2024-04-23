@@ -254,7 +254,7 @@
 										     <span th:each="i : ${#numbers.sequence(1, c.c_level)}">
 									            &nbsp;&nbsp;
 									        </span>
-										    <span class="comment-content" th:text="${c.c_content}">
+										    <span class="comment-content" th:text="${c.c_content}" style="white-space: pre;">
 										        <input type="hidden" class="entry" th:value="${c.c_content}" />
 										    </span>
 									    </div>
