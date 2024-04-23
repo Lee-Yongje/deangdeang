@@ -69,6 +69,15 @@
 							text: regionCode.r_name
 						}));
 					});
+					//콤보박스에 검색했던 지역 유지
+					var searchedRegion=null;
+					 if ($("#category").val() === "region") {
+        				searchedRegion = $("#searchedRegion").val();
+    				}
+					if(searchedRegion !=null && searchedRegion != ""){
+						$("#region").show()
+		           		 $("#region").val(searchedRegion);
+		           	}
 				}
 			});
 		});
@@ -183,6 +192,7 @@
 							</select>
 						</div>
 						<div class="form-group ml-md-3">
+							<input type="hidden" id="searchedRegion" th:value="${rno}"/>
 							<select class="form-control" id="region" name="rno">
 							</select>
 						</div>
