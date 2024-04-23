@@ -292,6 +292,7 @@
 									    <img th:if="${c.u_fname == null}" src="/images/icon.png" class="rounded-circle img-fluid" style="width: 30px; height: 30px;">
 									    <img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}" class="rounded-circle img-fluid" style="width: 30px; height: 30px;">
 									    <em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>&nbsp;&nbsp;
+									   	<span th:if="${c.uno==writer}" style="color: darkgreen">(작성자)</span>
 									    <span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 									    <th:block th:if="${session.userSession.id==c.uno}">
 									        <button class="btn btn-light edit" th:data-cno="${c.cno}">수정</button>
