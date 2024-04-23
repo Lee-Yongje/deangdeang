@@ -45,4 +45,9 @@ public class CommentService {
 	public void delete(Comment c) {
 		dao.delete(c);
 	}
+	
+	//c_step 최대값 찾기
+	public int getMaxCStep(int b_code, int bno, int c_ref) {
+		return dao.getMaxCStep(b_code, bno, c_ref);
+	}
 }

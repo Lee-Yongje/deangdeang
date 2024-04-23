@@ -16,6 +16,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.config.http.CsrfBeanDefinitionParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -351,16 +352,22 @@ public class CommunityController {
 		
 		//원댓글 없을 시 기본 설정
 		int c_ref = cno; //기본 ref는 cno랑 동일하게 설정
-		int c_level = 1; //기본 레벨 1로 설정
+		int c_level = 0; //기본 레벨 0으로 설정 
+		int c_pcno = -1; //원댓글 없으면 -1
+		int c_step = 1; //원댓글의 댓글 순서는 첫번째 
 		
 		//원댓글이 있다면 (대댓글이라면 )
 		if(pno!=0) {
 			Comment pc = cs.getOldComment(pno); //원댓글 불러오기
 			c_ref = pc.getC_ref(); //원댓글이랑 ref 동일하게 설정
-			c_level = pc.getC_level()+1; //깊이는 원댓 +1
+			c_level = 1; //대댓글이라면 레벨 1로 설정.
+			c_pcno = pc.getCno(); //부모댓글번호
+			c_step = cs.getMaxCStep(b_code, bno, c_ref)+1;
 		}
 		c.setC_ref(c_ref);
 		c.setC_level(c_level);
+		c.setC_pcno(c_pcno);
+		c.setC_step(c_step);
 		
 		
 		cs.insert(c);
@@ -398,5 +405,13 @@ public class CommunityController {
   		}
   		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
+	
+	//대댓글 달 때 원댓의 글쓴이 표시하려고
+	@GetMapping("/member/community/getCommentWriter")
+	@ResponseBody
+	public String commentWriter(int cno) {
+		String writer = cs.getOldComment(cno).getUser().getNickname();
+		return writer;
+	}
 }
     

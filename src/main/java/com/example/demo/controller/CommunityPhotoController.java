@@ -312,6 +312,7 @@ public class CommunityPhotoController {
 	// 사진게시판 상세 - 댕댕자/신고제보
 	@GetMapping("/member/community/photoBoardDetail/{b_code}/{bno}")
 	public String boastDetailPage(Model model, @PathVariable int b_code, @PathVariable int bno) {
+		bs.updateHit(bno, b_code);
 		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
   		model.addAttribute("list", listComment);
   		model.addAttribute("listCount", listComment.size());
@@ -321,7 +322,6 @@ public class CommunityPhotoController {
 		model.addAttribute("bno", bno);
 		model.addAttribute("b_code", b_code);
 		model.addAttribute("b_name", bs.findBNameByBCode(b_code));
-		bs.updateHit(bno, b_code);
 		return "/member/community/photoBoardDetail";
 	}
 
