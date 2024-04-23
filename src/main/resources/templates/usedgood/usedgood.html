@@ -33,6 +33,11 @@
 		#region {
 			display: none;
 		}
+		.fixed-height-img {
+		    width: 100%; /* 부모 요소의 가로 크기를 꽉 채우도록 설정 */
+		    height: 250px; /* 세로 크기 고정 */
+		    object-fit: cover; /* 이미지가 부모의 요소에 맞게 변형될 때 기존의 가로,세로 비율을 유지하기 위한 기능 */
+		}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
@@ -69,6 +74,15 @@
 							text: regionCode.r_name
 						}));
 					});
+					//콤보박스에 검색했던 지역 유지
+					var searchedRegion=null;
+					 if ($("#category").val() === "region") {
+        				searchedRegion = $("#searchedRegion").val();
+    				}
+					if(searchedRegion !=null && searchedRegion != ""){
+						$("#region").show()
+		           		 $("#region").val(searchedRegion);
+		           	}
 				}
 			});
 		});
@@ -112,7 +126,7 @@
 					<div class="ftco-animate">
 						<div class="product">
 							<a th:href="@{'/member/usedgood/detail/6/' + ${b.id.bno}}" class="img-prod">
-								<img class="img-fluid" th:src="@{'/images/' + ${b.b_fname}}">
+								<img class="fixed-height-img" th:src="@{'/images/' + ${b.b_fname}}">
 								<span class="status" th:if="${b.ongoing == 1}"  th:text="'판매중'"> 
 								</span>
 								<span class="status" th:if="${b.ongoing == 0}"  style="background-color: grey;" th:text="'판매완료'"> 
@@ -120,7 +134,7 @@
 
 							</a>
 
-							<div class="text py-3 pb-4 px-3 text-center">
+							<div class="text py-3 pb-4 px-3 text-center" style="height: 120px;">
 								<h3><a th:href="@{'/member/usedgood/detail/6/' + ${b.id.bno}}"
 										th:text="${b.b_title}"></a></h3>
 								<div class="d-flex">
@@ -183,6 +197,7 @@
 							</select>
 						</div>
 						<div class="form-group ml-md-3">
+							<input type="hidden" id="searchedRegion" th:value="${rno}"/>
 							<select class="form-control" id="region" name="rno">
 							</select>
 						</div>

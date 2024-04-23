@@ -28,6 +28,21 @@
 }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(function(){
+	$("#p_name").each(function() {
+        var maxLength = 15; // 최대 길이
+        var text = $(this).text();
+
+        if (text.length > maxLength) {
+            var p_name = text.substring(0, maxLength) + '...';
+            $(this).text(p_name);
+        }
+    });
+});
+</script>
+
 </head>
 <body>
     <!-- 헤더 -->
@@ -80,11 +95,11 @@
 						        <div class="blog-entry align-self-stretch d-md-flex" style="width: 100%">
 						            <div class="text-center">
 						                <a th:href="@{'/member/mypage/insertPuppy/'+${p.pno}}">
-						                    <img class="img-fluid col-md-auto" th:src="${p.p_fname == null ? '/images/icon.png' : '/images/' + p.p_fname}" style="object-fit: cover; width: 200px; height: 200px;"/>
+						                    <img class="img-fluid col-md-auto" th:src="${p.p_fname == null ? '/images/icon.png' : '/images/' + p.p_fname}" style="object-fit: cover; width: 230px; height: 200px;"/>
 						                </a>
 						            </div>
 						            <div class="text d-block pl-md-4 col-md-8">
-						                <h3><a th:href="@{'/member/mypage/insertPuppy/'+${p.pno}}" th:text="${p.p_name}"></a></h3>
+						                <h3><a id="p_name" th:href="@{'/member/mypage/insertPuppy/'+${p.pno}}" th:text="${p.p_name}"></a></h3>
 						                <h6 th:text="${p.p_birth}"></h6>
 						                <h6 th:text="${p.p_sex eq '1'?'남':'여'}"></h6>
 						                <h6 th:text="${p.p_neuter eq '1'?'중성화 완료':'중성화 미완료'}"></h6> 

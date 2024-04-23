@@ -106,7 +106,7 @@
 			<p th:if="${h.rstde_GUID_CN}" th:text="'휴일: ' + ${h.rstde_GUID_CN}"></p>
 			<p th:if="${h.oper_TIME}" th:text="'영업시간: ' + ${h.oper_TIME}"></p>
 			<p th:if="${h.parkng_POSBL_AT}" th:text="'주차 가능 여부: ' + ${h.parkng_POSBL_AT}"></p>
-            <p><a th:href="@{${h.hmpg_URL}}">>>공식 페이지 바로가기</a></p>
+            <p><a th:if="${h.hmpg_URL!=null}" th:href="@{${h.hmpg_URL}}">>>공식 페이지 바로가기</a></p>
             <input type="hidden" id="lat" th:value="${h.lc_LA}"/>
             <input type="hidden" id="lon" th:value="${h.lc_LO}"/>
             <br />

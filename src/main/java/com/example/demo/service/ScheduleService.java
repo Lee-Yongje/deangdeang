@@ -81,4 +81,9 @@ public class ScheduleService {
         }
     }
     
+    // 반려견 삭제시 스케줄러의 내용도 함께 삭제되게 하기 위한 메소드
+    public void deleteScheduleByPno(int pno) {
+    	dao.deleteSchedule(pno);
+    }
+    
 }

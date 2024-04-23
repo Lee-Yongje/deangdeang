@@ -101,6 +101,7 @@ public class UsedgoodController {
 				session.removeAttribute("rno");
 			}
 	    }
+	    System.out.println("Category: " + session.getAttribute("category"));
 	    
 	    //입력된 검색어가 있으면 session에 값 유지
 	    if(search!=null) {
@@ -117,7 +118,6 @@ public class UsedgoodController {
 	    //검색
 	    if (v_category != null && v_category.equals("b_title") && v_search != null) {
 	        list = bs.searchUsedgoodByTitle(6, v_search, v_ongoing, pageable);
-	        System.out.println("검색에걸림");
 	    } else if(v_category != null && v_category.equals("region") && v_search != null){
 	    	list = bs.searchUsedgoodByTitleAndRegion(6, v_rno, v_search, v_ongoing, pageable);
 	    }
@@ -128,6 +128,7 @@ public class UsedgoodController {
 	    int endPage = Math.min(startPage + pagingSize - 1, list.getTotalPages()); //5개씩 보여주기. 마지막 페이지는 마지막페이지까지
 	    
 	    
+	    model.addAttribute("rno",rno);
 	    model.addAttribute("list",list);
 	    model.addAttribute("nowPage",page);
 	    model.addAttribute("startPage",startPage);
@@ -138,6 +139,7 @@ public class UsedgoodController {
 	// 중고거래 상세
 	@GetMapping("/member/usedgood/detail/{b_code}/{bno}")
 	public String usedgoodDetailPage(@PathVariable int b_code, @PathVariable int bno, Model model) {
+		bs.updateHit(bno, b_code);
 		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
   		model.addAttribute("list", listComment);
   		model.addAttribute("listCount", listComment.size());
@@ -146,7 +148,6 @@ public class UsedgoodController {
 		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
-		bs.updateHit(bno, b_code);
 		return "/member/usedgood/detail";
 	}
 	
@@ -312,7 +313,5 @@ public class UsedgoodController {
 		bs.insertUsedgood(b);
 		return "redirect:/usedgood/usedgood";
 	}
-	
-	
-	
+
 }

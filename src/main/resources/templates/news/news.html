@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/css/flaticon.css">
     <link rel="stylesheet" href="/css/icomoon.css">
     <link rel="stylesheet" href="/css/style.css">
+<<<<<<< HEAD
 </head>
 <body class="goto-here">
     <!-- Header/nav -->
@@ -89,4 +90,114 @@
     <script src="/js/main.js"></script>
 </body>
 </html>
+=======
+  </head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+	$(function(){
+		var arr;
+		var pageSIZE=10; //한 화면에 보여줄 레코드의 수
+		var pageGROUP=10;//한 화면에 보여줄 페이지의 수
+		var totalRecord;
+		var totalPage;
+		
+		$("#paging").on("click",".page", function(){
+			var pageNUM = eval($(this).attr("pageNUM"));
+			loadData(pageNUM);
+		});
+		
+		function loadData(pageNUM){
+			$("#list").empty();
+			var start = (pageNUM-1)*pageSIZE;
+			var end = start+pageSIZE;
+			if(end > totalRecord-1){
+				end = totalRecord-1;
+			}
+			for(i = start; i<=end; i++){
+				var book = arr[i];
+				var title = book.title;
+				var link = book.link;
+				var a = $("<a></a>").html(title).attr("href",link);
+				var li = $("<li></li>");
+				$(li).append(a);
+				$("#list").append(li);
+			}
+			printPage(pageNUM);
+		}	
+		
+		function printPage(pageNUM){			
+			$("#paging").empty();		
+				              
+			var startPage = parseInt((pageNUM-1)/pageGROUP)*pageGROUP+1;			
+			var endPage = startPage + pageGROUP - 1;
+			
+			if(  startPage > 1  ){
+				var span = $("<span></span>").html("[이전]").addClass("page").attr("pageNUM", startPage-1 );
+				$("#paging").append(span);
+			}
+						
+			for(i=startPage; i<=endPage; i++){
+				var span = $("<span></span>").html(i).addClass("page").attr("pageNUM",i);
+				$("#paging").append(span);
+			}
+			
+			if(  endPage < totalPage  ){
+				var span = $("<span></span>").html("[다음]").addClass("page").attr("pageNUM", endPage+1 );
+				$("#paging").append(span);
+			}
+			
+		}	
+				
+		$.ajax({
+			url:"/newbook",
+			success:function(r){
+				arr = r;
+				totalRecord = arr.length;
+				totalPage = Math.ceil(totalRecord / pageSIZE);
+				console.log("totalRecord:"+totalRecord);
+				console.log("totalPage:"+totalPage);
+				loadData(1);				
+			}
+		});
+		
+		
+		
+	});
+  </script>
+  <body class="goto-here">
+	<!-- Header/nav -->
+   	<div th:replace="header :: header-fragment"></div>
+    <!-- Header/nav nav -->
+	<section class="ftco-section ftco-degree-bg">
+	    <div class="container">
+	        <h3><a href="https://www.pet-news.or.kr/">출처: 한국반려동물신문</a></h3>
+	        <div class="row">
+	            <div class="col-lg-12 ftco-animate">
+	                <div class="row">
+	                    <!-- 뉴스 리스트를 루프하여 표시 -->
+	                    <div class="col-md-12 d-flex ftco-animate" th:each="news : ${newsList}">
+	                        <div class="blog-entry align-self-stretch d-md-flex">
+	                            <a th:href="${news.link}" class="thumb"><img th:src="${news.imageUrl}" alt="News Thumbnail"></a>
+	                            <div class="text d-block pl-md-4">
+	                                <div class="meta mb-3">
+	                                    <div><span th:text="${news.date}"></span></div>
+	                                    <div><span th:text="${news.author}"></span></div>	                                    
+	                                </div>
+	                                <h3 class="heading"><a th:href="${news.link}" th:text="${news.title}"></a></h3>
+	                                <p th:text="${news.summary}"></p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+	
+    <!--footer  -->
+	 <div th:replace="footer :: footer"></div>
+    <!--footer end  -->
+    
+  
+>>>>>>> branch 'main' of https://github.com/sangwon0707/final.git
 

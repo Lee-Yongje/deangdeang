@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Puppy;
 import com.example.demo.entity.Schedule;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface ScheduleDAO extends JpaRepository<Schedule, Integer> {
 	
@@ -39,6 +41,10 @@ public interface ScheduleDAO extends JpaRepository<Schedule, Integer> {
 	@Query(value = "select * from Schedule where uno = ?1 and month(s_date) = ?2 and year(s_date) = ?3", nativeQuery = true)
 	public List<Schedule> findByYearAndMonth(Long uno, int month, int year);
 
+	@Modifying
+	@Query(value = "delete from schedule where pno=?", nativeQuery = true)
+	@Transactional
+	public void deleteSchedule(int pno);
 	
 	
 }

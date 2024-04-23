@@ -35,7 +35,8 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			+ "WHERE b_code = ?1 "
 			+ "and b_title LIKE CONCAT('%', ?2, '%') "
 			+ "order by b_date desc",
-			countQuery = "select count(*) from board where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
+			countQuery = "select count(*) from board "
+					+ "where b_code=?1 AND b_title LIKE CONCAT('%', ?2, '%')",
 			nativeQuery = true)
 	public Page<List<Map<String, Object>>> searchByBTitle(int b_code, String keyword, Pageable pageable);
 	
@@ -45,7 +46,9 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 				+ "WHERE b_code = ?1 "
 				+ "and u_nickname = ?2 "
 				+ "order by b_date desc",
-				countQuery = "select count(*) from board b INNER JOIN users u ON b.uno = u.uno where b_code=?1 AND u_nickname = ?2",
+				countQuery = "select count(*) from board b "
+						+ "INNER JOIN users u ON b.uno = u.uno "
+						+ "where b_code=?1 AND u_nickname = ?2",
 				nativeQuery = true)
 		public Page<List<Map<String, Object>>> searchByUNickname(int b_code, String keyword, Pageable pageable);
 	
@@ -57,6 +60,53 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
 			nativeQuery = true)
 	public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable);
 	
+	// 모임 게시판 지역으로 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b.rno = ?2 order by b_date desc",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+					+ "where b_code=?1 and b.rno = ?2",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByRno(int b_code, String rno, Pageable pageable);
+	
+	// 모임 게시판 지역 + 제목으로 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b.rno = ?2 and b_title LIKE CONCAT('%', ?3, '%') order by b_date desc",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+					+ "where b_code=?1 and b.rno = ?2 and b_title LIKE CONCAT('%', ?3, '%')",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByRnoAndBTitle(int b_code, String rno, String keyword, Pageable pageable);
+
+	// 모임 게시판 지역 + 작성자로 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b.rno = ?2 and u_nickname = ?3 order by b_date desc",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+					+ "where b_code=?1 and b.rno = ?2 and u_nickname = ?3",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchByRnoAndUNickname(int b_code, String rno, String keyword, Pageable pageable);
+	
+	// 모임 게시판 제목 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and b_title LIKE CONCAT('%', ?2, '%') order by b_date desc;",
+			countQuery = "select count(*) from board where b_code=?1 and b_title LIKE CONCAT('%', ?2, '%')",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchClubByBTitle(int b_code, String keyword, Pageable pageable);
+	
+	// 모임 게시판 닉네임 조회
+	@Query(value = "SELECT b.*, u_nickname, r_name FROM board b "
+			+ "INNER JOIN users u ON b.uno = u.uno INNER JOIN regioncode r ON b.rno = r.rno "
+			+ "WHERE b_code = ?1 and u_nickname = ?2 order by b_date desc;",
+			countQuery = "select count(*) from board b "
+					+ "INNER JOIN users u ON b.uno = u.uno " 
+					+ "where b_code=?1 and u_nickname = ?2",
+			nativeQuery = true)
+	public Page<List<Map<String, Object>>> searchClubByUNickname(int b_code, String keyword, Pageable pageable);
 //	사진 없는 게시판 메소드 끝
 	
 	
@@ -125,7 +175,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     public Page<Board> searchBoardByRegion(int b_code, String rno ,Pageable pageable);
     
     //b_code랑 bno로 삭제
-    @Modifying
+    @Modifying 
     @Transactional
     @Query(value="DELETE FROM board WHERE b_code = ?1 AND bno = ?2", nativeQuery = true)
     public int deleteBoard(int b_code, int bno);
@@ -141,8 +191,16 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     public void usedgoodSold(int b_code, int bno);
     
     //고객번호로 게시글 조회 - countQuery는 Pageable를 통해서 한 페이지에 가져올 게시물의 개수를 설정하기 위함. 즉, Pageable를 사용하려면 countQuery를 해야 함.
-    @Query(value = "select b.* from board b inner join users u on b.uno=u.uno where b.uno=?",countQuery = "select count(*) from board where uno=?", nativeQuery = true)
+    @Query(value = "select b.* from board b inner join users u on b.uno=u.uno where b.uno=? order by b_date desc",countQuery = "select count(*) from board where uno=?", nativeQuery = true)
     public Page<Board> findByUno(Long uno, Pageable pageable);
     
-}
+    
+    //메인페이지 전국댕댕자랑 1위~5위 이미지 정렬
+    @Query(value = "select b_fname from board where b_code=1 order by b_hit desc limit 5", nativeQuery = true)
+    public List<String> findTopByBHit();
+    
+    //메인페이지 전국댕댕자랑 1위~5위 bno 가져오기
+    @Query(value = "select bno from board where b_code = 1 order by b_hit desc limit 5", nativeQuery = true)
+    public List<Integer> findTopByBno();
+} 
 

@@ -68,8 +68,39 @@ public class BoardService {
    }
    
    // 모임 게시판 조회
-   public Page<List<Map<String, Object>>> findClubByBcode(int b_code, Pageable pageable) {
-	   return dao.findClubByBcode(b_code, pageable);
+   public Page<List<Map<String, Object>>> findClubByBcode(HashMap<String, String> map, int b_code, Pageable pageable) {
+	   String rno = map.get("rno");
+	   String cname = map.get("cname");
+	   String keyword = map.get("keyword");
+	   System.out.println("서비스 rno : " + rno);
+	   System.out.println("서비스 cname : " + cname);
+	   System.out.println("서비스 keyword : " + keyword);
+	   Page<List<Map<String, Object>>> list = null;
+	   if( rno != null && !rno.equals("rno")) {
+		   // 지역 설정 O, 검색어 O
+		   if(keyword != null && !keyword.equals("")) {
+			   switch(cname) {
+			   case "b_title": list = dao.searchByRnoAndBTitle(b_code, rno, keyword,pageable);break;
+			   case "u_nickname": list = dao.searchByRnoAndUNickname(b_code,rno, keyword,pageable);break;
+			   }
+		   }else {
+			// 지역 설정 O, 검색어 X
+			   list = dao.searchByRno(b_code, rno, pageable);
+		   }
+	   }else {
+		   // 지역 설정 X, 검색어 O
+		   if( keyword != null && !keyword.equals("")) {
+			   switch(cname) {
+			   case "b_title": list = dao.searchClubByBTitle(b_code, keyword, pageable);break;
+			   case "u_nickname": list = dao.searchClubByUNickname(b_code, keyword, pageable);break;
+			   }
+		   }else {
+			   // 지역 설정 X, 검색어 X
+			   // 모임게시판 기본 조회
+			   list = dao.findClubByBcode(b_code, pageable);		   
+		   }		   
+	   }
+	   return list;
    }
    
  //게시판용 getNextNo
@@ -153,9 +184,20 @@ public class BoardService {
    public void usedgoodSold(int b_code, int bno){
 	   dao.usedgoodSold(b_code, bno);
    }
-   
+    
    //내 글 보기(마이페이지)
    public Page<Board> findByUno(Long uno, Pageable pageable){
 	   return dao.findByUno(uno,pageable);
    }
+   
+   
+   //메인페이지 전국댕댕자랑 1위~5위 이미지 정렬
+   public List<String> getTopImageFile() {
+	    return dao.findTopByBHit();
+   }
+   
+   //메인페이지 전국댕댕자랑 1위~5위 글번호
+   public List<Integer> getTopBno() {
+	    return dao.findTopByBno();  
+	}
 }
