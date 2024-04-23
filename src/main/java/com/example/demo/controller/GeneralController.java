@@ -62,7 +62,7 @@ public class GeneralController {
         }
 
         // 이미지 파일 이름 로드
-        try {
+        try {  
             List<String> filenames = bs.getTopImageFile(); // 이미지 파일 이름
             List<Integer> bnolist = bs.getTopBno(); // bno 목록
             model.addAttribute("filenames", filenames);

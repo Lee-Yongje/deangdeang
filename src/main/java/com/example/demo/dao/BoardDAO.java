@@ -175,7 +175,7 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     public Page<Board> searchBoardByRegion(int b_code, String rno ,Pageable pageable);
     
     //b_code랑 bno로 삭제
-    @Modifying
+    @Modifying 
     @Transactional
     @Query(value="DELETE FROM board WHERE b_code = ?1 AND bno = ?2", nativeQuery = true)
     public int deleteBoard(int b_code, int bno);
@@ -202,5 +202,5 @@ public interface BoardDAO extends JpaRepository<Board, Integer> {
     //메인페이지 전국댕댕자랑 1위~5위 bno 가져오기
     @Query(value = "select bno from board where b_code = 1 order by b_hit desc limit 5", nativeQuery = true)
     public List<Integer> findTopByBno();
-}
+} 
 

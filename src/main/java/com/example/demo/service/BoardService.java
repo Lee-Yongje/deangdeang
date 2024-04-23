@@ -198,6 +198,6 @@ public class BoardService {
    
    //메인페이지 전국댕댕자랑 1위~5위 글번호
    public List<Integer> getTopBno() {
-	    return dao.findTopByBno();
+	    return dao.findTopByBno();  
 	}
 }
