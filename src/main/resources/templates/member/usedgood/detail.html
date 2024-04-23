@@ -61,10 +61,14 @@
 				// textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦
 				if (textarea.length === 0) {
 					entryContent.html(`
-				        <div style="display: flex; width: 100%;">
-				            <textarea rows="2" class="form-control" width="80%" >${currentContent}</textarea>
-				            <button class="btn btn-primary update" data-cno="${cno}">수정</button>
-				        </div>
+				        <div class="row">
+						    <div class="col-md-10">
+						        <textarea rows="2" class="form-control">${currentContent}</textarea>
+						    </div>
+						    <div class="col-md-2">
+						        <button class="btn btn-primary update" data-cno="${cno}">수정</button>
+						    </div>
+						</div>
 				    `);
 				      entry.find('.edit').hide();
             		  entry.find('.delete').hide();
@@ -238,15 +242,15 @@
 								        &nbsp;&nbsp;
 								    </span>
 								    <span>
-									    <img th:if="${c.u_fname == null}" src="/images/sampledog.jpg" alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
-									    <img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}" alt="작성자 사진" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
+									    <img th:if="${c.u_fname == null}" src="/images/sampledog.jpg" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
+									    <img th:if="${c.u_fname != null}" th:src="@{'/images/' + ${c.u_fname}}" class="rounded-circle img-fluid" style="width: 50px; height: 50px;">
 									    <em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
 									    <span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 									    <th:block th:if="${session.userSession.id==c.uno}">
-									        <button class="edit" th:data-cno="${c.cno}">수정</button>
-									        <button class="delete" th:data-cno="${c.cno}">삭제</button>
+									        <button class="btn btn-light edit" th:data-cno="${c.cno}">수정</button>
+									        <button class="btn btn-light delete" th:data-cno="${c.cno}">삭제</button>
 									    </th:block>
-									    <button class="reply">대댓글 달기</button>
+									    <!--<button class="reply btn btn-light">대댓글 달기</button>-->
 									    <div>
 										     <span th:each="i : ${#numbers.sequence(1, c.c_level)}">
 									            &nbsp;&nbsp;
