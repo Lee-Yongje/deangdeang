@@ -58,23 +58,20 @@
 				var entryContent = entry.find('.entry-content'); // entry-content 요소 가져오기
 				var textarea = entryContent.find('textarea'); // textarea 요소 가져오기
 
-				// textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦-?필요한가??
-				//if (textarea.length === 0) {
-					entryContent.html(`
-				        <div class="row">
-						    <div class="col-md-10">
-						        <textarea rows="2" class="form-control">${currentContent}</textarea>
-						    </div>
-						    <div class="col-md-2">
-						        <button class="btn btn-primary update" data-cno="${cno}">수정</button>
-						    </div>
-						</div>
-				    `);
-				      entry.find('.edit').hide();
-            		  entry.find('.delete').hide();
-            		  entry.find('.reply').hide(); // 대댓글 버튼 숨기기
-				//}
-
+				entryContent.html(`
+			        <div class="row">
+					    <div class="col-md-10">
+					        <textarea rows="2" class="form-control">${currentContent}</textarea>
+					    </div>
+					    <div class="col-md-2">
+					        <button class="btn btn-primary update" data-cno="${cno}">수정</button>
+					    </div>
+					</div>
+			    `);
+			      entry.find('.edit').hide();
+        		  entry.find('.delete').hide();
+        		  entry.find('.reply').hide(); // 대댓글 버튼 숨기기
+			
 				entry.find('.comment-content').hide(); // 댓글 내용 숨기기
 				entryContent.show(); // 수정 입력 필드 보이기
 
@@ -306,8 +303,8 @@
 							</div>
 							<hr th:unless="${index.last}">
 						</div>
+						<br/>
 					</div>
-					<br />
 					<!-- 댓글 작성 폼 시작-->
 					<form action="/member/community/boardComment" class="mt-3">
 						<div class="form-group">
@@ -326,7 +323,7 @@
 					</form>
 					<!-- 댓글 작성 폼 끝-->
 				</div>
-			</div>
+			</div><!--댓글 끝-->
 		</div>
 		<div class="row mt-5">
 		</div>
