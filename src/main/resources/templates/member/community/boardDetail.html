@@ -159,7 +159,7 @@
 										<div class="ml-3">
 											<div class="comment-meta">
 												<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
-												<span th:text="${c.c_date}"></span>											
+												<span th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>											
 											</div>
 											<div class="comment-content" th:text="${c.c_content}"></div>
 										</div>

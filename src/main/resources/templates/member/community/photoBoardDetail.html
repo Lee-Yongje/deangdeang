@@ -60,6 +60,8 @@
 				            <button class="btn btn-primary update" data-cno="${cno}">수정</button>
 				        </div>
 				    `);
+				    entry.find('.edit').hide();
+            		entry.find('.delete').hide();
 				}
 
 				entry.find('.comment-content').hide(); // 댓글 내용 숨기기
@@ -74,7 +76,7 @@
 				var updatedContent = entry.find('textarea').val().trim();
 				$.ajax({
 					type: "GET",
-					url: "/member/community/updateComment",
+					url: "/member/community/boardComment",
 					data: {
 						bno: bno,
 						b_code: b_code,
@@ -83,9 +85,6 @@
 					},
 					success: function (response) {
 						location.reload();
-					},
-					error: function (xhr, status, error) {
-						console.error(xhr.responseText);
 					}
 				});
 			});
@@ -167,6 +166,7 @@
 									<button id="btnUpdate" class="btn btn-primary">수정</button> 
 									<button id="btnDelete" class="btn btn-primary">삭제</button>
 								</div>
+								
 							</div>
 						</div>
 						<div class="row mt-3">
@@ -182,7 +182,7 @@
 							<div class="col-md-12">
 								<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 								<!-- 기존 댓글 표시 -->
-								<div class="allComments" wid>
+								<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}" >
 									<div th:each="c: ${list}">
 										<div class="comment">
 											<input type="hidden" class="cno" th:value="${c.cno}" />
@@ -197,7 +197,7 @@
 														style="width: 50px; height: 50px;">
 													<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
 													<span
-														th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+														th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 													<th:block th:if="${session.userSession.id==c.uno}">
 														<button class="edit" th:data-cno="${c.cno}">수정</button>
 														<button class="delete" th:data-cno="${c.cno}">삭제</button>
