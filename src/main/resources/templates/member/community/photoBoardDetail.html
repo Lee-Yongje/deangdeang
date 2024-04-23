@@ -59,13 +59,13 @@
 						    <div class="col-md-10">
 						        <textarea rows="2" class="form-control">${currentContent}</textarea>
 						    </div>
-						    <div class="col-md-2">
+						    <div class="col-md-3">
 						        <button class="btn btn-primary update" data-cno="${cno}">수정</button>
 						    </div>
 						</div>
 				    `);
-				    entry.find('.edit').hide();
-            		entry.find('.delete').hide();
+					entry.find('.edit').hide();
+					entry.find('.delete').hide();
 				}
 
 				entry.find('.comment-content').hide(); // 댓글 내용 숨기기
@@ -160,7 +160,8 @@
 								<h2 class="post-title" th:text="${b.b_title}"></h2>
 								<!-- 작성자, 작성일 -->
 								<div class="post-meta">
-									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
+									<img th:if="${b.u_fname == null}" src="/images/icon.png"
+										th:else="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
 										class="rounded-circle">&nbsp;
 									<span th:text="${b.u_nickname}">작성자 이름</span><br />
 									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
@@ -170,7 +171,7 @@
 									<button id="btnUpdate" class="btn btn-primary">수정</button> 
 									<button id="btnDelete" class="btn btn-primary">삭제</button>
 								</div>
-								
+
 							</div>
 						</div>
 						<div class="row mt-3">
@@ -186,13 +187,13 @@
 							<div class="col-md-12">
 								<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 								<!-- 기존 댓글 표시 -->
-								<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}" >
+								<div class="allComments" th:if="${list != null and not #lists.isEmpty(list)}">
 									<div th:each="c: ${list}">
 										<div class="comment">
 											<input type="hidden" class="cno" th:value="${c.cno}" />
 											<div>
 												<div class="comment-meta" style="width: 100%;">
-													<img th:if="${c.u_fname == null}" src="/images/sampledog.jpg"
+													<img th:if="${c.u_fname == null}" src="/images/icon.png"
 														class="rounded-circle img-fluid"
 														style="width: 50px; height: 50px;">
 													<img th:if="${c.u_fname != null}"
@@ -203,8 +204,10 @@
 													<span
 														th:text="${#dates.format(c.c_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 													<th:block th:if="${session.userSession.id==c.uno}">
-														<button class="btn btn-light edit" th:data-cno="${c.cno}">수정</button>
-														<button class="btn btn-light delete" th:data-cno="${c.cno}">삭제</button>
+														<button class="btn btn-light edit"
+															th:data-cno="${c.cno}">수정</button>
+														<button class="btn btn-light delete"
+															th:data-cno="${c.cno}">삭제</button>
 													</th:block>
 												</div>
 												<div class="comment-content" th:text="${c.c_content}">
