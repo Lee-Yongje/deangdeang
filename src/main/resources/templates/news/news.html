@@ -113,15 +113,14 @@
 	                    <!-- 뉴스 리스트를 루프하여 표시 -->
 	                    <div class="col-md-12 d-flex ftco-animate" th:each="news : ${newsList}">
 	                        <div class="blog-entry align-self-stretch d-md-flex">
-	                            <a href="#" class="thumb"><img th:src="${news.imageUrl}" alt="News Thumbnail"></a>
+	                            <a th:href="${news.link}" class="thumb"><img th:src="${news.imageUrl}" alt="News Thumbnail"></a>
 	                            <div class="text d-block pl-md-4">
 	                                <div class="meta mb-3">
-	                                    <div><a href="#"> <span th:text="${news.date}">July 20, 2019</span> </a></div>
-	                                    <div><a href="#"> <span th:text="${news.author}">Admin</span> </a></div>
-	                                    <!-- 여기에 댓글 수 등의 추가 정보가 들어갈 수 있습니다. -->
+	                                    <div><span th:text="${news.date}"></span></div>
+	                                    <div><span th:text="${news.author}"></span></div>	                                    
 	                                </div>
-	                                <h3 class="heading"><a href="#" th:text="${news.title}">뉴스 제목</a></h3>
-	                                <p th:text="${news.summary}">뉴스 요약</p>
+	                                <h3 class="heading"><a th:href="${news.link}" th:text="${news.title}"></a></h3>
+	                                <p th:text="${news.summary}"></p>
 	                            </div>
 	                        </div>
 	                    </div>

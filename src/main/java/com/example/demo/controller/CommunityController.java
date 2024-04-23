@@ -95,22 +95,19 @@ public class CommunityController {
 			@PathVariable int b_code,
 			String rno, String cname, String keyword,
 			HttpSession session, Model model) {
-		
-		System.out.println("지역 : "+ rno );
-		System.out.println("주제 : "+ cname );
-		System.out.println("검색어 : "+ keyword );
+
 		// 조회용 Hashmap
-//		HashMap<String, String> map = new HashMap<String, String>();		
-//		map.put("rno", rno);
-//		map.put("cname", cname);
-//		map.put("keyword", keyword);
+		HashMap<String, String> map = new HashMap<String, String>();		
+		map.put("rno", rno);
+		map.put("cname", cname);
+		map.put("keyword", keyword);
 		
 		// 게시판명 불러오기
 		String b_name = bs.findBNameByBCode(b_code);
 		// 한페이지에 5개씩 (테스트)
 		int pageSize = 5; 
 		Pageable pageable = PageRequest.of(page-1, pageSize);
-		Page<List<Map<String ,Object>>> list = bs.findClubByBcode(b_code, pageable);
+		Page<List<Map<String ,Object>>> list = bs.findClubByBcode(map,b_code, pageable);
 		
 		 //페이징
 	    int pagingSize = 5; //페이징 몇개씩 보여줄 건지 ex) 1 2 3 4 5
@@ -358,8 +355,38 @@ public class CommunityController {
 		
 		cs.insert(c);
 		System.out.println("댓글 등록 완료");
+		if(b_code==6) {
+  			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
+  		}
 		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
   	}
   
+  	//댓글 수정
+  	@GetMapping("/member/community/updateComment")
+  	public String updateComment(Comment c ,int cno, int bno, int b_code) {
+  		Comment oc = cs.getOldComment(cno);
+  		oc.setC_content(c.getC_content());
+  		cs.update(oc);
+  		if(b_code==6) {
+  			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
+  		}
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
+  	//댓글 삭제
+	@GetMapping("/member/community/deleteComment")
+  	public String deleteComment(int cno,  int bno, int b_code) {
+  		Comment oc = cs.getOldComment(cno);
+  		cs.delete(oc);
+  		if(b_code==6) {
+  			return "redirect:/member/usedgood/detail/"+b_code+"/"+bno;
+  		}else if(b_code == 1 ||b_code == 5) {
+  			return "redirect:/member/community/photoBoardDetail/"+b_code+"/"+bno;
+  		}
+  		return "redirect:/member/community/boardDetail/"+b_code+"/"+bno;
+  	}
 }
     

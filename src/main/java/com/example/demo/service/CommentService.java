@@ -26,8 +26,23 @@ public class CommentService {
 		dao.save(c);
 	}
 	
+	//댓글 update
+	public void update(Comment c) {
+		dao.save(c);
+	}
+	
 	// 댓글 List
 	public List<Map<String, Object>> List(int b_code, int bno){
 		return dao.listComment(b_code, bno);
+	}
+	
+	//(수정을 위한) 원본 댓글 가져오기
+	public Comment getOldComment(int cno){
+		return dao.findById(cno).get();
+	}
+	
+	//댓글 삭제
+	public void delete(Comment c) {
+		dao.delete(c);
 	}
 }

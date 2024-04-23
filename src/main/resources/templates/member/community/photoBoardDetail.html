@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>댕댕정보통 | 전국댕댕자랑</title>
+	<title>댕댕정보통 | 전국댕댕자랑</title>
 	<link rel="icon" th:href="@{/images/icon.png}">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,46 +12,98 @@
 	<link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/animate.css}">
+	<link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/animate.css}">
 
-    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
 
-    <link rel="stylesheet" th:href="@{/css/aos.css}">
+	<link rel="stylesheet" th:href="@{/css/aos.css}">
 
-    <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+	<link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
-    <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+	<link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
 
-    <link rel="stylesheet" th:href="@{/css/flaticon.css}">
-    <link rel="stylesheet" th:href="@{/css/icomoon.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/flaticon.css}">
+	<link rel="stylesheet" th:href="@{/css/icomoon.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
-		$(document).ready(function(){
-		    $("#btnDelete").click(function () {
-				var bno = $("#bno").val();
-				var b_code = $("#b_code").val();
-				if(confirm("정말로 삭제하시겠습니까?")){
-			        window.location.href = "/member/community/photoBoardDelete/"+b_code+"/"+bno;				
+		$(document).ready(function () {
+			var bno = $("#bno").val();
+			var b_code = $("#b_code").val();
+			$("#btnDelete").click(function () {
+				if (confirm("정말로 삭제하시겠습니까?")) {
+					window.location.href = "/member/community/photoBoardDelete/" + b_code + "/" + bno;
 				}
-		    });
-		    $("#btnUpdate").click(function () {
-				var bno = $("#bno").val();
-				var b_code = $("#b_code").val();
-			    window.location.href = "/member/community/photoBoardUpdate/"+b_code+"/"+bno;				
-				
-		    });
+			});
+			$("#btnUpdate").click(function () {
+				window.location.href = "/member/community/photoBoardUpdate/" + b_code + "/" + bno;
+
+			});
+			//댓글 수정, 삭제 설정
+			// 댓글 수정
+			$(document).on('click', '.edit', function () {
+				var cno = $(this).data('cno');
+				var entry = $(this).closest('.comment');
+				var currentContent = entry.find('.comment-content').text().trim(); // 현재 댓글 내용 가져오기
+				var entryContent = entry.find('.entry-content'); // entry-content 요소 가져오기
+				var textarea = entryContent.find('textarea'); // textarea 요소 가져오기
+
+				// textarea가 이미 존재하는지 확인하고, 없다면 새로 만듦
+				if (textarea.length === 0) {
+					entryContent.html(`
+				        <div style="display: flex; width: 100%;">
+				            <textarea rows="2" class="form-control" width="80%" >${currentContent}</textarea>
+				            <button class="btn btn-primary update" data-cno="${cno}">수정</button>
+				        </div>
+				    `);
+				}
+
+				entry.find('.comment-content').hide(); // 댓글 내용 숨기기
+				entryContent.show(); // 수정 입력 필드 보이기
+
+
+			});
+			$(document).on('click', '.update', function () {
+
+				var cno = $(this).data('cno');
+				var entry = $(this).closest('.comment');
+				var updatedContent = entry.find('textarea').val().trim();
+				$.ajax({
+					type: "GET",
+					url: "/member/community/updateComment",
+					data: {
+						bno: bno,
+						b_code: b_code,
+						cno: cno,
+						c_content: updatedContent
+					},
+					success: function (response) {
+						location.reload();
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			});
+			$(document).on('click', '.delete', function () {
+				if (confirm("정말로 삭제하시겠습니까?")) {
+					var cno = $(this).data('cno');
+					window.location.href = "/member/community/deleteComment?cno=" + cno + "&bno=" + bno + "&b_code=" + b_code;
+				};
+			});
+
 		});
 	</script>
 	<style>
-		.img-fluid{
+		.img-fluid {
 			margin-bottom: 10px;
 		}
-		.text{
+
+		.text {
 			color: black;
 		}
 	</style>
@@ -90,14 +142,14 @@
 				<div class="container">
 					<div class="container mt-5 text">
 						<h2 th:text="${b_name}"></h2>
-						<input type="hidden" id ="bno" th:value="${bno}"/>
-						<input type="hidden" id ="b_code" th:value="${b_code}"/>
+						<input type="hidden" id="bno" th:value="${bno}" />
+						<input type="hidden" id="b_code" th:value="${b_code}" />
 						<br />
 						<div class="row">
 							<div class="col-md-6">
 								<!-- 사진 -->
 								<img th:src="@{'/images/' + ${b.b_fname}}" class="img-fluid"
-						style="max-width: 100%; height: auto; max-height: 500px;">
+									style="max-width: 100%; height: auto; max-height: 500px;">
 							</div>
 							<div class="col-md-6">
 								<h4 th:if="${b_code==5}" th:text="${b.r_name}"></h4>
@@ -106,12 +158,12 @@
 								<!-- 작성자, 작성일 -->
 								<div class="post-meta">
 									<img th:src="@{'/images/' + ${b.u_fname}}" style="width: 50px; height: 50px;"
-							class="rounded-circle">&nbsp;
+										class="rounded-circle">&nbsp;
 									<span th:text="${b.u_nickname}">작성자 이름</span><br />
 									<span th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
-								<br/>
-								<div th:if="${session.userSession.id==writer}"> 
+								<br />
+								<div th:if="${session.userSession.id==writer}">
 									<button id="btnUpdate" class="btn btn-primary">수정</button> 
 									<button id="btnDelete" class="btn btn-primary">삭제</button>
 								</div>
@@ -128,47 +180,55 @@
 						<!-- 댓글 -->
 						<div class="row mt-3">
 							<div class="col-md-12">
-								<h5>댓글(2)</h5>
+								<h5 th:text="'댓글( '+${listCount}+' ) 조회수('+${b.b_hit}+')'"></h5>
 								<!-- 기존 댓글 표시 -->
-								<div class="comment">
-									<div class="d-flex align-items-center">
-										<img src="/images/category.jpg" alt="작성자 사진" class="rounded-circle"
-											style="width: 50px; height: 50px;">
-										<div class="ml-3">
-											<div class="comment-meta">
-												<span class="font-weight-bold">작성자1</span>
-												<span>2024-03-29 12:00</span>
-											</div>
-											<div class="comment-content">
-												댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.
+								<div class="allComments" wid>
+									<div th:each="c: ${list}">
+										<div class="comment">
+											<input type="hidden" class="cno" th:value="${c.cno}" />
+											<div>
+												<div class="comment-meta" style="width: 100%;">
+													<img th:if="${c.u_fname == null}" src="/images/sampledog.jpg"
+														alt="작성자 사진" class="rounded-circle img-fluid"
+														style="width: 50px; height: 50px;">
+													<img th:if="${c.u_fname != null}"
+														th:src="@{'/images/' + ${c.u_fname}}" alt="작성자 사진"
+														class="rounded-circle img-fluid"
+														style="width: 50px; height: 50px;">
+													<em class="font-weight-bold h5" th:text="${c.u_nickname}"></em>
+													<span
+														th:text="${#dates.format(b.b_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+													<th:block th:if="${session.userSession.id==c.uno}">
+														<button class="edit" th:data-cno="${c.cno}">수정</button>
+														<button class="delete" th:data-cno="${c.cno}">삭제</button>
+													</th:block>
+												</div>
+												<div class="comment-content" th:text="${c.c_content}">
+													<input type="hidden" class="entry" th:value="${c.c_content}" />
+												</div>
+												<div class="entry-content"></div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<br />
-								<div class="comment">
-									<div class="d-flex align-items-center">
-										<img src="/images/category.jpg" alt="작성자 사진" class="rounded-circle"
-											style="width: 50px; height: 50px;">
-										<div class="ml-3">
-											<div class="comment-meta">
-												<span class="font-weight-bold">작성자2</span>
-												<span>2024-03-29 12:00</span>
-											</div>
-											<div class="comment-content">
-												댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.댓글 내용을 이곳에 표시합니다.
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- 댓글 작성 폼 -->
-								<form class="mt-3">
+								<!-- 댓글 작성 폼 시작-->
+								<form action="/member/community/boardComment" class="mt-3">
 									<div class="form-group">
-										<label for="comment">댓글 작성</label>
-										<textarea class="form-control" id="comment" rows="2"></textarea>
+										<!-- 게시물 번호 -->
+										<input type="hidden" name="bno" id="bno" th:value="${bno}" />
+										<!-- 게시판 코드 -->
+										<input type="hidden" name="b_code" id="b_code" th:value="${b_code}" />
+										<!-- 댓글 작성자(세션값) -->
+										<em class="h5" name="u_nickname" th:text="${session.userSession.nickname}"></em>
+										<!-- 댓글 내용 -->
+										<textarea class="form-control" name="c_content" id="c_content" rows="2"
+											placeholder="댓글을 작성해주세요" required></textarea>
 									</div>
-									<button type="submit" class="btn btn-primary">댓글 작성</button>
+									<!-- 댓글 등록 버튼 -->
+									<button type="submit" id="btnComment" class="btn btn-primary">댓글 작성</button>
 								</form>
+								<!-- 댓글 작성 폼 끝-->
 							</div>
 						</div>
 					</div>
