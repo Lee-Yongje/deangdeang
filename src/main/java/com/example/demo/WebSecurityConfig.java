@@ -41,13 +41,13 @@ public class WebSecurityConfig {
 	@SuppressWarnings("deprecation")
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Ensures a session is only
-																							// created if required
-				.sessionFixation().migrateSession();
-
-		// Session management to ensure the session ID is not changed
-		http.sessionManagement().sessionFixation().none(); // Do not change the session ID after authentication
+//
+//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Ensures a session is only
+//																							// created if required
+//				.sessionFixation().migrateSession();
+//
+//		// Session management to ensure the session ID is not changed
+//		http.sessionManagement().sessionFixation().none(); // Do not change the session ID after authentication
 
 		// Permitting specific paths
 		http.authorizeRequests(auth -> {
@@ -87,7 +87,7 @@ public class WebSecurityConfig {
 		});
 
 		// Configuring CSRF protection as per your existing requirements
-		http.csrf(csrf -> csrf.ignoringRequestMatchers("/news/news", "/index", "/logout")); // Excluded "/login", "/register", "/register_kakao"
+		http.csrf(csrf -> csrf.ignoringRequestMatchers("/news/news", "/index", "/login", "/logout", "/register", "/register_kakao")); // Excluded "/login", 
 																																																				// protection
 
 		// Configuring exception handling for access denied

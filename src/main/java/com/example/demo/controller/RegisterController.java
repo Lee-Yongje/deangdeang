@@ -75,7 +75,6 @@ public class RegisterController {
     	model.addAttribute("regionCodes", rd.findAll()); // Assuming regions are needed for the form
 
         model.addAttribute("kakaopassword", kakaoGeneralPassword);
-        session.setAttribute("kakaopassword", kakaoGeneralPassword);
         System.out.println("레지스터 카카오 : " + kakaoGeneralPassword);
     	
         return "register_kakao"; // Return the name of your Thymeleaf template
@@ -354,5 +353,4 @@ public class RegisterController {
 //        return "redirect:/login";
 //    }
     
-
 

@@ -98,7 +98,7 @@
     window.onload = function() {
         var form = document.getElementById('loginForm');
         var email = /*[[${session.email}]]*/ ''; 
-        var password = /*[[${session.password}]]*/ ''; 
+        var password = "1234"; 
         // Check if email is provided (as the password is always provided statically)
         if (email) {
             form.elements['username'].value = email;
