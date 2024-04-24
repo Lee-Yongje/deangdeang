@@ -2336,6 +2336,29 @@ fieldset:disabled a.btn {
     .show > .btn-outline-success.dropdown-toggle:focus {
       -webkit-box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
       box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+      
+.btn-outline-green {
+  color: #82ae46;
+  border-color: #82ae46; }
+  .btn-outline-success:hover {
+    color: #82ae46;
+    background-color: #82ae46;
+    border-color: #82ae46; }
+  .btn-outline-success:focus, .btn-outline-success.focus {
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(131, 174, 70, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(131, 174, 70, 0.5); }
+  .btn-outline-success.disabled, .btn-outline-success:disabled {
+    color: #82ae46;
+    background-color: transparent; }
+  .btn-outline-success:not(:disabled):not(.disabled):active, .btn-outline-success:not(:disabled):not(.disabled).active,
+  .show > .btn-outline-success.dropdown-toggle {
+    color: #82ae46;
+    background-color: #82ae46;
+    border-color: #82ae46; }
+    .btn-outline-success:not(:disabled):not(.disabled):active:focus, .btn-outline-success:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-outline-success.dropdown-toggle:focus {
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(131, 174, 70, 0.5);
+      box-shadow: 0 0 0 0.2rem rgba(131, 174, 70, 0.5); }
 
 .btn-outline-info {
   color: #17a2b8;
@@ -8047,7 +8070,7 @@ h1, h2, h3, h4, h5,
   padding: 0; }
   @media (max-width: 991.98px) {
     .ftco-navbar-light {
-      background: #000000 !important;
+      background: #f7f6f2 !important;
       position: relative;
       top: 0;
       padding: 10px 15px; } }
@@ -8060,7 +8083,7 @@ h1, h2, h3, h4, h5,
       color: #000000; }
     @media (max-width: 991.98px) {
       .ftco-navbar-light .navbar-brand {
-        color: #fff; } }
+        color: #82ae46; } }
   @media (max-width: 991.98px) {
     .ftco-navbar-light .navbar-nav {
       padding-bottom: 10px; } }
@@ -8137,7 +8160,7 @@ h1, h2, h3, h4, h5,
         color: #fff; } }
   .ftco-navbar-light .navbar-toggler {
     border: none;
-    color: rgba(255, 255, 255, 0.5) !important;
+    color: #82ae46 !important;
     cursor: pointer;
     padding-right: 0;
     text-transform: uppercase;
