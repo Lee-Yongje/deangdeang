@@ -32,8 +32,9 @@ public class DiaryController {
 	@Autowired
 	private DiaryService ds;
     
-	//----------다이어리----------
+	//----------집사일지----------
     
+
 	@GetMapping("/member/diary/diary")
     public String redirectToCurrentMonth() {
         LocalDate now = LocalDate.now();
@@ -42,9 +43,9 @@ public class DiaryController {
         return "redirect:/member/diary/diary/" + year + "/" + month;
     }
 
-    // 특정 연도와 월을 지정하여 접속
+    // 특정 연도와 월을 지정하여 집사일지 목록 출력
     @GetMapping("/member/diary/diary/{year}/{month}")
-    public String diaryPageByMonth(@PathVariable("year") int year, @PathVariable("month") int month, Model model, HttpSession session) {
+    public String listDiary(@PathVariable("year") int year, @PathVariable("month") int month, Model model, HttpSession session) {
     	Users user = (Users) session.getAttribute("userSession");
         Long userId = user.getId();
         
@@ -55,9 +56,9 @@ public class DiaryController {
         return "member/diary/diary";
     } 
     
-    
-    @GetMapping("/member/diary/diaryDetail/{dno}")
-    public String diaryDetail(@PathVariable("dno") int dno, Model model, HttpSession session) {
+    // 특정(dno) 집사일지 상세보기
+    @GetMapping("/member/diary/detailDiary/{dno}")
+    public String detailDiary(@PathVariable("dno") int dno, Model model, HttpSession session) {
         Diary diary = ds.getDiaryById(dno);
         Users user = (Users) session.getAttribute("userSession");
         if (diary != null && diary.getUsers().getId().equals(user.getId())) {
@@ -66,13 +67,13 @@ public class DiaryController {
         } else {
             model.addAttribute("isUser", false);
         }
-        return "member/diary/diaryDetail";
+        return "member/diary/detailDiary";
     }
 
     
     
-    @GetMapping("/member/diary/diaryDetail")
-    public void diaryDetailPage() {
+    @GetMapping("/member/diary/detailDiary")
+    public void detailDiaryPage() {
     }
     
     
@@ -83,7 +84,7 @@ public class DiaryController {
     }
 
     
-
+    // 집사일지 등록
     @PostMapping("/member/diary/insertDiary")
     public String insertDiary(@ModelAttribute Diary diary, @RequestParam("uploadFile") MultipartFile file, HttpSession session) {
     	Users user = (Users) session.getAttribute("userSession");
@@ -134,15 +135,6 @@ public class DiaryController {
     }
 
     
-    
-    
-    
-//    @PostMapping("/insertDiary")
-//    public String insertDiary(@ModelAttribute Diary diary, @RequestParam("file") MultipartFile file) {
-//        ds.saveDiary(diary, file);
-//        return "redirect:/member/diary/diary"; // 글 등록 후 리디렉션될 경로
-//    }
-    
     @GetMapping("/member/diary/diaryUpdate/{dno}")
     public String diaryUpdatePage(@PathVariable("dno") int dno, Model model) {
         Diary diary = ds.getDiaryById(dno);
@@ -191,10 +183,10 @@ public class DiaryController {
         
         diary.setDno(dno);
         ds.updateDiary(diary); 
-        return "redirect:/member/diary/diaryDetail/" + dno;
+        return "redirect:/member/diary/detailDiary/" + dno;
     }
     
-    // 다이어리 삭제
+    // 집사일지 삭제
     @PostMapping("/member/diary/deleteDiary/{dno}")
     public String deleteDiary(@PathVariable int dno, HttpSession session) {
     	Users user = (Users) session.getAttribute("userSession");

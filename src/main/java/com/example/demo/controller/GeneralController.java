@@ -25,7 +25,7 @@ public class GeneralController {
     private UsersDAO dao;
     
     @Autowired
-    private UsersService userService;
+    private UsersService us;
     
     @Autowired
     private BoardService bs;

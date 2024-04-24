@@ -30,7 +30,7 @@ public class DiaryService {
 	}
 	
 //	// 일지 상세 정보
-//	public List<Diary> getDiaryDetailsByUnoAndDno(int uno, int dno){
+//	public List<Diary> getdetailDiaryByUnoAndDno(int uno, int dno){
 //		return dao.findByUsersUnoAndDno(uno, dno);
 //	}
 	

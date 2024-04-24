@@ -21,7 +21,8 @@ public interface ScheduleDAO extends JpaRepository<Schedule, Integer> {
 	// 스케줄러 강아지 목록 출력
 	@Query("select p from Puppy p join p.user u where u.id = ?1")
 	public List<Puppy> findPuppyById(Long id);
-
+	
+	
 	@Query("select s from Schedule s where s.users.id = ?1 and s.s_date = ?2")
 	public List<Schedule> findSchedulesByDate(Long id, Date date);
 

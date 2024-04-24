@@ -73,7 +73,7 @@ public class ScheduleService {
         dao.deleteById(sno);
     }
     
-    public void updateScheduleStatus(int sno, String s_complete) {
+    public void checkSchedule(int sno, String s_complete) {
         Schedule schedule = dao.findById(sno).orElse(null);
         if (schedule != null) {
             schedule.setS_complete(s_complete);
