@@ -72,7 +72,7 @@ public class DiaryController {
 
     
     
-    @GetMapping("/member/diary/detailDiary")
+    @GetMapping("/member/diary/diaryDetail")
     public void detailDiaryPage() {
     }
     
@@ -183,7 +183,7 @@ public class DiaryController {
         
         diary.setDno(dno);
         ds.updateDiary(diary); 
-        return "redirect:/member/diary/detailDiary/" + dno;
+        return "redirect:/member/diary/diaryDetail/" + dno;
     }
     
     // 집사일지 삭제
