@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,86 +16,84 @@ import com.example.demo.service.CustomOAuth2UserService;
 import com.example.demo.service.CustomUserDetailsService;
 import com.example.demo.service.UsersService;
 
-
 @Configuration
 @EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
+	@Autowired
+	private CustomOAuth2UserService customOAuth2UserService;
 
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
-    }
-    
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
-    
-    @SuppressWarnings("deprecation")
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	// Session management to ensure the session ID is not changed
-        http.sessionManagement()
-            .sessionFixation().none();  // Do not change the session ID after authentication
-    	
-    	// Permitting specific paths
-    	http.authorizeRequests(auth -> {
-            auth.requestMatchers(
-            		"/", "/register", "/registerSubmit", "/login", "/index",
-                    "/css/**", "/js/**", "/fonts/**", "/images/**", "/scss/**", "/data/**",
-                    "/community/**", "/region/**", "/usedgood/**", "/auth/**", "/oauth2/**",
-                    "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
-                    "/login/oauth2/code/kakao", "/news/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
-        });
+	public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+	}
 
-        // Configuring form-based login
-        http.formLogin(login -> {
-            login.loginPage("/login")
-                .defaultSuccessUrl("/index", true) // Redirect to /index upon successful login
-                .failureUrl("/login?error=true") // Redirect back to login page with error flag
-                .permitAll(); // Allow all users to access the login page
-        });
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+	}
 
-        // Configuring logout behavior
-        http.logout(logout -> {
-            logout.logoutUrl("/logout") // URL to trigger logout
-                .logoutSuccessUrl("/login?logout=true") // Redirect to login with a logout query parameter
-                .invalidateHttpSession(true) // Invalidate session upon logout
-                .deleteCookies("JSESSIONID") // Delete session cookies
-                .permitAll(); // Allow all users to perform logout
-        });
+	@SuppressWarnings("deprecation")
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//
+//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Ensures a session is only
+//																							// created if required
+//				.sessionFixation().migrateSession();
+//
+//		// Session management to ensure the session ID is not changed
+//		http.sessionManagement().sessionFixation().none(); // Do not change the session ID after authentication
 
-        // Configuring OAuth2 login
-        http.oauth2Login(oauth -> {
-            oauth.loginPage("/login")
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService) // Custom service for OAuth2 user details
-                .and()
-                .defaultSuccessUrl("/index", true) // Redirect to /index after OAuth2 login
-                .failureUrl("/login?error=true") // Redirect to login on failure
-                .permitAll(); // Allow all users to access OAuth2 login
-        });
+		// Permitting specific paths
+		http.authorizeRequests(auth -> {
+			auth.requestMatchers("/", "/register", "/registerSubmit", "/registerKakaoSubmit", "/login", "/index", "/css/**", "/js/**",
+					"/fonts/**", "/images/**", "/scss/**", "/data/**", "/community/**", "/region/**", "/usedgood/**",
+					"/auth/**", "/oauth2/**", "/register_success", "/register_kakao", "/oauth2/authorization/kakao",
+					"/login/oauth2/code/kakao", "/news/**", "/kakaoLogin", "indexKakao", "/index2")
+					.permitAll()
+					.anyRequest()
+					.authenticated();
+		});
 
-        // Configuring CSRF protection as per your existing requirements
-        http.csrf(csrf -> csrf
-            .ignoringRequestMatchers("/login", "/logout", "/register", "/register_kakao")); // Exclude login and logout actions from CSRF protection
+		// Configuring form-based login
+		http.formLogin(login -> {
+			login.loginPage("/login")
+					.defaultSuccessUrl("/index", true) // Redirect to /index upon successful login
+					.failureUrl("/login?error=true") // Redirect back to login page with error flag
+					.permitAll(); // Allow all users to access the login page
+		});
 
-        // Configuring exception handling for access denied
-        http.exceptionHandling(exceptions -> exceptions.accessDeniedPage("/403"));
+		// Configuring logout behavior
+		http.logout(logout -> {
+			logout.logoutUrl("/logout") // URL to trigger logout
+					.logoutSuccessUrl("/login?logout=true") // Redirect to login with a logout query parameter
+					.invalidateHttpSession(true) // Invalidate session upon logout
+					.deleteCookies("JSESSIONID") // Delete session cookies
+					.permitAll(); // Allow all users to perform logout
+		});
 
-        return http.build(); // Build the security filter chain
-    }
-    
+		// Configuring OAuth2 login
+		http.oauth2Login(oauth -> {
+			oauth.loginPage("/login").userInfoEndpoint().userService(customOAuth2UserService) // Custom service for
+																								// OAuth2 user details
+					.and().defaultSuccessUrl("/index", true) // Redirect to /index after OAuth2 login
+					.failureUrl("/login?error=true") // Redirect to login on failure
+					.permitAll(); // Allow all users to access OAuth2 login
+		});
+
+		// Configuring CSRF protection as per your existing requirements
+		http.csrf(csrf -> csrf.ignoringRequestMatchers("/news/news", "/index", "/login", "/logout", "/register", "/register_kakao")); // Excluded "/login", 
+																																																				// protection
+
+		// Configuring exception handling for access denied
+		http.exceptionHandling(exceptions -> exceptions.accessDeniedPage("/403"));
+
+		return http.build(); // Build the security filter chain
+	}
+
 }

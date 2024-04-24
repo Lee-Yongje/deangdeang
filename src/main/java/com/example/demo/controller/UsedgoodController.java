@@ -139,6 +139,7 @@ public class UsedgoodController {
 	// 중고거래 상세
 	@GetMapping("/member/usedgood/detail/{b_code}/{bno}")
 	public String usedgoodDetailPage(@PathVariable int b_code, @PathVariable int bno, Model model) {
+		bs.updateHit(bno, b_code);
 		List<Map<String ,Object>> listComment = cs.List(b_code, bno);
   		model.addAttribute("list", listComment);
   		model.addAttribute("listCount", listComment.size());
@@ -147,7 +148,6 @@ public class UsedgoodController {
 		model.addAttribute("writer",bs.findBoardByBnoAndBCode(b_code, bno).getUser().getId());
 		model.addAttribute("bno",bno);
 		model.addAttribute("b_code",b_code);
-		bs.updateHit(bno, b_code);
 		return "/member/usedgood/detail";
 	}
 	

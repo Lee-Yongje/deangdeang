@@ -23,7 +23,7 @@ public interface UsersDAO extends JpaRepository<Users, Long> {
 	public int updateInfo(String name, String email, String phone, String nickname, String filename, String rno, Long uno);
 
 	@Modifying
-	@Query(value = "update users set u_pwd=? where uno=?", nativeQuery = true)
+	@Query(value = "UPDATE users SET u_pwd = ?1 WHERE uno = ?2 AND auth_type = 'STANDARD'", nativeQuery = true)
 	@Transactional
 	public void updatePwd(String newPwd, Long uno);
 	

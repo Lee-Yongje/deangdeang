@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dao.RegionCodeDAO;
+import com.example.demo.entity.AuthType;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.BoardId;
 import com.example.demo.entity.Puppy;
@@ -133,6 +134,9 @@ public class MypageController {
     	Long uno = user.getId();
     	String oldPwd = us.findById(uno).getPasswordHash();
     	model.addAttribute("oldPwd", oldPwd);
+
+    	String authType = user.getAuthType().name(); // Convert enum to String
+        model.addAttribute("authType", authType);
     }
     
     // 비밀번호 수정 POST

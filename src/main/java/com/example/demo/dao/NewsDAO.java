@@ -1,11 +1,10 @@
 package com.example.demo.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.entity.News;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.News;
-
 @Repository
-public interface NewsDAO extends JpaRepository<News, String> {
-
+public interface NewsDAO extends PagingAndSortingRepository<News, String> {
+    // This interface now uses DAO naming convention and extends PagingAndSortingRepository
 }

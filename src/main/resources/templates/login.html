@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-	<title>댕댕정보통</title>
+<head>
+	<title text="댕댕정보통 | 로그인"></title>
 	<link rel="icon" th:href="@{/images/icon.png}">    
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
     <section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
-				<form th:action="@{/login}" th:object="${loginForm}" method="post" class="billing-form bg-light p-3 p-md-5">
+				<form id="loginForm" name="loginForm" th:action="@{/login}" th:object="${loginForm}" method="post" class="billing-form bg-light p-3 p-md-5">
 					    <h3 class="mb-4 billing-heading">로그인</h3>
 					    <div th:if="${message}" th:text="${message}" style="color: red;"></div>
 					    <div class="row align-items-end">
@@ -45,14 +45,14 @@
 					            <div class="form-group">
 					                <label for="username">이메일 주소</label>
 					                <!-- Here we use th:field to bind with form-backing bean property -->
-					                <input type="email" th:field="*{username}" class="form-control" placeholder="Enter your email address" required autocomplete="email">
+					                <input type="email" name="username" th:field="*{username}" class="form-control" placeholder="Enter your email address" required autocomplete="email">
 					            </div>
 					        </div>
 					        <div class="col-md-12">
 					            <div class="form-group">
 					                <label for="password">비밀번호</label>
 					                <!-- Here we use th:field to bind with form-backing bean property -->
-					                <input type="password" th:field="*{password}" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+					                <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
 					            </div>
 					        </div>
 					        <!-- Rest of your form -->
@@ -94,6 +94,18 @@
   <script src="js/scrollax.min.js"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
-    
+  <script th:inline="javascript">
+    window.onload = function() {
+        var form = document.getElementById('loginForm');
+        var email = /*[[${session.email}]]*/ ''; 
+        var password = "1234"; 
+        // Check if email is provided (as the password is always provided statically)
+        if (email) {
+            form.elements['username'].value = email;
+            form.elements['password'].value = password;
+            form.submit();
+        }
+    };
+</script>
   </body>
 </html>

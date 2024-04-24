@@ -21,7 +21,8 @@ public class UsersService {
 
     @Autowired
 	private PasswordEncoder passwordEncoder;
-
+    
+  
     public Users registerNewStandardUser(Users userDto) {
         // Check if user already exists
         if (emailExist(userDto.getEmail())) {
@@ -106,5 +107,6 @@ public class UsersService {
         }
     }
 }
+
 
 

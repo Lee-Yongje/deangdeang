@@ -23,6 +23,10 @@ public class Comment {
 	private int c_level;
 	// 원 댓글
 	private int c_ref;
+	// 부모댓글번호
+	private int c_pcno;
+	// 댓글 순서
+	private int c_step;
 	// 날짜
 	private LocalDateTime c_date;
 	
