@@ -87,8 +87,6 @@ public class GeneralController {
             model.addAttribute("errorMessage", "오류가 발생했습니다.");
             System.out.println("오류사항: " + e.getMessage());
         }
-
-        
         
         return "index";
     }

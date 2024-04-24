@@ -15,13 +15,6 @@ public interface DiaryDAO extends JpaRepository<Diary, Integer> {
 	
 	
 	//----------다이어리----------
-	
-//	// 일지 요약 정보 출력 (내용이 200자 이상일 경우 '...'으로 처리 => 오류로 html에 적용
-//	@Query(value="select diary(d.dno, d.d_title, " +
-//            "case when length(d.d_content) > 200 then concat(substring(d.d_content, 1, 200), '…') else d.d_content end, " +
-//            "d.d_date, d.d_fname) from diary d where d.uno = ?1")
-//    List<Diary> findDiarySummariesByUno(int uno);
-	
 	 
 	//목록 출력
 	@Query(value="select * from diary where uno=?1 order by d_date desc", nativeQuery=true)

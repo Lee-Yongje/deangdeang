@@ -83,16 +83,6 @@ public class ScheduleController {
 
     }
     
-//    if (day != null) {
-//        // 일별 스케줄을 요청(entry)(전달받은 월 그대로 사용)
-//        LocalDate date = LocalDate.of(year, month+1, day);
-//        return ss.getSchedulesByDate(uno, Date.valueOf(date));
-//    } else {
-//        // 월별 스케줄을 요청(달력에 점으로 표시)(클라이언트에서 -1된 값을 보냈으므로 +1)
-//        return ss.getMonthlySchedules(uno, year, month+1);
-//    }
-    
-    
     // 스케줄러 등록
     @GetMapping("/member/diary/schedulerWrite")
     public String schedulerWrite(Model model, HttpSession session) {
