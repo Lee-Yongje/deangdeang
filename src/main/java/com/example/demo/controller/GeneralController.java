@@ -77,7 +77,7 @@ public class GeneralController {
         } else {
             System.out.println("principal 객체가 예상한 타입이 아닙니다.");
         }
-        // 이미지 파일 이름 로드
+        // 이미지 파일 이름 로드 
         try {  
             List<String> filenames = bs.getTopImageFile(); // 이미지 파일 이름
             List<Integer> bnolist = bs.getTopBno(); // bno 목록
