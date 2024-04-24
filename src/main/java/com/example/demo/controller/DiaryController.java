@@ -57,7 +57,7 @@ public class DiaryController {
     } 
     
     // 특정(dno) 집사일지 상세보기
-    @GetMapping("/member/diary/detailDiary/{dno}")
+    @GetMapping("/member/diary/diaryDetail/{dno}")
     public String detailDiary(@PathVariable("dno") int dno, Model model, HttpSession session) {
         Diary diary = ds.getDiaryById(dno);
         Users user = (Users) session.getAttribute("userSession");
@@ -67,7 +67,7 @@ public class DiaryController {
         } else {
             model.addAttribute("isUser", false);
         }
-        return "member/diary/detailDiary";
+        return "/member/diary/diaryDetail";
     }
 
     
