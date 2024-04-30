@@ -29,16 +29,11 @@ public class DiaryService {
         return dao.findByUsersId(id);
 	}
 	
-//	// 일지 상세 정보
-//	public List<Diary> getdetailDiaryByUnoAndDno(int uno, int dno){
-//		return dao.findByUsersUnoAndDno(uno, dno);
-//	}
 	
 	// 일지 상세
 	public Diary getDiaryById(int dno) {
 		return dao.findById(dno).orElse(null);
     }
-	
 	 
 	// 일지 등록
     public void saveDiary(Diary diary) {
@@ -55,10 +50,8 @@ public class DiaryService {
         dao.deleteById(dno);
     }
     
+    // 특정 계정이 작성한 일지를 연도,월에 따라 출력 
     public List<Diary> getDiariesByIdAndYearAndMonth(Long id, int year, int month) {
         return dao.findByYearAndMonthAndId(year, month, id);
     }
-
-
-	
 }

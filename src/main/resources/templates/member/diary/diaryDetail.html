@@ -136,14 +136,11 @@
 
                     </p>
 
-
                     <div class="tag-widget post-tag-container mb-5 mt-5 feelings" th:if="${session.userSession != null and session.userSession.id == diary.users.id}">
                         <a th:href="@{/member/diary/diaryUpdate/{dno}(dno=${diary.dno})}" class="btn btn-primary">수정하기</a>
                         <button id="delete-button" class="btn btn-primary" th:onclick="'deleteDiary(\'' + ${diary.dno} + '\');'">삭제하기</button>
-
                     </div>
                 </div> <!-- feelings -->
-
             </div>
         </div>
     </section> <!-- .section -->
@@ -175,5 +172,4 @@
     <script th:src="@{/js/scrollax.min.js}"></script>
     <script th:src="@{/js/main.js}"></script>
 </body>
-
 </html>

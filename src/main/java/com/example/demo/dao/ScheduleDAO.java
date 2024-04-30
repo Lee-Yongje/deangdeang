@@ -26,12 +26,13 @@ public interface ScheduleDAO extends JpaRepository<Schedule, Integer> {
 	@Query("select s from Schedule s where s.users.id = ?1 and s.s_date = ?2")
 	public List<Schedule> findSchedulesByDate(Long id, Date date);
 
+	
 	@Query("select s from Schedule s where s.users.id = ?1 and s.s_date between ?2 and ?3")
 	public List<Schedule> findSchedulesByMonth(Long id, Date startOfMonth, Date endOfMonth);
     
 	 
 	@Query(value = "select ifnull(max(sno),0)+1 from schedule", nativeQuery = true)
-	public int getNextSno();
+	public int getNextSno(); 
 	
 	
 	@Modifying

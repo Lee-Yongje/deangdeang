@@ -36,6 +36,7 @@ public class ScheduleService {
 		  return dao.findSchedulesByDate(uno, date);
 	}
 	
+	// 선택한 월,일 범위 내의 스케줄 출력
     public List<Schedule> getMonthlySchedules(Long uno, int year, int month) {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.with(TemporalAdjusters.lastDayOfMonth());
@@ -73,6 +74,7 @@ public class ScheduleService {
         dao.deleteById(sno);
     }
     
+    // 완료한 스케줄러 체크
     public void checkSchedule(int sno, String s_complete) {
         Schedule schedule = dao.findById(sno).orElse(null);
         if (schedule != null) {

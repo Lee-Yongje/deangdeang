@@ -30,8 +30,7 @@ public class Diary {
 	@ManyToOne
 	@JoinColumn(name="uno")
 	private Users users;
-	
-	 
+
 	@Transient	
 	private MultipartFile uploadFile;
 }

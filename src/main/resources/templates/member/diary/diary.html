@@ -47,29 +47,30 @@
             margin: 20px;
         }
     </style>
-    
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script th:inline="javascript">
-    /*<![CDATA[*/
-    var csrfToken = /*[[${_csrf.token}]]*/ 'defaultToken';
-    var csrfHeader = /*[[${_csrf.headerName}]]*/ 'defaultHeaderName';
-    var userId = /*[[${session.userSession.id}]]*/ 0;
-    
-		$(function() {
-	        function updateDiaries() {
-	            var year = $('#year-select').val();
-	            var month = parseInt($('#month-select').val())+1; // 월에 +1하기 위해 parsInt처리
-	            window.location.href = `/member/diary/diary/${year}/${month}`;
-	        }
-	
-	        $('#year-select').change(updateDiaries);
-	        $('#month-select').change(updateDiaries);
-	    });
-		
-		/*]]>*/
-	</script>
-    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var csrfToken = /*[[${_csrf.token}]]*/ 'defaultToken';
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ 'defaultHeaderName';
+        var userId = /*[[${session.userSession.id}]]*/ 0;
+
+        $(function() {
+            function updateDiaries() {
+                var year = $('#year-select').val();
+                var month = parseInt($('#month-select').val()) + 1; // 월에 +1하기 위해 parsInt처리
+                window.location.href = `/member/diary/diary/${year}/${month}`;
+            }
+
+            $('#year-select').change(updateDiaries);
+            $('#month-select').change(updateDiaries);
+        });
+
+        /*]]>*/
+    </script>
+
 </head>
+
 <body class="goto-here">
     <!-- Header/nav -->
     <div th:replace="header :: header-fragment"></div>
@@ -176,5 +177,4 @@
 
 
 </body>
-
 </html>

@@ -298,28 +298,27 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script th:inline="javascript">
-        /*<![CDATA[*/
+    
+    	// 아래 코드는 배포 시 타임리프가 서버에서 실제 csrf 토큰값으로 대체하여 html 생성하게 됨.
+    	// 클라이언트에게 전달 시 실제 토큰값을 노출되지 않도록 하기 위한 설정!
         var csrfToken = /*[[${_csrf.token}]]*/ 'defaultToken';
         var csrfHeader = /*[[${_csrf.headerName}]]*/ 'defaultHeaderName';
         var userId = /*[[${session.userSession.id}]]*/ 0;
 
         $(function() {
-        	
-
             var currentDate = new Date();
             var currentYear = currentDate.getFullYear();
             var currentMonth = currentDate.getMonth();
-            var currentDay = currentDate.getDate(); 
-            
+            var currentDay = currentDate.getDate();
+
             // 현재 월을 반영
             $('#month-select').val(currentMonth);
-            
+
             // 캘린더 초기 생성
             generateCalendar(currentYear, currentMonth);
-            
+
             // 현재 날짜에 일정이 있으면 페이지 실행시 출력
             updateEntries(currentYear, currentMonth, currentDay);
-            
 
             $.ajaxSetup({
                 beforeSend: function(xhr) {
@@ -329,16 +328,6 @@
 
             // 월 선택박스를 오늘 날짜로
             $('#month-select').val(currentMonth);
-
-
-            /*             // 강아지마다 컬러테두리 부여
-                        $('.pet-selected').each(function(index) {
-                            var colors = ['red', 'orange', 'green', 'blue', 'purple', 'yellow', 'pink', 'skyblue', 'brown', 'gold'];
-                            var color = colors[index % 10];
-                            $(this).find('.pet-image').css('border', '6px solid ' + color);
-                        }); */
-
-
 
             // 캘린더 생성
             // 월은 0부터 시작 > 서버 전송 시 +1
@@ -482,12 +471,9 @@
                 });
             }
 
-
             $(document).on('click', '.entry-button', function(event) {
                 event.stopPropagation();
             });
-
-
 
             // 스케줄 수정
             $(document).on('click', '.edit', function() {
@@ -563,10 +549,7 @@
                     }
                 });
             });
-
-
         });
-        /*]]>*/
     </script>
 </head>
 
@@ -658,13 +641,11 @@
                         <!-- 내용 입력하기 -->
                         <div class="schedulerPlus">
                             <p><a href="/member/diary/schedulerWrite" class="btn btn-primary py-2 px-3">╋</a></p>
-
                         </div>
                         <br><br>
 
                         <!-- 달력과 구분 -->
                         <div class="col-md-12" style="border:2px solid #e0e0e0; margin-top: 20px;"></div>
-
 
                         <!-- 내용 표시될 부분 -->
                         <div id="entries">
@@ -707,5 +688,4 @@
     <script th:src="@{/js/main.js}"></script>
 
 </body>
-
 </html>

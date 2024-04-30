@@ -26,5 +26,5 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name="pno")
-    private Puppy puppy;
+    private Puppy puppy; 
 }
