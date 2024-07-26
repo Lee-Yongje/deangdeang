@@ -1,15 +1,13 @@
-
-<img width="1039" alt="main" src="https://github.com/sangwon0707/final/blob/main/dangdang_img.jpg"> 
-<img width="1039" alt="db" src="https://github.com/sangwon0707/final/blob/main/db_image.png"> 
-
-&nbsp;
-&nbsp;
-
 # 🐾 반려동물 관리 웹 애플리케이션 프로젝트
 
 [🔗 프로젝트 기획/주제선정](https://github.com/sangwon0707/final/blob/main/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3%E1%84%80%E1%85%B5%E1%84%92%E1%85%AC%E1%86%A8.pdf)<br>
 [🔗 프로젝트 DB/프로파일러](https://github.com/sangwon0707/final/blob/main/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3%E1%84%89%E1%85%A5%E1%86%AF%E1%84%80%E1%85%A8.pdf) <br>
 [🔗 최종발표 자료](https://github.com/sangwon0707/final/blob/main/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3%E1%84%87%E1%85%A1%E1%86%AF%E1%84%91%E1%85%AD.pdf) <br>
+
+
+<img width="1039" alt="main" src="https://github.com/sangwon0707/final/blob/main/dangdang_img.jpg"> 
+<img width="1039" alt="db" src="https://github.com/sangwon0707/final/blob/main/db_image.png"> 
+&nbsp;
 
 ## 🗓 작업 기간 및 인원
 **기간:** 2024.03.27 ~ 2024.04.23  
