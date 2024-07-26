@@ -54,23 +54,19 @@ Spring Boot와 Spring Security를 활용하여 웹 애플리케이션을 개발�
         - **타임리프를 통한 필드 잠금 (프론트 제한):** 카카오로 로그인한 사용자는 `authType`이 `KAKAO`로 등록되어 비밀번호 변경 기능에서 입력 필드를 Thymeleaf를 이용하여 `disabled` 속성으로 잠가두고 유저에게는 비밀번호 변경 불가를 안내합니다.
         - **서버 측 검증 (백엔드 제한):** 비밀번호 변경 요청이 들어올 때, `authType`이 `STANDARD`인 경우에만 비밀번호를 변경할 수 있도록 서버 측에서 추가 검증을 수행합니다. 이를 통해 사용자가 프론트엔드를 강제로 수정하여 비밀번호 수정 필드를 열더라도, 서버에서 다시 한 번 확인하여 변경을 방지합니다. 이러한 처리 방법을 통해 카카오 로그인 사용자의 비밀번호 변경을 완전히 제한하였습니다.
 
-6. **데이터베이스 설계 및 관리**
-    - MySQL을 활용하여 데이터베이스를 설계하고 테이블을 생성 및 관리합니다. 효율적인 데이터 저장과 관리를 위해 최적화된 쿼리를 작성하고 인덱스를 설정하여 성능을 향상시킵니다.
-
-7. **프론트엔드 구조 및 디자인 구현**
+6. **프론트엔드 구조 및 디자인 구현**
     - 타임리프(Thymeleaf)를 사용하여 동적인 웹 페이지를 구현합니다. HTML5, CSS3, JavaScript, jQuery, Bootstrap을 사용하여 반응형 디자인과 사용자 친화적인 UI/UX를 제공합니다.
 
-8. **비즈니스 로직 구현**
-    - Spring Framework와 Spring Boot를 활용하여 MVC 패턴에 기반한 비즈니스 로직을 구현합니다. Spring Security를 사용하여 사용자 인증 및 권한 관리를 처리합니다.
 
-9. **AWS 배포**
-    - Elastic Beanstalk를 사용하여 애플리케이션을 AWS에 배포하고 운영 환경을 구축합니다. 이를 통해 애플리케이션의 확장성과 가용성을 확보합니다.
+7. **데이터베이스 설계 및 관리**
+    - MySQL을 활용하여 데이터베이스를 설계하고 테이블을 생성 및 관리합니다. 효율적인 데이터 저장과 관리를 위해 최적화된 쿼리를 작성하고 인덱스를 설정하여 성능을 향상시킵니다.
 
-10. **REST API 사용**
+8. **REST API 사용**
     - 마이페이지, 반려동물 정보 제공 및 병원 검색 기능 등을 RESTful API로 구현하여 클라이언트와 서버 간 효율적인 데이터 통신을 구현합니다. 이를 통해 애플리케이션의 확장성과 유지 보수성을 향상시킵니다.
 
-## 💻 사용 언어 및 개발 환경
-- **Front-End:** HTML5, CSS3, JavaScript, jQuery, Thymeleaf, Bootstrap
-- **Back-End:** Java, Spring Framework, Spring Boot, Spring Security, Spring Data JPA, Lombok
-- **Database:** MySQL, MySQL Workbench
-- **Tools & Platforms:** STS4(Eclipse), GitHub, AWS
+9. **비즈니스 로직 구현**
+    - Spring Framework와 Spring Boot를 활용하여 MVC 패턴에 기반한 비즈니스 로직을 구현합니다. Spring Security를 사용하여 사용자 인증 및 권한 관리를 처리합니다.
+
+10. **AWS 배포**
+    - Elastic Beanstalk를 사용하여 애플리케이션을 AWS에 배포하고 운영 환경을 구축합니다. 이를 통해 애플리케이션의 확장성과 가용성을 확보합니다.
+
